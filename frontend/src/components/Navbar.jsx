@@ -8,7 +8,7 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
 import { Link } from "react-router-dom";
 
-import avatar from '../data/avatar.jpg';
+
 import { Cart, Chat, Notification, UserProfile } from '.';
 import { useStateContext } from '../contexts/ContextProvider';
 
