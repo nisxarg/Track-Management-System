@@ -52,8 +52,8 @@ const App = () => {
                             {themeSettings && (<ThemeSettings />)}
                             <Routes> */
                                 {/* Home Section */}
-                                <Route path="/" element={(<Home />)} />
-                                <Route path="/home" element={(<Home />)} />
+                                <Route path="/" element={(<Home year="2023" />)} />
+                                <Route path="/home" element={(<Home year="2023"/>)} />
 
                                 {/* Home section Pages  */}
                                 <Route path="/CallForPapers" element={<CFP />} />
