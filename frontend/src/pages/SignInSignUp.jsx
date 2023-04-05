@@ -17,7 +17,7 @@ const SignInSignUp = () => {
     const { children, value, index, ...other } = props;
 
     return (
-      <div className=" dark:bg-secondary-dark-bg bg-white text-white">
+      <div className=" dark:bg-secondary-dark-bg bg-white text-white ">
       <div
         role="tabpanel"
         hidden={value !== index}
