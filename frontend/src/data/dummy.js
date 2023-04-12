@@ -43,11 +43,16 @@ export const homePageData1 = {
     {
       year: 2023,
       img: "url of the image ",
-      "content": {
-        welcomeContent: "This is the welcome content for the home page of 2023",
+      welcomeContent:{
+        title:"Welcome to FIRE 2023",
+        content:"The 14th meeting of Forum for Information Retrieval Evaluation {props.year} will be held at Kolkata,India. Started in 2008 with the aim of building a South Asian counterpart for TREC, CLEF and NTCIR, FIRE has since evolved continuously to meet the new challenges in multilingual information access. It has expanded to include new domains like plagiarism detection, legal information access, mixed script information retrieval and spoken document retrieval to name a few.Continuing the trend started in 2015, the FIRE will consist of a peer-reviewed conference track along with evaluation tasks. We invite full and short papers from information retrieval, natural language processing, and related domains. Please re`fer to the call for papers or submission guidelines for more information.",
+
+      } ,
+      content: {
+      
         keyNoteSpeakers: {
           title: "speakers for this year 2023",
-          speakerList: [{
+          List: [{
             text: "first Speaker",
             link: "#"
           },
@@ -64,7 +69,7 @@ export const homePageData1 = {
         },
         invitedSpeakers: {
           title: "speakers for this year 2023",
-          speakerList: [{
+          List: [{
             text: "first Speaker",
             link: "#",
           },
@@ -79,9 +84,9 @@ export const homePageData1 = {
 
           ]
         },
-        traks: {
+        tracks: {
           title: "traks for this year 2023",
-          trackList: [{
+          List: [{
             text: "first track",
             link: "#",
           },
@@ -98,7 +103,7 @@ export const homePageData1 = {
         },
         tutorials: {
           title: "tutorials for this year 2023",
-          trackList: [{
+          List: [{
             text: "first turorial",
             link: "#",
           },
@@ -117,13 +122,19 @@ export const homePageData1 = {
     },
     {
       year: 2022,
-      "content": {
-        welcomeContent: "This is the welcome content for the home page of 2022",
+      img: "url of the image ",
+      welcomeContent:{
+        title:"Welcome to FIRE 2022",
+        content:"this is any text none of use   will be held at Kolkata,India. Started in 2008 with the aim of building a South Asian counterpart for TREC, CLEF and NTCIR, FIRE has since evolved continuously to meet the new challenges in multilingual information access. It has expanded to include new domains like plagiarism detection, legal information access, mixed script information retrieval and spoken document retrieval to name a few.Continuing the trend started in 2015, the FIRE will consist of a peer-reviewed conference track along with evaluation tasks. We invite full and short papers from information retrieval, natural language processing, and related domains. Please re`fer to the call for papers or submission guidelines for more information.",
+
+      } ,
+      content: {
+      
         keyNoteSpeakers: {
           title: "speakers for this year 2022",
-          speakerList: [{
+          List: [{
             text: "first Speaker",
-            link: "#",
+            link: "#"
           },
           {
             text: "Second: Speaker",
@@ -137,8 +148,8 @@ export const homePageData1 = {
           ]
         },
         invitedSpeakers: {
-          title: "speakers for this year 2022",
-          speakerList: [{
+          title: "speakers for this year 2023",
+          List: [{
             text: "first Speaker",
             link: "#",
           },
@@ -153,9 +164,9 @@ export const homePageData1 = {
 
           ]
         },
-        traks: {
-          title: "traks for this year 2022",
-          trackList: [{
+        tracks: {
+          title: "traks for this year 2023",
+          List: [{
             text: "first track",
             link: "#",
           },
@@ -171,8 +182,8 @@ export const homePageData1 = {
           ]
         },
         tutorials: {
-          title: "tutorials for this year 2022",
-          trackList: [{
+          title: "tutorials for this year 2023",
+          List: [{
             text: "first turorial",
             link: "#",
           },
@@ -187,10 +198,7 @@ export const homePageData1 = {
 
           ]
         },
-
-
       },
-
     },
 
   ]
