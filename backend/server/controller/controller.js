@@ -44,7 +44,7 @@ exports.user_login = async(req, res) =>{
     userdb.findOne({ username: username_ })
         .then(data => {
             if (!data) {
-                res.status(404).send({ message: `May be user not found` })
+                res.status(400).send({ message: `May be user not found` })
 
             }
             else {
