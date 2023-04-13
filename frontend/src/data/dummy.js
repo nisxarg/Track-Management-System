@@ -1,15 +1,4 @@
 import React from 'react';
-import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
-import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
-import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
-import { BiColorFill } from 'react-icons/bi';
-import { IoMdContacts } from 'react-icons/io';
-import { RiContactsLine, RiStockLine } from 'react-icons/ri';
-import { MdOutlineSupervisorAccount } from 'react-icons/md';
-import { HiOutlineRefresh } from 'react-icons/hi';
-import { TiTick } from 'react-icons/ti';
-import { GiLouvrePyramid } from 'react-icons/gi';
-import { GrLocation } from 'react-icons/gr';
 
 
 export const themeColors = [
@@ -328,157 +317,157 @@ export const links = [
 
 ];
 
-export const homePageData = [
-  {
-    year: 2023,
-    "content": {
-      welcomeContent: "This is the welcome content for the home page of 2023",
-      keyNoteSpeakers: {
-        title: "speakers for this year 2023",
-        speakerList: [{
-          text: "first Speaker",
-          link: "#",
-        },
-        {
-          text: "Second: Speaker",
-          link: "#",
-        },
-        {
-          text: "Third: Speaker",
-          link: "#",
-        },
+// export const homePageData = [
+//   {
+//     year: 2023,
+//     "content": {
+//       welcomeContent: "This is the welcome content for the home page of 2023",
+//       keyNoteSpeakers: {
+//         title: "speakers for this year 2023",
+//         speakerList: [{
+//           text: "first Speaker",
+//           link: "#",
+//         },
+//         {
+//           text: "Second: Speaker",
+//           link: "#",
+//         },
+//         {
+//           text: "Third: Speaker",
+//           link: "#",
+//         },
 
-        ]
-      },
-      invitedSpeakers: {
-        title: "speakers for this year 2023",
-        speakerList: [{
-          text: "first Speaker",
-          link: "#",
-        },
-        {
-          text: "Second: Speaker",
-          link: "#",
-        },
-        {
-          text: "Third: Speaker",
-          link: "#",
-        },
+//         ]
+//       },
+//       invitedSpeakers: {
+//         title: "speakers for this year 2023",
+//         speakerList: [{
+//           text: "first Speaker",
+//           link: "#",
+//         },
+//         {
+//           text: "Second: Speaker",
+//           link: "#",
+//         },
+//         {
+//           text: "Third: Speaker",
+//           link: "#",
+//         },
 
-        ]
-      },
-      traks: {
-        title: "traks for this year 2023",
-        trackList: [{
-          text: "first track",
-          link: "#",
-        },
-        {
-          text: "Second: track",
-          link: "#",
-        },
-        {
-          text: "Third: track",
-          link: "#",
-        },
+//         ]
+//       },
+//       traks: {
+//         title: "traks for this year 2023",
+//         trackList: [{
+//           text: "first track",
+//           link: "#",
+//         },
+//         {
+//           text: "Second: track",
+//           link: "#",
+//         },
+//         {
+//           text: "Third: track",
+//           link: "#",
+//         },
 
-        ]
-      },
-      tutorials: {
-        title: "tutorials for this year 2023",
-        trackList: [{
-          text: "first turorial",
-          link: "#",
-        },
-        {
-          text: "Second: turorial",
-          link: "#",
-        },
-        {
-          text: "Third: turorial",
-          link: "#",
-        },
+//         ]
+//       },
+//       tutorials: {
+//         title: "tutorials for this year 2023",
+//         trackList: [{
+//           text: "first turorial",
+//           link: "#",
+//         },
+//         {
+//           text: "Second: turorial",
+//           link: "#",
+//         },
+//         {
+//           text: "Third: turorial",
+//           link: "#",
+//         },
 
-        ]
-      },
-
-
-    },
-    year: 2022,
-    "content": {
-      welcomeContent: "This is the welcome content for the home page of 2022",
-      keyNoteSpeakers: {
-        title: "speakers for this year 2022",
-        speakerList: [{
-          text: "first Speaker",
-          link: "#",
-        },
-        {
-          text: "Second: Speaker",
-          link: "#",
-        },
-        {
-          text: "Third: Speaker",
-          link: "#",
-        },
-
-        ]
-      },
-      invitedSpeakers: {
-        title: "speakers for this year 2022",
-        speakerList: [{
-          text: "first Speaker",
-          link: "#",
-        },
-        {
-          text: "Second: Speaker",
-          link: "#",
-        },
-        {
-          text: "Third: Speaker",
-          link: "#",
-        },
-
-        ]
-      },
-      traks: {
-        title: "traks for this year 2022",
-        trackList: [{
-          text: "first track",
-          link: "#",
-        },
-        {
-          text: "Second: track",
-          link: "#",
-        },
-        {
-          text: "Third: track",
-          link: "#",
-        },
-
-        ]
-      },
-      tutorials: {
-        title: "tutorials for this year 2022",
-        trackList: [{
-          text: "first turorial",
-          link: "#",
-        },
-        {
-          text: "Second: turorial",
-          link: "#",
-        },
-        {
-          text: "Third: turorial",
-          link: "#",
-        },
-
-        ]
-      },
+//         ]
+//       },
 
 
-    },
+//     },
+//     year: 2022,
+//     "content": {
+//       welcomeContent: "This is the welcome content for the home page of 2022",
+//       keyNoteSpeakers: {
+//         title: "speakers for this year 2022",
+//         speakerList: [{
+//           text: "first Speaker",
+//           link: "#",
+//         },
+//         {
+//           text: "Second: Speaker",
+//           link: "#",
+//         },
+//         {
+//           text: "Third: Speaker",
+//           link: "#",
+//         },
 
-  },
+//         ]
+//       },
+//       invitedSpeakers: {
+//         title: "speakers for this year 2022",
+//         speakerList: [{
+//           text: "first Speaker",
+//           link: "#",
+//         },
+//         {
+//           text: "Second: Speaker",
+//           link: "#",
+//         },
+//         {
+//           text: "Third: Speaker",
+//           link: "#",
+//         },
 
-]
+//         ]
+//       },
+//       traks: {
+//         title: "traks for this year 2022",
+//         trackList: [{
+//           text: "first track",
+//           link: "#",
+//         },
+//         {
+//           text: "Second: track",
+//           link: "#",
+//         },
+//         {
+//           text: "Third: track",
+//           link: "#",
+//         },
+
+//         ]
+//       },
+//       tutorials: {
+//         title: "tutorials for this year 2022",
+//         trackList: [{
+//           text: "first turorial",
+//           link: "#",
+//         },
+//         {
+//           text: "Second: turorial",
+//           link: "#",
+//         },
+//         {
+//           text: "Third: turorial",
+//           link: "#",
+//         },
+
+//         ]
+//       },
+
+
+//     },
+
+//   },
+
+// ]

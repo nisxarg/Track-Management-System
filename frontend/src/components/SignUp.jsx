@@ -15,7 +15,7 @@ const Signup = () => {
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: currentColor }
-    const marginTop = { marginTop: 5 }
+    // const marginTop = { marginTop: 5 }
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -44,6 +44,9 @@ const Signup = () => {
         console.error(error);
       }
     };
+    
+    const disabledButton = !acceptedTerms || password !== confirmPassword;
+    
 
     return (
         <div className=" dark:bg-secondary-dark-bg bg-white text-white">
@@ -69,8 +72,9 @@ const Signup = () => {
                         <TextField fullWidth label="Phone Number" placeholder="Enter your phone number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
                         <TextField fullWidth label="Password" placeholder="Enter your password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <TextField fullWidth label="Confirm Password" placeholder="Confirm your password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                        {password !== confirmPassword && <Typography style={{ color: 'red' }}>Password and confirm password does not match</Typography>}
                         <FormControlLabel control={<Checkbox name="checkedA" />} label="I accept the terms and conditions." checked={acceptedTerms} onChange={(e) => setAcceptedTerms(e.target.checked)} />
-                        <Button type="submit" variant="contained" color="primary">
+                        <Button type="submit" variant="contained" color="primary" disabled={disabledButton}>
                             Sign up
                         </Button>
                     </form>
