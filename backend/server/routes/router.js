@@ -11,13 +11,8 @@ route.post('/api/user_signup', controller.user_signup)
 route.post('/api/user_login/:username', controller.user_login)
 route.post('/api/organizer_signup', controller.organizer_signup)
 route.post('/api/organizer_login/:username', controller.organizer_login)
-// route.post('/save', controller.saveTodo)
-// route.post('/update', controller.updateToDo)
-// route.post('/delete', controller.deleteToDo)
-// route.post('/api/student', controller.create_student)
-// route.post('/api/company', controller.create_company)
-// route.get('/api/student/:username', controller.find_student)
-// route.get('/api/company/:company_name', controller.find_company)
+route.post('/api/add_track', controller.add_track)
+route.post('/api/track/', controller.find_track)
 
 
 module.exports = route
