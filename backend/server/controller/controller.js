@@ -3,7 +3,8 @@ var organizerdb = require('../model/model_organizer')
 var trackdb = require('../model/model_track')
 
 exports.home = async(req, res) =>{
-    res.send("Hii...")
+    // res.send("Hii...")
+    res.status(200).send({success:true})
 }
 
 exports.user_signup = async(req, res) =>{
@@ -27,8 +28,9 @@ exports.user_signup = async(req, res) =>{
     //save user in the database
     user.save(user)
         .then(data=>{
-            res.send(data)  
+            // res.status(200).send(data)  
             // res.redirect('/')
+            res.status(200).send({success: true})
         })
         .catch(err=>{
             res.status(500).send({
@@ -49,7 +51,8 @@ exports.user_login = async(req, res) =>{
 
             }
             else {
-                res.send(data)
+                // res.status(200).send(data)
+                res.status(200).send({success: true})
             }
         })
         .catch(err => {
@@ -100,7 +103,8 @@ exports.organizer_login = async(req, res) =>{
 
             }
             else {
-                res.send(data)
+                // res.send(data)
+                res.status(200).send({ success: true })
             }
         })
         .catch(err => {
