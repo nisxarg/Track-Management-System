@@ -69,7 +69,7 @@ const App = () => {
                                 <Route path="/2021" element={<Home year="2021" />} />
                                 <Route path="/2020" element={<Home year="2020" />} />
                                 <Route path="/2019" element={<Home year="2019" />} />
-                                <Route path="/2017" element={<Home year="2017" />} />
+                                <Route path="/2016" element={<Home year="2016" />} />
                                 <Route path="/2017" element={<Home year="2017" />} />
                                 <Route path="/2015" element={<Home year="2015" />} />
                                 <Route path="/2014" element={<Home year="2014" />} />

@@ -1,5 +1,3 @@
-import React from 'react';
-
 
 export const themeColors = [
   {
@@ -193,28 +191,72 @@ export const homePageData1 = {
   ]
 }
 
+export const Track ={
+  sidebar:  {
+    title: 'Home',
+    links: [
+      {
+        name: 'Home',
 
-export const gridOrderImage = (props) => (
-  <div>
-    <img
-      className="rounded-xl h-20 md:ml-3"
-      src={props.ProductImage}
-      alt="order-item"
-    />
-  </div>
-);
+      },
+      {
+        name: 'Call for Papers',
 
-export const gridOrderStatus = (props) => (
-  <button
-    type="button"
-    style={{ background: props.StatusBg }}
-    className="text-white py-1 px-2 capitalize rounded-2xl text-md"
-  >
-    {props.Status}
-  </button>
-);
+      },
+      {
+        name: 'Call for Tracks',
+
+      },
+      {
+        name: 'Organizations',
+
+      },
+    ],
+  },
+  importantDates:{
+    title:"important Dates",
+    dates:[
+    {
+      date:"22/5/2021",
+      event:"this is the event to be held during this day"
+    },
+    {
+      date:"22/5/2021",
+      event:"this is the event to be held during this day"
+    },
+  ],
+},
+  content:{
+    introduction:{
+      title:"introduction ",
+      content:" The growth of social media platforms such as twitter, facebook for communication between people has led to creation of huge user generated data. This is now leading to development of new challenges and perspectives in the language technologies research. Automatic processing of such texts requires us to develop new methodologies. Thus there is great need to develop various automatic systems such as information extraction, information retrieval, machine translation and other higher Natural Language Processing (NLP) applications such as Anaphora resolution, co-reference resolution which can be applied on these social media text.This is the 2nd edition of the track. The first edition was held in the FIRE 2020. In the last edition the focus was on the resolution of Anaphora alone. In this edition of the track the focus will be on identifying other discourse elements such as connectives along with anaphora. Also, the coreference chain identification. Natural Language Processing (NLP) technologies are advancing very fast and today we find Conversational AI applications such as chatbots are used across various industries for customer interactions, in training employees.This is now leading to development of new challenges and perspectives in the language technologies research. Thus, there is great need to develop robust conversational AI systems. And for a conversational AI systems development we need Anaphora resolution, co-reference resolution.The objectives of SocAnaRes-IL are:Creation of benchmark data for Anaphora Resolution in Indian language text from various Social media text such as Facebook, Twitter, Chat conversations etc.Encourage researchers to develop novel systems for Anaphora Resolution.Providing opportunity to researchers to have comparison of differenttechniques."
+    },
+    TaskDescription:{
+        title:"Task Description",
+        conten : "There are various challenges in anaphora resolution on these type of texts. One of the main challeges is that facebook (FB) posts and tweets are generally very short, thus often lack sufficient context to determine an antecedent of an anaphor without the aid of background or world knowledge. Especially in the resolution of third person pronominals “he/they” (woh, ve, vo) in atleast 20% of the cases the antecedent is not mentioned in the current tweet or FB post, it is either in posts which was already said a day before or it is understood with world knowledge.Example Tweet:HI: “@vijayrk modi sarkar ke baad garibi kam hui hai, bank wale ab usko bhi loandena shuru kiya ha”(“@vijayrk after Modi government poverty has reduced, now banks are giving loans to them”)Here in this tweet “usko” is the third person pronoun, and here it referring to poor people. The antecedent for this pronoun can be identified only if we have world knowledge.In comparison with English, Indian Languages have more dialectal variations. These dialects are mainly influenced by different regions and communities. And thus we have different styles of writing. Some of the main issues in handling of social media texts such as tweets are i) Spelling errors ii) Abbreviated new language vocabulary such as “b4u” for “before you” iii) use of symbols such as emoticons/emojis iv) use of meta tags and hash tags v) Code mixing. We need to preprocess the data to normalize the abbreviated vocabulary by providing expansions.The task is to identify Anaphor and its antecedent in a given text. The text is a tweet."
+        
+    },
+    corpus: {
+       title : "Training Corpus",
+       content : "Training data is released.For more details on training data such as data format please click here .Please register your Team following the procedure given in registration section and make request for data. The data will be mailed to the team contact person"
+    },
+    regestration: {
+      title : "registration",
+      content : "Registration is now open !!!Please register by sending email to sobha@au-kbc.org with subject line `Registration for SocAnaRes-IL 2022` with the following details:`Team Leader Name:``Team Affiliation (Proper full Address of the Organization):``Team Contact Person name:` and `Email ID:``Languages for which participating:``Team Members Names:`(PS: Maximum of 4 members will be allowed in a team)"
+    },
+    submission : {
+      title : "Submission Format",
+      content : "  The participants have to submit their test runs in the format as given in training data.Note: There should be no changes/alterations in the format of the test run submission file.Each team can submit maximum of 3 test runs for each language."
+
+    },
+    evaluation:{
+      title :" We plan to use the standard evaluation metrics of Precision, Recall and F-measure. More details will be provided later.",
+      content:" We plan to use the standard evaluation metrics of Precision, Recall and F-measure. More details will be provided later."
+    }
 
 
+  }
+}
 export const links = [
   {
     title: 'Home',
