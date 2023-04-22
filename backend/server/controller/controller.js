@@ -1,6 +1,7 @@
 var userdb = require('../model/model_user')
 var organizerdb = require('../model/model_organizer')
 var trackdb = require('../model/model_track')
+var homedb = require('../model/model_home')
 
 exports.home = async(req, res) =>{
     // res.send("Hii...")
@@ -184,5 +185,37 @@ exports.find_track = async(req, res) =>{
 
     }
     
+}
+
+exports.organizer_signup = async(req, res) =>{
+
+    //validate request
+    if(!req.body){
+        res.status(400).send({message: "Content can not be empty"});
+        return;
+    }
+
+    //new user
+    const user = new organizerdb({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        gender: req.body.gender,
+        phone_no: req.body.phone_no
+        
+    })
+
+    //save user in the database
+    user.save(user)
+        .then(data=>{
+            res.send(data)  
+            // res.redirect('/')
+        })
+        .catch(err=>{
+            res.status(500).send({
+                message: err.message || "Some error occured while creating a create operation"
+            });
+        });
+
 }
 
