@@ -52,6 +52,73 @@ const Home = (props) => {
       </div>
       
     </div>
+     {/* changed */}
+     <div>
+  <div
+    className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3"
+    style={{ backgroundColor: currentColor }}
+  >
+    <p className="text-2xl text-white font-semibold mt-8">
+      {mainContent.keyNoteSpeakers.title}
+    </p>
+  </div>
+
+  <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
+    <ul>
+      {mainContent.keyNoteSpeakers.List.map((speaker) => (
+        <li key={speaker.text}>
+          <a href={speaker.link}>{speaker.text}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+
+
+<div>
+  <div
+    className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3"
+    style={{ backgroundColor: currentColor }}
+  >
+    <p className="text-2xl text-white font-semibold mt-8">
+      {mainContent.invitedSpeakers.title}
+    </p>
+  </div>
+
+  <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
+    <ul>
+      {mainContent.invitedSpeakers.List.map((speaker) => (
+        <li key={speaker.text}>
+          <a href={speaker.link}>{speaker.text}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+
+<div>
+  <div
+    className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3"
+    style={{ backgroundColor: currentColor }}
+  >
+    <p className="text-2xl text-white font-semibold mt-8">
+      {mainContent.tracks.title}
+    </p>
+  </div>
+
+  <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
+    <ul>
+      {mainContent.tracks.List.map((tracks) => (
+        <li key={tracks.text}>
+          <a href={`/track-details/${tracks.text}`}>{tracks.text}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+{/* changed */}
     
     </>
    

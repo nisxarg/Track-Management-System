@@ -7,6 +7,8 @@ import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
 import { Home, Data, CFP, Organizations, PastPrecedings, Resources, CFT, SignInSignUp, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor } from './pages';
 import { useStateContext } from './contexts/ContextProvider';
 
+import TrackDetails from './pages/TrackDetails'
+
 const App = () => {
     const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
     return (
@@ -77,6 +79,9 @@ const App = () => {
                                 <Route path="/2013" element={<Home year="2013" />} />
                                 <Route path="/2012" element={<Home year="2012" />} />
                                 <Route path="/SignInSignUp" element={<SignInSignUp />} />
+
+
+                                <Route path="/track-details/:trackName"element={<TrackDetails />} />
 
 
 

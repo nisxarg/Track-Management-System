@@ -1,4 +1,5 @@
 import React, { useEffect,useState } from 'react';
+
 import { AiOutlineMenu } from 'react-icons/ai';
 import { BsChatLeft } from 'react-icons/bs';
 import { RiNotification3Line } from 'react-icons/ri';
@@ -30,7 +31,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   </TooltipComponent>
 );
 
-const Navbar = () => {
+const Navbar = (showOnlyOrgSignIn) => {
 
 
   const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize } = useStateContext();
@@ -73,6 +74,7 @@ const Navbar = () => {
     Navigate("/SignInSignUp");
   };
 
+    
   return (
 
     <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
@@ -80,8 +82,6 @@ const Navbar = () => {
       <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor}  icon={<AiOutlineMenu />} />
 
       </div>
-
-     
 
       <div className="flex">
 
@@ -103,14 +103,16 @@ const Navbar = () => {
               className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
               onClick={handleUserSignIn}
             >
-              Sign in as User
+              Sign in as Organizer
             </div>
+            {!showOnlyOrgSignIn && (
             <div
               className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
               onClick={handleOrganizerSignIn}
             >
-              Sign in as Organizer
+              Sign in as User
             </div>
+            )}
           </div>
         )}
 
