@@ -20,7 +20,7 @@ var home_schema = new mongoose.Schema({
             type : String,
             required: true
         },
-        required: true    
+   
     },
     content:{
         keyNoteSpeakers : {
@@ -39,9 +39,8 @@ var home_schema = new mongoose.Schema({
                 }
                 
             }],
-            required : true
         },
-        invitedeSpeakers : {
+        invitedSpeakers : {
             title : {
                 type : String,
                 required: true
@@ -57,7 +56,6 @@ var home_schema = new mongoose.Schema({
                 }
                 
             }],
-            required : true
         },
         tracks : {
             title : {
@@ -75,7 +73,6 @@ var home_schema = new mongoose.Schema({
                 }
                 
             }],
-            required : true
         },
         tutorials : {
             title : {
@@ -93,7 +90,6 @@ var home_schema = new mongoose.Schema({
                 }
                 
             }],
-            required : true
         }
     },
 

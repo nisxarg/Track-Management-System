@@ -17,14 +17,7 @@ exports.user_signup = async(req, res) =>{
         }
 
     //new user
-    const user = new userdb({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        gender: req.body.gender,
-        phone_no: req.body.phone_no
-        
-    })
+    const user = new userdb(req.body)
 
     //save user in the database
     user.save(user)
@@ -70,14 +63,7 @@ exports.organizer_signup = async(req, res) =>{
     }
 
     //new user
-    const user = new organizerdb({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        gender: req.body.gender,
-        phone_no: req.body.phone_no
-        
-    })
+    const user = new organizerdb(req.body)
 
     //save user in the database
     user.save(user)
@@ -122,15 +108,7 @@ exports.add_track = async(req, res) =>{
     }
 
     //new user
-    const track = new trackdb({
-        name: req.body.name,
-        year: req.body.year,
-        introduction: req.body.introduction,
-        description: req.body.description,
-        submission_format: req.body.submission_format,
-        evalution_criteria: req.body.evalution_criteria
-        
-    })
+    const track = new trackdb(req.body)
 
     //save track in the database
     track.save(track)
@@ -187,7 +165,7 @@ exports.find_track = async(req, res) =>{
     
 }
 
-exports.organizer_signup = async(req, res) =>{
+exports.find_year_track = async(req, res) =>{
 
     //validate request
     if(!req.body){
@@ -195,21 +173,15 @@ exports.organizer_signup = async(req, res) =>{
         return;
     }
 
+    console.log(req.body)
+
     //new user
-    const user = new organizerdb({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        gender: req.body.gender,
-        phone_no: req.body.phone_no
-        
-    })
+    const new_year = new homedb(req.body)
 
     //save user in the database
-    user.save(user)
+    new_year.save(new_year)
         .then(data=>{
             res.send(data)  
-            // res.redirect('/')
         })
         .catch(err=>{
             res.status(500).send({
