@@ -2,10 +2,15 @@ const mongoose = require('mongoose')
 
 var track_schema = new mongoose.Schema({
 
+    name_code: {
+        type: String,
+        require: true,
+        unique : true
+    },
     sidebar: {
         title: {
             type: String,
-            required: true
+            required: true,
         },
         links: [{
             name: {
@@ -15,10 +20,6 @@ var track_schema = new mongoose.Schema({
 
         }]
     },
-    // type: String,
-    // required: true,
-    // unique: true
-    //},
     importantDates: {
         title: {
             type: String,
@@ -36,7 +37,7 @@ var track_schema = new mongoose.Schema({
         }]
     },
 
-    Content: {
+    content: {
         introduction: {
             title: {
                 type: String,
