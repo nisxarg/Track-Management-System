@@ -22,6 +22,10 @@ connectDB();
 //load routers
 app.use('/', require('./server/routes/router'))
 
+module.exports = app
+
+if(!module.parent){
 app.listen(PORT, ()=>{
     console.log(`server is running on http://localhost:${PORT}`);
 })
+}
