@@ -22,7 +22,7 @@ exports.user_signup = async(req, res) =>{
     const user = new userdb(req.body)
 
     //save user in the database
-    user.save(user)
+    await user.save(user)
         .then(data=>{
             // res.status(200).send(data)  
             // res.redirect('/')
@@ -40,7 +40,7 @@ exports.user_login = async(req, res) =>{
 
     const username_ = req.body.username;
     
-    userdb.findOne({ username: username_ })
+    await userdb.findOne({ username: username_ })
         .then(async data => {
             if (!data) {
                 res.status(400).send({ message: `May be user not found` })
@@ -78,7 +78,7 @@ exports.organizer_signup = async(req, res) =>{
     const user = new organizerdb(req.body)
 
     //save user in the database
-    user.save(user)
+    await user.save(user)
         .then(data=>{
             res.send(data)  
             // res.redirect('/')
@@ -95,7 +95,7 @@ exports.organizer_login = async(req, res) =>{
 
     const username_ = req.params.username;
     
-    organizerdb.findOne({ username: username_ })
+    await organizerdb.findOne({ username: username_ })
         .then(data => {
             if (!data) {
                 res.status(404).send({ message: `May be user not found` })
@@ -123,7 +123,7 @@ exports.add_track = async(req, res) =>{
     const track = new trackdb(req.body)
 
     //save track in the database
-    track.save(track)
+    await track.save(track)
         .then(data=>{
             res.send(data)  
             // res.redirect('/')
@@ -181,7 +181,7 @@ exports.find_year_track = async(req, res) =>{
 
     const year_ = req.params.year;
     
-    trackdb.findOne({ year: year_ })
+    await trackdb.findOne({ year: year_ })
         .then(data => {
             if (!data) {
                 res.status(404).send({ message: `May be track not found` })
@@ -198,49 +198,104 @@ exports.find_year_track = async(req, res) =>{
 
 }
 
-exports.team_reg = async(req,res) => {
+exports.team_signup = async(req,res) => {
      
     const team = req.body
-    //checking request ..
-    // and then user list main track,year exist nahi karna chahiye.
+    const user1 = team.teammate_1
+    const user2 = team.teammate_2
+    const user3 = team.teammate_3
+
+    let count = 0, check = 0
+
+
+    await userdb.findOne({ username: user1 })
+        .then(data => {
+            if (data) {
+                count++
+
+                var len = data.tracks.length
+
+                for(let i=0; i<len; i++)
+                {   
+                    if(team.track_name==data.tracks[i].track_name)
+                    {
+                        console.log(team.track_name, data.tracks[i].track_name)
+                        check = 1
+                    }
+                }
+            }
+        })
+        .catch(err => {
+            res.status(500).send({ message: "Error" })
+        })  
+
+        if(user2!=undefined)
+        {
+            await userdb.findOne({ username: user2 })
+            .then(data => {
+                if (data) {
+                    count++
+
+                    var len = data.tracks.length
+
+                    for(let i=0; i<len; i++)
+                    {   
+                        if(team.track_name==data.tracks[i].track_name)
+                        {
+                            check = 1
+                        }
+                    }
+                }
+            })
+            .catch(err => {
+                res.status(500).send({ message: "Error" })
+            })  
+        }
+
+        if(user3!=undefined)
+        {
+            await userdb.findOne({ username: user3 })
+            .then(data => {
+                if (data) {
+                    count++
+
+                    var len = data.tracks.length
+
+                    for(let i=0; i<len; i++)
+                    {   
+                        if(team.track_name==data.tracks[i].track_name)
+                        {
+                            check = 1
+                        }
+                    }
+                }
+            })
+            .catch(err => {
+                res.status(500).send({ message: "Error" })
+            })  
+        }
+
+        if(check==0)
+        {
+            const team = new teamdb(req.body)
+
+            await team.save(team)
+            .then(data=>{
+                res.send(data)  
+                // res.redirect('/')
+            })
+            .catch(err=>{
+                res.status(500).send({
+                    message: err.message || "Some error occured while creating a create operation"
+                });
+            });           
+        }
+        else
+        {
+            res.status(500).send("registration not possible")
+        }
 
 }
 
 
-
-
-// exports.login = async (req, res, next) => {
-
-//     try {
-//       const username_ = req.params.username;
-//       userdb.findOne({ username: username_ })
-//         .then(data => {
-//             if (!data) {
-//                 res.status(400).send({ message: `May be user not found` })
-//             }
-//             else {
-//                 //res.status(200).send(data)
-//                 let tokenData = {
-//                     username: user.username
-//                 };
-//                 console.log(user.username)
-//                 const token = jwt.sign(tokenData, "secret" , { expiresIn: "1h"});
-//                 res.status(200).json({
-//                     status:true,
-//                     success:"SendData",
-//                     token:token,
-//                 })
-//             }
-//         })
-//         .catch(err => {
-//             res.status(500).send({ message: "Error update user information" })
-//         })
-
-//     } catch (error) {
-//       res.status(400).json({
-//         message: "An error occurred",
-//         error: error.message,
-//       })
-//     }
-//   }
 
