@@ -139,11 +139,9 @@ exports.add_track = async(req, res) =>{
 exports.find_track = async(req, res) =>{
 
     const year = req.query.year
-    const id = req.query._id;
+    const name_code_ = req.query.name_code;
 
-    if(id===undefined)
-    {
-        await trackdb.find({ year: year })
+    await trackdb.findOne({ year:year, name_code: name_code_ })
         .then(data => {
             if (!data) {
                 res.status(404).send({ message: `May be track not found` })
@@ -156,24 +154,6 @@ exports.find_track = async(req, res) =>{
         .catch(err => {
             res.status(500).send({ message: "Error" })
         })
-    }
-    else
-    {
-        await trackdb.findOne({ year:year, _id: id })
-            .then(data => {
-                if (!data) {
-                    res.status(404).send({ message: `May be track not found` })
-    
-                }
-                else {
-                    res.send(data)
-                }
-            })
-            .catch(err => {
-                res.status(500).send({ message: "Error" })
-            })
-
-    }
     
 }
 
