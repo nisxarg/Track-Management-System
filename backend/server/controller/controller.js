@@ -2,6 +2,7 @@ var userdb = require('../model/model_user')
 var organizerdb = require('../model/model_organizer')
 var trackdb = require('../model/model_track')
 var homedb = require('../model/model_home')
+var teamdb = require('../model/model_team')
 const jwt =  require("jsonwebtoken")
 
 exports.home = async(req, res) =>{
@@ -201,6 +202,15 @@ exports.find_year_track = async(req, res) =>{
         });
 
 }
+
+// exports.team_reg = async(req,res) => {
+     
+//     const team = req.body
+
+
+// }
+
+
 
 
 // exports.login = async (req, res, next) => {
