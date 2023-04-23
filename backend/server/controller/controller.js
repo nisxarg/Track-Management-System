@@ -203,12 +203,13 @@ exports.find_year_track = async(req, res) =>{
 
 }
 
-// exports.team_reg = async(req,res) => {
+exports.team_reg = async(req,res) => {
      
-//     const team = req.body
+    const team = req.body
+    //checking request ..
+    // and then user list main track,year exist nahi karna chahiye.
 
-
-// }
+}
 
 
 

@@ -7,6 +7,12 @@ var track_schema = new mongoose.Schema({
         require: true,
         unique : true,
     },
+    tag : [{
+        tagname:{
+            type : String,
+            required : true
+        }
+    }],
     sidebar: {
         title: {
             type: String,
