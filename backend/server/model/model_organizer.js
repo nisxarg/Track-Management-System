@@ -1,25 +1,28 @@
 const mongoose = require('mongoose')
 
 var organizer_schema = new mongoose.Schema({
-
-    username:{
+    name:{
         type: String,
         required: true,
         unique: true
-    },
-    email:{
-        type: String,
-        required: true,
     },
     password:{
         type: String,
         required: true
     },
-    phone_no:{
+    track_name:{
         type: String,
         required: true
     },
-    gender:{
+    start_date:{
+        type: Date,
+        required: true
+    },
+    end_date:{
+        type: Date,
+        required: true
+    },
+    resume_link:{
         type: String,
         required: true
     }
