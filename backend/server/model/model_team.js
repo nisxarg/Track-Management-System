@@ -31,7 +31,7 @@ var team_schema = new mongoose.Schema({
     }
 })
 
-user_schema.pre('save',async function() {
+team_schema.pre('save',async function() {
     try {
         const salt= await(bcrypt.genSalt(10));
         const hashPass=await bcrypt.hash(this.team_password,salt);
@@ -45,6 +45,6 @@ user_schema.pre('save',async function() {
 
 
 //creating collection
-const teamdb = mongoose.model('userdb', user_schema);  //(<collectionname>, <collectionshema>)
+const teamdb = mongoose.model('teamdb', team_schema);  //(<collectionname>, <collectionshema>)
 
-module.exports = userdb;
+module.exports = teamdb;
