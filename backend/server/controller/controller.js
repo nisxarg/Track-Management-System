@@ -201,99 +201,66 @@ exports.find_year_track = async(req, res) =>{
 exports.team_signup = async(req,res) => {
      
     const team = req.body
-    const user1 = team.teammate_1
-    const user2 = team.teammate_2
-    const user3 = team.teammate_3
 
-    let count = 0, check = 0
+    const user = [team.teammate_1, team.teammate_2, team.teammate_3]
 
+    let count = 0, check = 0, flag = 0
 
-    await userdb.findOne({ username: user1 })
-        .then(data => {
-            if (data) {
-                count++
+    for(let j=0; j<3; j++)
+    {
+        if(user[j]!=undefined)
+        {
+            await userdb.findOne({ username: user[j] })
+            .then(data => {
+                if (data) 
+                {
+                    count++
 
-                var len = data.tracks.length
+                    var len = data.tracks.length
 
-                for(let i=0; i<len; i++)
-                {   
-                    if(team.track_name==data.tracks[i].track_name)
-                    {
-                        console.log(team.track_name, data.tracks[i].track_name)
-                        check = 1
+                    for(let i=0; i<len; i++)
+                    {   
+                        if(team.track_name==data.tracks[i].track_name && team.track_year==data.tracks[i].track_year)
+                        {
+                            check = 1
+                        }
                     }
                 }
-            }
+                else
+                {
+                    flag = 1;
+                }
+            })
+            .catch(err => {
+                return res.status(500).send({ message: "Error" })
+            })  
+
+        }
+
+        if(flag)
+        return res.status(500).send('User not found')
+
+    }
+
+
+     if(count>=1 && check==0)
+    {
+        const team = new teamdb(req.body)
+
+        await team.save(team)
+        .then(data=>{
+            res.send(data)  
         })
-        .catch(err => {
-            res.status(500).send({ message: "Error" })
-        })  
-
-        if(user2!=undefined)
-        {
-            await userdb.findOne({ username: user2 })
-            .then(data => {
-                if (data) {
-                    count++
-
-                    var len = data.tracks.length
-
-                    for(let i=0; i<len; i++)
-                    {   
-                        if(team.track_name==data.tracks[i].track_name)
-                        {
-                            check = 1
-                        }
-                    }
-                }
-            })
-            .catch(err => {
-                res.status(500).send({ message: "Error" })
-            })  
-        }
-
-        if(user3!=undefined)
-        {
-            await userdb.findOne({ username: user3 })
-            .then(data => {
-                if (data) {
-                    count++
-
-                    var len = data.tracks.length
-
-                    for(let i=0; i<len; i++)
-                    {   
-                        if(team.track_name==data.tracks[i].track_name)
-                        {
-                            check = 1
-                        }
-                    }
-                }
-            })
-            .catch(err => {
-                res.status(500).send({ message: "Error" })
-            })  
-        }
-
-        if(check==0)
-        {
-            const team = new teamdb(req.body)
-
-            await team.save(team)
-            .then(data=>{
-                res.send(data)  
-                // res.redirect('/')
-            })
-            .catch(err=>{
-                res.status(500).send({
-                    message: err.message || "Some error occured while creating a create operation"
-                });
-            });           
-        }
-        else
-        {
-            res.status(500).send("registration not possible")
-        }
+        .catch(err=>{
+            res.status(500).send({
+                message: err.message || "Some error occured while creating a create operation"
+            });
+        });           
+    }
+    else
+    {
+        res.status(500).send("registration not possible")
+    }
 
 }
 
