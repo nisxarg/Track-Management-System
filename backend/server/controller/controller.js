@@ -51,7 +51,7 @@ exports.user_login = async(req, res) =>{
                 let tokenData = {
                     username: username_ 
                 };
-                console.log(username_ )
+                // console.log(username_ )
                 const token = await jwt.sign(tokenData, "secret" , { expiresIn: "1h"});
                 console.log("token created");
                 res.status(200).json({
@@ -62,7 +62,7 @@ exports.user_login = async(req, res) =>{
             }
         })
         .catch(err => {
-            res.status(500).send({ message: "Error update user information" })
+            res.status(500).send({ message: "Error" })
         })
 }
 
@@ -98,7 +98,7 @@ exports.organizer_login = async(req, res) =>{
     await organizerdb.findOne({ username: username_ })
         .then(data => {
             if (!data) {
-                res.status(404).send({ message: `May be user not found` })
+                res.status(404).send({ message: `May be organizer not found` })
 
             }
             else {
@@ -107,7 +107,7 @@ exports.organizer_login = async(req, res) =>{
             }
         })
         .catch(err => {
-            res.status(500).send({ message: "Error update user information" })
+            res.status(500).send({ message: "Error" })
         })
 }
 
@@ -146,7 +146,7 @@ exports.find_track = async(req, res) =>{
         await trackdb.find({ year: year })
         .then(data => {
             if (!data) {
-                res.status(404).send({ message: `May be user not found` })
+                res.status(404).send({ message: `May be track not found` })
 
             }
             else {
@@ -154,7 +154,7 @@ exports.find_track = async(req, res) =>{
             }
         })
         .catch(err => {
-            res.status(500).send({ message: "Error update user information" })
+            res.status(500).send({ message: "Error" })
         })
     }
     else
@@ -162,7 +162,7 @@ exports.find_track = async(req, res) =>{
         await trackdb.findOne({ year:year, _id: id })
             .then(data => {
                 if (!data) {
-                    res.status(404).send({ message: `May be user not found` })
+                    res.status(404).send({ message: `May be track not found` })
     
                 }
                 else {
@@ -170,7 +170,7 @@ exports.find_track = async(req, res) =>{
                 }
             })
             .catch(err => {
-                res.status(500).send({ message: "Error update user information" })
+                res.status(500).send({ message: "Error" })
             })
 
     }
@@ -297,5 +297,34 @@ exports.team_signup = async(req,res) => {
 
 }
 
+exports.team_login = async(req, res) =>{
+
+    const team_name_ = req.body.team_name;
+    
+    await teamdb.findOne({ team_name: team_name_ })
+        .then(async data => {
+            if (!data) {
+                res.status(400).send({ message: `May be team not found` })
+
+            }
+            else {
+               // res.status(200).send(data)
+                let tokenData = {
+                    team_name: team_name_ 
+                };
+                // console.log(team_name_ )
+                const token = await jwt.sign(tokenData, "secret" , { expiresIn: "1h"});
+                console.log("token created");
+                res.status(200).json({
+                    status:true,
+                    success:"SendData",
+                    token:token,
+                })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({ message: "Error" })
+        })
+}
 
 
