@@ -2,6 +2,7 @@ var userdb = require('../model/model_user')
 var organizerdb = require('../model/model_organizer')
 var trackdb = require('../model/model_track')
 var homedb = require('../model/model_home')
+const jwt =  require("jsonwebtoken")
 
 exports.home = async(req, res) =>{
     // res.send("Hii...")
@@ -36,17 +37,27 @@ exports.user_signup = async(req, res) =>{
 
 exports.user_login = async(req, res) =>{
 
-    const username_ = req.params.username;
+    const username_ = req.body.username;
     
     userdb.findOne({ username: username_ })
-        .then(data => {
+        .then(async data => {
             if (!data) {
                 res.status(400).send({ message: `May be user not found` })
 
             }
             else {
-                // res.status(200).send(data)
-                res.status(200).send({success: true})
+               // res.status(200).send(data)
+                let tokenData = {
+                    username: username_ 
+                };
+                console.log(username_ )
+                const token = await jwt.sign(tokenData, "secret" , { expiresIn: "1h"});
+                console.log("token created");
+                res.status(200).json({
+                    status:true,
+                    success:"SendData",
+                    token:token,
+                })
             }
         })
         .catch(err => {
@@ -190,4 +201,40 @@ exports.find_year_track = async(req, res) =>{
         });
 
 }
+
+
+// exports.login = async (req, res, next) => {
+
+//     try {
+//       const username_ = req.params.username;
+//       userdb.findOne({ username: username_ })
+//         .then(data => {
+//             if (!data) {
+//                 res.status(400).send({ message: `May be user not found` })
+//             }
+//             else {
+//                 //res.status(200).send(data)
+//                 let tokenData = {
+//                     username: user.username
+//                 };
+//                 console.log(user.username)
+//                 const token = jwt.sign(tokenData, "secret" , { expiresIn: "1h"});
+//                 res.status(200).json({
+//                     status:true,
+//                     success:"SendData",
+//                     token:token,
+//                 })
+//             }
+//         })
+//         .catch(err => {
+//             res.status(500).send({ message: "Error update user information" })
+//         })
+
+//     } catch (error) {
+//       res.status(400).json({
+//         message: "An error occurred",
+//         error: error.message,
+//       })
+//     }
+//   }
 

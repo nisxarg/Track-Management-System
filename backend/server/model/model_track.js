@@ -5,7 +5,7 @@ var track_schema = new mongoose.Schema({
     name_code: {
         type: String,
         require: true,
-        unique : true
+        unique : true,
     },
     sidebar: {
         title: {
