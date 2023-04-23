@@ -7,6 +7,10 @@ var track_schema = new mongoose.Schema({
         require: true,
         unique : true,
     },
+    year:{
+        type: String,
+        require: true
+    },
     tag : [{
         tagname:{
             type : String,

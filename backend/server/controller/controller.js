@@ -179,27 +179,22 @@ exports.find_track = async(req, res) =>{
 
 exports.find_year_track = async(req, res) =>{
 
-    //validate request
-    if(!req.body){
-        res.status(400).send({message: "Content can not be empty"});
-        return;
-    }
+    const year_ = req.params.year;
+    
+    trackdb.findOne({ year: year_ })
+        .then(data => {
+            if (!data) {
+                res.status(404).send({ message: `May be track not found` })
 
-    console.log(req.body)
-
-    //new user
-    const new_year = new homedb(req.body)
-
-    //save user in the database
-    new_year.save(new_year)
-        .then(data=>{
-            res.send(data)  
+            }
+            else {
+                res.send(data)
+                // res.status(200).send({ success: true })
+            }
         })
-        .catch(err=>{
-            res.status(500).send({
-                message: err.message || "Some error occured while creating a create operation"
-            });
-        });
+        .catch(err => {
+            res.status(500).send({ message: "Error" })
+        })
 
 }
 
