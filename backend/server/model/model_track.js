@@ -110,6 +110,7 @@ var track_schema = new mongoose.Schema({
         }
     }
 })
+track_schema.index({ name_code: 1, year: 1 }, { unique: true });
 
 //creating collection
 const trackdb = mongoose.model('trackdb', track_schema);  //(<collectionname>, <collectionshema>)
