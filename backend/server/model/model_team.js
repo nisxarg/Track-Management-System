@@ -5,7 +5,6 @@ var team_schema = new mongoose.Schema({
     team_name: {
         type: String,
         required: true,
-        unique: true
     },
     track_name:{
         type: String,

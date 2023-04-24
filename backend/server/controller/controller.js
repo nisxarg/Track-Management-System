@@ -292,7 +292,7 @@ exports.team_signup = async (req, res) => {
                     var len = data.tracks.length;
 
                     for (let i = 0; i < len; i++) {
-                        if (team.track_name == data.tracks[i].track_name) {
+                        if (track_name_ == data.tracks[i].track_name && year_==data.tracks[i].track_year) {
                             check = 1;
                         }
                     }
@@ -316,8 +316,8 @@ exports.team_signup = async (req, res) => {
                     const name = check.username;
 
                     const newTrack = {
-                        track_name: team.track_name,
-                        track_year: team.year_name
+                        track_name: track_name_,
+                        track_year: year_
                     }
 
                     try {
@@ -358,30 +358,29 @@ exports.team_signup = async (req, res) => {
 
 exports.team_login = async (req, res) => {
 
-    const team_name_ = req.body.team_name;
+    try {
+        // check if organizer exists
+        const team = await teamdb.findOne({team_name: req.body.team_name});
+        if(!team) return res.status(400).send('Team not found');
+        
+        // check if password is correct
+        const validPassword = await bcrypt.compare(req.body.team_password, team.team_password);
+        if(!validPassword) return res.status(400).send('Invalid Password');
+        
+        // create and assign a token
+        let tokenData = {
+            team_name: team.team_name
+        };
 
-    await teamdb.findOne({ team_name: team_name_ })
-        .then(async data => {
-            if (!data) {
-                res.status(400).send({ message: `May be team not found` })
+        const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
+        console.log("token created");
+        res.status(200).json({
+            status: true,
+            success: "SendData",
+            token: token,
+        })
 
-            }
-            else {
-                // res.status(200).send(data)
-                let tokenData = {
-                    team_name: team_name_
-                };
-                // console.log(team_name_ )
-                const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
-                console.log("token created");
-                res.status(200).json({
-                    status: true,
-                    success: "SendData",
-                    token: token,
-                })
-            }
-        })
-        .catch(err => {
-            res.status(500).send({ message: "Error" })
-        })
+    } catch (err) {
+        return res.status(500).send('error');
+    }
 }
