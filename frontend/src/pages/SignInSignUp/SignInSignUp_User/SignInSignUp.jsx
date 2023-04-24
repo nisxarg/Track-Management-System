@@ -4,8 +4,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Login from '../components/Login'
-import Signup from '../components/SignUp'
+import Login from './Login'
+import Signup from './SignUp'
 const SignInSignUp = () => {
   const [value, setValue] = useState(0)
   const handleChange = (event, newValue) => {
@@ -17,21 +17,21 @@ const SignInSignUp = () => {
     const { children, value, index, ...other } = props;
 
     return (
-      
+
       <div className=" dark:bg-secondary-dark-bg bg-white text-white ">
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
+        <div
+          role="tabpanel"
+          hidden={value !== index}
+          id={`simple-tabpanel-${index}`}
+          aria-labelledby={`simple-tab-${index}`}
+          {...other}
+        >
+          {value === index && (
+            <Box>
+              <Typography>{children}</Typography>
+            </Box>
+          )}
+        </div>
       </div>
     );
   }

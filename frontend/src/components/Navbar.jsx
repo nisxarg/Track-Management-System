@@ -71,7 +71,7 @@ const Navbar = (showOnlyOrgSignIn) => {
   };
 
   const handleOrganizerSignIn = () => {
-    Navigate("/SignInSignUp");
+    Navigate("/SignInSignUp_O");
   };
 
     
@@ -103,14 +103,14 @@ const Navbar = (showOnlyOrgSignIn) => {
               className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
               onClick={handleUserSignIn}
             >
-              Sign in as Organizer
+              Sign in as  User
             </div>
-            {!showOnlyOrgSignIn && (
+            {showOnlyOrgSignIn && (
             <div
               className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
               onClick={handleOrganizerSignIn}
             >
-              Sign in as User
+              Sign in as Organizer
             </div>
             )}
           </div>

@@ -14,7 +14,7 @@ const TrackDetails = () => {
   
   return (
   <>
-  <Navbar showOnlyOrgSignIn={true} />
+ 
    <div>
 <div
   className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3"
