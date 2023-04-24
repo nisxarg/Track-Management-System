@@ -217,16 +217,6 @@ exports.team_signup = async (req, res) => {
                 if (data) {
                     count++;
 
-
-                    // userdata[j] = data.tracks;
-                    // console.log(userdata[j])
-                    // userdata[j].push({
-                    //     track_year: team.year_name,
-                    //     track_name: team.track_name
-                    //   });
-
-                    // console.log(userdata[j])
-
                     var len = data.tracks.length;
 
                     for (let i = 0; i < len; i++) {
@@ -258,26 +248,9 @@ exports.team_signup = async (req, res) => {
                         track_year: team.year_name
                     }
 
-                    console.log("hiiii")
-                    //    try
-                    //     userdb.findOneAndUpdate(
-                    //         { "username" : name }, // Filter to find the user with matching username
-                    //         { $push: { "tracks": newTrack } }, // Add new track to 'tracks' array of found user
-                    //         { new: true }, // Return the updated document after update is applied
-                    //         (err, user) => {
-                    //             if (err) {
-                    //                 console.error(err);
-                    //             } else if (user) {
-                    //                 console.log(`Added new track to user ${user.username}: ${newTrack.track_name}`);
-                    //                 // Do something with the updated user object here
-                    //             } else {
-                    //                 console.log(`User with username ${username} not found.`);
-                    //             }
-                    //         }
-                    //     );
                     try {
                         await userdb.findOneAndUpdate(
-                            { "username": name }, // Filter to find the user with matching username
+                            { "username": name }, 
                             { $push: { "tracks": newTrack } }
                         );
                     } catch (e) {
