@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import { Grid, Paper, Avatar, Typography, TextField, Button } from '@material-ui/core'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import DatePicker from 'react-datepicker';
 import Checkbox from '@material-ui/core/Checkbox';
 import axios from 'axios';
@@ -47,17 +45,19 @@ const Signup = () => {
 
         try {
             const res = await axios.post('http://localhost:5000/api/organizer_signup', data);
-            console.log(res);
-            if (res.data.message === "Username already exists") {
-                console.log(res.data.message);
-            } else if (res.data.message === "succesful") {
+            console.log(res.data);
+            
                 console.log(res.data.message);
                 navigate('/SignInSignUp_O');
-            } else {
-                console.log("there is error in creating your account");
-            }
+            
         } catch (error) {
-            console.error(error);
+            if (error.response.data.message === "Username already exists") {
+                console.log(error.response.data.message);
+            } 
+            else {
+                console.error(error);
+            }
+            
         }
     };
 

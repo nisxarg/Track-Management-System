@@ -97,8 +97,8 @@ exports.organizer_signup = async (req, res) => {
     }
     catch (err) {
         console.error(err);
-        res.status(500).send({ message: "Internal server error" });
-    }
+        res.status(500).send({ message: "Internal server error" });
+    }
 
 }
 

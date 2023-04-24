@@ -17,10 +17,10 @@ const Login = ({ handleChange }) => {
     const { currentColor } = useStateContext();
     const paperStyle = { padding: 20, height: '73vh', width: 300, margin: "0 auto" }
     const avatarStyle = { backgroundColor: currentColor }
-    const btnstyle = { margin: '8px 0' };
+    const btnstyle = { margin: '20px 0' };
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
-    const { setUsername } = useStateContext();
+
 
     // route.post('/api/user_signup', controller.user_signup)
     // route.post('/api/user_login/:username', controller.user_login)
@@ -29,15 +29,12 @@ const Login = ({ handleChange }) => {
 
     const submitAction = async () => {
         try {
-            const res = await axios.post(`http://localhost:5000/api/user_login`, { username: user, password: pwd });
+            const res = await axios.post(`http://localhost:5000/api/organizer_login`, { username: user, password: pwd });
             if (res.status === 200) {
                 console.log('User is authenticated');
-                setUsername({user});
                 const token = res.data.token; // assuming the token is returned in the response
                 localStorage.setItem('token', token); // store the token in local storage
-                console.log(`Token: ${token}`); // print token to console
                 navigate('/home'); // navigate to next page
-
             }
         } catch (err) {
             console.error(err);

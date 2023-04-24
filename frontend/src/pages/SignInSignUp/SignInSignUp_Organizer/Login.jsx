@@ -13,6 +13,7 @@ const baseURL = "https://jsonplaceholder.typicode.com/posts";
 
 const Login = ({ handleChange }) => {
     const navigate = useNavigate();
+    const { setUsername } = useStateContext();
 
     const { currentColor } = useStateContext();
     const paperStyle = { padding: 20, height: '73vh', width: 300, margin: "0 auto" }
@@ -31,6 +32,7 @@ const Login = ({ handleChange }) => {
         try {
             const res = await axios.post(`http://localhost:5000/api/organizer_login`, { username: user, password: pwd });
             if (res.status === 200) {
+                setUsername({user});
                 console.log('User is authenticated');
                 const token = res.data.token; // assuming the token is returned in the response
                 localStorage.setItem('token', token); // store the token in local storage

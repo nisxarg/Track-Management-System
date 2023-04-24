@@ -7,10 +7,10 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
 import { Link, useNavigate } from "react-router-dom";
+import { useStateContext } from '../contexts/ContextProvider';
 
 
 import { Cart, Chat, Notification, UserProfile } from '.';
-import { useStateContext } from '../contexts/ContextProvider';
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 
@@ -34,7 +34,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 const Navbar = (showOnlyOrgSignIn) => {
 
 
-  const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize } = useStateContext();
+  const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize, Username } = useStateContext();
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
