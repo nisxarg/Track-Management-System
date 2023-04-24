@@ -69,6 +69,48 @@ exports.user_login = async (req, res) => {
     }
 }
 
+exports.change_pwd = async(req,res) => {
+       
+    try{
+
+        if (!req.body) {
+            res.status(400).send({ message: "Content can not be empty" });
+            return;
+        }
+
+        const user = await userdb.findOne({username: req.body.username});
+        if(!user) return res.status(400).send('User not found');
+        
+        const old_password = req.body.old_password
+        const new_password = req.body.new_password
+        // check if password is correct
+        const validPassword = await bcrypt.compare(old_password, user.password);
+
+        const salt= await(bcrypt.genSalt(10));
+        const hashPass=await bcrypt.hash(new_password,salt);
+
+        if(!validPassword) {
+            return res.status(400).send('Invalid Password');
+        }
+        else{
+            await userdb.findOneAndUpdate(
+                { "username" : user.username }, //filtering
+                { $set : {  
+                    "password" : hashPass
+                }}
+            )
+            return res.status(200).send('update succesfull');
+
+        }
+
+
+    }
+    catch(err){
+        return res.status(500).send('error');
+    }
+
+}
+
 exports.organizer_signup = async (req, res) => {
 
     try {

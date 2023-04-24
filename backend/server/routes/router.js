@@ -17,6 +17,7 @@ route.get('/api/:year', controller.find_year_track)
 route.post('/api/team_signup', controller.team_signup)
 route.post('/api/team_login', controller.team_login)
 route.post('/api/add_home', controller.add_home)
+route.post('/api/change_pwd', controller.change_pwd)
 
 
 
