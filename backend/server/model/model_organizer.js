@@ -2,54 +2,54 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
 var organizer_schema = new mongoose.Schema({
-    username:{
+    username: {
         type: String,
         required: true,
         unique: true
     },
-    email:{
+    email: {
         type: String,
         required: true
     },
-    password:{
+    password: {
         type: String,
         required: true
     },
-    track_name:{
+    track_name: {
         type: String,
         required: true
     },
-    start_date:{
+    start_date: {
         type: Date,
         required: true
     },
-    end_date:{
+    end_date: {
         type: Date,
         required: true
     },
-    resume_link:{
+    resume_link: {
         type: String,
         required: true
     },
-    verified:{
+    verified: {
         type: Boolean,
         default: false
     }
 })
 
-organizer_schema.pre('save',async function() {
+organizer_schema.pre('save', async function () {
     try {
-        const salt= await(bcrypt.genSalt(10));
-        const hashPass=await bcrypt.hash(this.password,salt);
-        this.password=hashPass; 
-        
+        const salt = await (bcrypt.genSalt(10));
+        const hashPass = await bcrypt.hash(this.password, salt);
+        this.password = hashPass;
+
     } catch (error) {
-        throw error;
-    }
+        throw error;
+    }
 });
 
 
 //creating collection
 const organizerdb = mongoose.model('organizerdb', organizer_schema);  //(<collectionname>, <collectionshema>)
 
-module.exports = organizerdb;
+module.exports = organizerdb;

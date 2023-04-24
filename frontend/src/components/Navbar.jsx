@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { AiOutlineMenu } from 'react-icons/ai';
 import { BsChatLeft } from 'react-icons/bs';
@@ -6,7 +6,7 @@ import { RiNotification3Line } from 'react-icons/ri';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 import { Cart, Chat, Notification, UserProfile } from '.';
@@ -42,7 +42,7 @@ const Navbar = (showOnlyOrgSignIn) => {
     window.addEventListener('resize', handleResize);
 
     handleResize();
-    
+
     return () => window.removeEventListener('resize', handleResize);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -58,7 +58,7 @@ const Navbar = (showOnlyOrgSignIn) => {
 
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
-  const Navigate=useNavigate();
+  const Navigate = useNavigate();
 
   const [signInOptions, setSignInOptions] = useState(false);
 
@@ -67,19 +67,22 @@ const Navbar = (showOnlyOrgSignIn) => {
   };
 
   const handleUserSignIn = () => {
+    setSignInOptions(!signInOptions);
     Navigate("/SignInSignUp");
+
   };
 
   const handleOrganizerSignIn = () => {
+    setSignInOptions(!signInOptions);
     Navigate("/SignInSignUp_O");
   };
 
-    
+
   return (
 
     <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
       <div className="flex">
-      <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor}  icon={<AiOutlineMenu />} />
+        <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
 
       </div>
 
@@ -106,12 +109,12 @@ const Navbar = (showOnlyOrgSignIn) => {
               Sign in as  User
             </div>
             {showOnlyOrgSignIn && (
-            <div
-              className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
-              onClick={handleOrganizerSignIn}
-            >
-              Sign in as Organizer
-            </div>
+              <div
+                className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
+                onClick={handleOrganizerSignIn}
+              >
+                Sign in as Organizer
+              </div>
             )}
           </div>
         )}

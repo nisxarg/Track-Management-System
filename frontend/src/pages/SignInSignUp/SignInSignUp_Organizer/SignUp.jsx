@@ -47,8 +47,15 @@ const Signup = () => {
 
         try {
             const res = await axios.post('http://localhost:5000/api/organizer_signup', data);
-            console.log(res.data);
-            navigate('/SignInSignUp_O');
+            console.log(res);
+            if (res.data.message === "Username already exists") {
+                console.log(res.data.message);
+            } else if (res.data.message === "succesful") {
+                console.log(res.data.message);
+                navigate('/SignInSignUp_O');
+            } else {
+                console.log("there is error in creating your account");
+            }
         } catch (error) {
             console.error(error);
         }
