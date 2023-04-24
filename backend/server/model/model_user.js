@@ -26,11 +26,11 @@ var user_schema = new mongoose.Schema({
     tracks : [{
         track_name:{
             type:String,
-            required: true
+            //required: true
         },
         track_year:{
             type:String,
-            required: true
+            //required: true
         }
     }]
 }) 

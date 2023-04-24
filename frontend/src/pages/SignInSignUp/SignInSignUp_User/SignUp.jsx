@@ -37,6 +37,9 @@ const Signup = () => {
             confirmPassword: confirmPassword,
             acceptedTerms: acceptedTerms,
         };
+
+        console.log(data);
+
         try {
             const res = await axios.post('http://localhost:5000/api/user_signup', data);
             console.log(res.data);
