@@ -141,12 +141,60 @@ exports.add_track = async (req, res) => {
         res.status(400).send({ message: "Content can not be empty" });
         return;
     }
+    const tracke = new trackdb(req.body)
+    const find_year = tracke.year;
+    const tn = tracke.name_code;
+   
+    await tracke.save(tracke)
+        .then(async data => {
+            
+            try{
+                // console.log("i am at update track")
+                const existingdata = await homedb.findOne({ year : find_year });
+                console.log("Printing data")
+                console.log(existingdata)
+                console.log("Printing year")
+                console.log(typeof(existingdata.year),existingdata.year)
 
-    //new user
-    const track = new trackdb(req.body)
+                await homedb.findOneAndUpdate(
+                    { "year" : find_year }, //filtering
+                    { $push : {  
+                        "content.tracks.list" : 
+                        {
+                            "text" : tracke.name_code,
+                            "link" : "jaymataji"
+                         }}
+                        }
+                )
+            }catch (e) {
+                console.error(e);
+            }
+            const existingdata = await homedb.findOne({ year:find_year });
+            //console.log(existingdata)
+            res.send(data)
+            // res.redirect('/')
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occured while creating a create operation"
+            });
+        });
 
-    //save track in the database
-    await track.save(track)
+}
+
+exports.add_home = async(req,res)=>{
+
+    //validate request
+    if (!req.body) {
+        res.status(400).send({ message: "Content can not be empty" });
+        return;
+    }
+
+    const user = new homedb(req.body)
+    console.log(user)
+
+    //save user in the database
+    await user.save(user)
         .then(data => {
             res.send(data)
             // res.redirect('/')
@@ -156,6 +204,7 @@ exports.add_track = async (req, res) => {
                 message: err.message || "Some error occured while creating a create operation"
             });
         });
+
 
 }
 
@@ -217,16 +266,6 @@ exports.team_signup = async (req, res) => {
                 if (data) {
                     count++;
 
-
-                    // userdata[j] = data.tracks;
-                    // console.log(userdata[j])
-                    // userdata[j].push({
-                    //     track_year: team.year_name,
-                    //     track_name: team.track_name
-                    //   });
-
-                    // console.log(userdata[j])
-
                     var len = data.tracks.length;
 
                     for (let i = 0; i < len; i++) {
@@ -258,23 +297,6 @@ exports.team_signup = async (req, res) => {
                         track_year: team.year_name
                     }
 
-                    console.log("hiiii")
-                    //    try
-                    //     userdb.findOneAndUpdate(
-                    //         { "username" : name }, // Filter to find the user with matching username
-                    //         { $push: { "tracks": newTrack } }, // Add new track to 'tracks' array of found user
-                    //         { new: true }, // Return the updated document after update is applied
-                    //         (err, user) => {
-                    //             if (err) {
-                    //                 console.error(err);
-                    //             } else if (user) {
-                    //                 console.log(`Added new track to user ${user.username}: ${newTrack.track_name}`);
-                    //                 // Do something with the updated user object here
-                    //             } else {
-                    //                 console.log(`User with username ${username} not found.`);
-                    //             }
-                    //         }
-                    //     );
                     try {
                         await userdb.findOneAndUpdate(
                             { "username": name }, // Filter to find the user with matching username
@@ -283,7 +305,6 @@ exports.team_signup = async (req, res) => {
                     } catch (e) {
                         console.error(e);
                     }
-                    console.log("hiiii")
 
                     const data2 = await userdb.findOne({ username: user[j] });
                     console.log(data2)
@@ -341,5 +362,3 @@ exports.team_login = async (req, res) => {
             res.status(500).send({ message: "Error" })
         })
 }
-
-
