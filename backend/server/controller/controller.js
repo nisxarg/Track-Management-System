@@ -74,16 +74,26 @@ exports.organizer_signup = async (req, res) => {
     try {
         // validate request
         if (!req.body) {
-            res.status(400).send({ message: "Content can not be empty" });
-            return;
+            return res.status(400).send({ message: "Content can not be empty" });
         }
 
         // check if username already exists
         const username = req.body.username;
         const existingorganizer = await organizerdb.findOne({ username });
         if (existingorganizer) {
-            res.status(300).send({ message: "Username already exists" });
-            return;
+            return res.status(300).send({ message: "Username already exists" });
+        }
+
+        //check if track name is already in database or not
+
+        const year_ = new Date(req.body.start_date).getFullYear();
+        const name_code_ = req.body.track_name
+
+        const data = await trackdb.findOne({name_code:name_code_, year:year_.toString()})
+
+        if(data)
+        {
+            return res.status(300).send('Track name already exists')
         }
 
         const organizer = new organizerdb(req.body)
@@ -233,7 +243,7 @@ exports.find_year_track = async (req, res) => {
 
     const year_ = req.params.year;
 
-    await homedb.findOne({ year: year_ })
+    await trackdb.findOne({ year: year_ })
         .then(data => {
             if (!data) {
                 res.status(404).send({ message: `May be track not found` })
@@ -258,6 +268,19 @@ exports.team_signup = async (req, res) => {
         flag = 0;
     var userdata = [];
 
+    //team name already exists
+    const team_name_ = team.team_name
+    const track_name_ = team.track_name
+    const year_ = team.track_year
+
+    const data = await teamdb.findOne({team_name: team_name_, track_name:track_name_, track_year:year_})
+
+    if(data)
+    {
+        return res.status(300).send('Team name already exists')
+    }
+
+
     for (let j = 0; j < 3; j++) {
 
         if (user[j] != undefined) {
@@ -278,7 +301,7 @@ exports.team_signup = async (req, res) => {
                     flag = 1;
                 }
             } catch (err) {
-                return res.status(500).send({ message: "Errdor" });
+                return res.status(500).send({ message: "Err" });
             }
         }
         if (flag) return res.status(500).send("User not found");
