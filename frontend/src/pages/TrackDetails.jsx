@@ -1,15 +1,21 @@
 import React from 'react';
-import  Navbar  from '../components/Navbar';
-import { useParams } from 'react-router-dom';
-import { homePageData1 } from '../data/dummy'
+// import  Navbar  from '../components/Navbar';
+// import { useParams } from 'react-router-dom';
+// import { homePageData1 } from '../data/dummy'
 import { useStateContext } from '../contexts/ContextProvider';
-import { Track } from '../data/dummy';
+// import { Track } from '../data/dummy';
+import { useLocation } from 'react-router-dom';
 
-const TrackDetails = () => {
-  const { currentColor } = useStateContext();
-  const { trackName } = useParams();
-
-  const trackData = Track.content[trackName];
+  
+  // const { trackName } = useParams();
+  const TrackDetails = (props) => {
+    const track = props.trackData;
+    const { currentColor } = useStateContext();
+   
+    const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const year = queryParams.get('year');
+  const trackname = queryParams.get('name_code');
 
   
   return (
@@ -21,14 +27,14 @@ const TrackDetails = () => {
   style={{ backgroundColor: currentColor }}
 >
   <p className="text-2xl text-white font-semibold mt-8">
-  {Track.content.introduction.title}
+  {track.title}
   </p>
 </div>
 
 <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
   <p>
     {/* Display the track data here */}
-    {Track.content.introduction.content}
+    {track.content.introduction.content}
   </p>
 </div>
 </div>
@@ -39,12 +45,12 @@ const TrackDetails = () => {
     style={{ backgroundColor: currentColor }}
   >
     <p className="text-2xl text-white font-semibold mt-8">
-      {Track.content.TaskDescription.title}
+      {track.content.TaskDescription.title}
     </p>
   </div>
 
   <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
-    <p>{Track.content.TaskDescription.content}</p>
+    <p>{track.content.TaskDescription.content}</p>
   </div>
 
   {/* corpus */}
@@ -53,12 +59,12 @@ const TrackDetails = () => {
     style={{ backgroundColor: currentColor }}
   >
     <p className="text-2xl text-white font-semibold mt-8">
-      {Track.content.corpus.title}
+      {track.content.corpus.title}
     </p>
   </div>
 
   <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
-    <p>{Track.content.corpus.content}</p>
+    <p>{track.content.corpus.content}</p>
   </div>
 
   {/* registration */}
@@ -67,12 +73,12 @@ const TrackDetails = () => {
     style={{ backgroundColor: currentColor }}
   >
     <p className="text-2xl text-white font-semibold mt-8">
-      {Track.content.registration.title}
+      {track.content.registration.title}
     </p>
   </div>
 
   <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
-    <p>{Track.content.registration.content}</p>
+    <p>{track.content.registration.content}</p>
   </div>
 
   {/* submission */}
@@ -82,12 +88,12 @@ const TrackDetails = () => {
     style={{ backgroundColor: currentColor }}
   >
     <p className="text-2xl text-white font-semibold mt-8">
-      {Track.content.submission.title}
+      {track.content.submission.title}
     </p>
   </div>
 
   <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
-    <p>{Track.content.submission.content}</p>
+    <p>{track.content.submission.content}</p>
   </div>
 
   {/* evaluation */}
@@ -97,37 +103,16 @@ const TrackDetails = () => {
     style={{ backgroundColor: currentColor }}
   >
     <p className="text-2xl text-white font-semibold mt-8">
-      {Track.content.evaluation.title}
+      {track.content.evaluation.title}
     </p>
   </div>
 
   <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
-    <p>{Track.content.evaluation.content}</p>
+    <p>{track.content.evaluation.content}</p>
   </div>
 
 
-{/* <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
-  <p>
-  The growth of social media platforms such as twitter, facebook for communication between people has led to creation of huge user generated data
-      </p>
-</div>
 
-<div>
-<div
-  className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3"
-  style={{ backgroundColor: currentColor }}
->
-  <p className="text-2xl text-white font-semibold mt-8">
-  Task Description - {trackName}
-  </p>
-</div>
-
-<div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
-  <p>
-  There are various challenges in anaphora resolution on these type of texts. One of the main challeges is that facebook (FB) posts and tweets are generally very short, thus often lack sufficient context to determine an antecedent of an anaphor without the aid of background or world knowledge. 
-      </p>
-</div>
-</div> */}
 </>
   );
 };
