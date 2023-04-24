@@ -9,7 +9,7 @@ var home_schema = new mongoose.Schema({
     },
     img:{
         type: String,
-        required: true,
+        required: true
     },
     WelcomeContent:{
         title :{

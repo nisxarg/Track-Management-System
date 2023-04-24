@@ -3,6 +3,7 @@ var organizerdb = require('../model/model_organizer')
 var trackdb = require('../model/model_track')
 var homedb = require('../model/model_home')
 var teamdb = require('../model/model_team')
+const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
 
 exports.home = async (req, res) => {
@@ -41,32 +42,31 @@ exports.user_signup = async (req, res) => {
 
 exports.user_login = async (req, res) => {
 
-    const username_ = req.body.username;
+    try {
+        // check if organizer exists
+        const user = await userdb.findOne({username: req.body.username});
+        if(!user) return res.status(400).send('User not found');
+        
+        // check if password is correct
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
+        if(!validPassword) return res.status(400).send('Invalid Password');
+        
+        // create and assign a token
+        let tokenData = {
+            username: user.username
+        };
 
-    await userdb.findOne({ username: username_ })
-        .then(async data => {
-            if (!data) {
-                res.status(400).send({ message: `May be user not found` })
+        const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
+        console.log("token created");
+        res.status(200).json({
+            status: true,
+            success: "SendData",
+            token: token,
+        })
 
-            }
-            else {
-                // res.status(200).send(data)
-                let tokenData = {
-                    username: username_
-                };
-                // console.log(username_ )
-                const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
-                console.log("token created");
-                res.status(200).json({
-                    status: true,
-                    success: "SendData",
-                    token: token,
-                })
-            }
-        })
-        .catch(err => {
-            res.status(500).send({ message: "Error" })
-        })
+    } catch (err) {
+        return res.status(500).send('error');
+    }
 }
 
 exports.organizer_signup = async (req, res) => {
@@ -104,48 +104,35 @@ exports.organizer_signup = async (req, res) => {
 
 exports.organizer_login = async (req, res) => {
 
-    const username_ = req.body.username;
+    try {
+        // check if organizer exists
+        const organizer = await organizerdb.findOne({username: req.body.username});
+        if(!organizer) return res.status(400).send('Oraganizer not found');
+        
+        // check if password is correct
+        const validPassword = await bcrypt.compare(req.body.password, organizer.password);
+        if(!validPassword) return res.status(400).send('Invalid password');
+        
+        // create and assign a token
+        let tokenData = {
+            username: organizer.username
+        };
 
-    await organizerdb.findOne({ username: username_ })
-        .then(async data => {
-            if (!data) {
-                res.status(400).send({ message: `May be organizer not found` })
-            }
-            else {
-                // res.status(200).send(data)
-                let tokenData = {
-                    username: username_
-                };
-
-                const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
-                console.log("token created");
-                res.status(200).json({
-                    status: true,
-                    success: "SendData",
-                    token: token,
-                })
-            }
+        const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
+        console.log("token created");
+        res.status(200).json({
+            status: true,
+            success: "SendData",
+            token: token,
         })
-        .catch(err => {
-            res.status(500).send({ message: "Error" })
-        })
-}
-//    const username_ = req.params.username;
 
-// await organizerdb.findOne({ username: username_ })
-//     .then(data => {
-//         if (!data) {
-//             res.status(404).send({ message: `May be organizer not found` })
 
-//         }
-//         else {
-//             // res.send(data)
-//             res.status(200).send({ success: true })
-//         }
-//     })
-//     .catch(err => {
-//         res.status(500).send({ message: "Error" })
-//     })
+    } catch (err) {
+        return res.status(500).send('error');
+
+    }
+ 
+} 
 
 exports.add_track = async (req, res) => {
 
@@ -154,12 +141,60 @@ exports.add_track = async (req, res) => {
         res.status(400).send({ message: "Content can not be empty" });
         return;
     }
+    const tracke = new trackdb(req.body)
+    const find_year = tracke.year;
+    const tn = tracke.name_code;
+   
+    await tracke.save(tracke)
+        .then(async data => {
+            
+            try{
+                // console.log("i am at update track")
+                const existingdata = await homedb.findOne({ year : find_year });
+                console.log("Printing data")
+                console.log(existingdata)
+                console.log("Printing year")
+                console.log(typeof(existingdata.year),existingdata.year)
 
-    //new user
-    const track = new trackdb(req.body)
+                await homedb.findOneAndUpdate(
+                    { "year" : find_year }, //filtering
+                    { $push : {  
+                        "content.tracks.list" : 
+                        {
+                            "text" : tracke.name_code,
+                            "link" : "jaymataji"
+                         }}
+                        }
+                )
+            }catch (e) {
+                console.error(e);
+            }
+            const existingdata = await homedb.findOne({ year:find_year });
+            //console.log(existingdata)
+            res.send(data)
+            // res.redirect('/')
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occured while creating a create operation"
+            });
+        });
 
-    //save track in the database
-    await track.save(track)
+}
+
+exports.add_home = async(req,res)=>{
+
+    //validate request
+    if (!req.body) {
+        res.status(400).send({ message: "Content can not be empty" });
+        return;
+    }
+
+    const user = new homedb(req.body)
+    console.log(user)
+
+    //save user in the database
+    await user.save(user)
         .then(data => {
             res.send(data)
             // res.redirect('/')
@@ -169,6 +204,7 @@ exports.add_track = async (req, res) => {
                 message: err.message || "Some error occured while creating a create operation"
             });
         });
+
 
 }
 
@@ -230,16 +266,6 @@ exports.team_signup = async (req, res) => {
                 if (data) {
                     count++;
 
-
-                    // userdata[j] = data.tracks;
-                    // console.log(userdata[j])
-                    // userdata[j].push({
-                    //     track_year: team.year_name,
-                    //     track_name: team.track_name
-                    //   });
-
-                    // console.log(userdata[j])
-
                     var len = data.tracks.length;
 
                     for (let i = 0; i < len; i++) {
@@ -271,23 +297,6 @@ exports.team_signup = async (req, res) => {
                         track_year: team.year_name
                     }
 
-                    console.log("hiiii")
-                    //    try
-                    //     userdb.findOneAndUpdate(
-                    //         { "username" : name }, // Filter to find the user with matching username
-                    //         { $push: { "tracks": newTrack } }, // Add new track to 'tracks' array of found user
-                    //         { new: true }, // Return the updated document after update is applied
-                    //         (err, user) => {
-                    //             if (err) {
-                    //                 console.error(err);
-                    //             } else if (user) {
-                    //                 console.log(`Added new track to user ${user.username}: ${newTrack.track_name}`);
-                    //                 // Do something with the updated user object here
-                    //             } else {
-                    //                 console.log(`User with username ${username} not found.`);
-                    //             }
-                    //         }
-                    //     );
                     try {
                         await userdb.findOneAndUpdate(
                             { "username": name }, // Filter to find the user with matching username
@@ -296,7 +305,6 @@ exports.team_signup = async (req, res) => {
                     } catch (e) {
                         console.error(e);
                     }
-                    console.log("hiiii")
 
                     const data2 = await userdb.findOne({ username: user[j] });
                     console.log(data2)
@@ -354,5 +362,3 @@ exports.team_login = async (req, res) => {
             res.status(500).send({ message: "Error" })
         })
 }
-
-
