@@ -93,23 +93,48 @@ exports.organizer_signup = async (req, res) => {
 
 exports.organizer_login = async (req, res) => {
 
-    const username_ = req.params.username;
+    const username_ = req.body.username;
 
     await organizerdb.findOne({ username: username_ })
-        .then(data => {
+        .then(async data => {
             if (!data) {
-                res.status(404).send({ message: `May be organizer not found` })
-
+                res.status(400).send({ message: `May be organizer not found` })
             }
             else {
-                // res.send(data)
-                res.status(200).send({ success: true })
+                // res.status(200).send(data)
+                let tokenData = {
+                    username: username_
+                };
+                console.log(username_ )
+                const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
+                console.log("token created");
+                res.status(200).json({
+                    status: true,
+                    success: "SendData",
+                    token: token,
+                })
             }
         })
         .catch(err => {
             res.status(500).send({ message: "Error" })
         })
-}
+    } 
+    //    const username_ = req.params.username;
+
+    // await organizerdb.findOne({ username: username_ })
+    //     .then(data => {
+    //         if (!data) {
+    //             res.status(404).send({ message: `May be organizer not found` })
+
+    //         }
+    //         else {
+    //             // res.send(data)
+    //             res.status(200).send({ success: true })
+    //         }
+    //     })
+    //     .catch(err => {
+    //         res.status(500).send({ message: "Error" })
+    //     })
 
 exports.add_track = async (req, res) => {
 
