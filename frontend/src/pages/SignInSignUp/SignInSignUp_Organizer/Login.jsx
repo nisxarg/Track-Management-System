@@ -32,7 +32,7 @@ const Login = ({ handleChange }) => {
         try {
             const res = await axios.post(`http://localhost:5000/api/organizer_login`, { username: user, password: pwd });
             if (res.status === 200) {
-                setUsername({user});
+                setUsername(user);
                 console.log('User is authenticated');
                 const token = res.data.token; // assuming the token is returned in the response
                 localStorage.setItem('token', token); // store the token in local storage

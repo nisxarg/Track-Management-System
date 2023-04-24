@@ -6,11 +6,12 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups'
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
 import { Home, Data, CFP, Organizations, PastPrecedings, Resources, CFT, SignInSignUp,SignInSignUp_O } from './pages';
 import { useStateContext } from './contexts/ContextProvider';
-
 import TrackDetails from './pages/TrackDetails'
 
 const App = () => {
     const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
+    
+          
     return (
         <div className={currentMode === 'Dark' ? 'dark' : ''}>
      <div >

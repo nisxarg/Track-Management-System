@@ -20,7 +20,7 @@ const Login = ({ handleChange }) => {
     const btnstyle = { margin: '8px 0' };
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
-    const { setUsername } = useStateContext();
+    const { Username,setUsername } = useStateContext();
 
     // route.post('/api/user_signup', controller.user_signup)
     // route.post('/api/user_login/:username', controller.user_login)
@@ -32,11 +32,12 @@ const Login = ({ handleChange }) => {
             const res = await axios.post(`http://localhost:5000/api/user_login`, { username: user, password: pwd });
             if (res.status === 200) {
                 console.log('User is authenticated');
-                setUsername({user});
+                setUsername(user);              
                 const token = res.data.token; // assuming the token is returned in the response
                 localStorage.setItem('token', token); // store the token in local storage
                 console.log(`Token: ${token}`); // print token to console
-                navigate('/home'); // navigate to next page
+                          
+            navigate('/home'); // navigate to next page
 
             }
         } catch (err) {

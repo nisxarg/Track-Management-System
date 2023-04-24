@@ -31,7 +31,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   </TooltipComponent>
 );
 
-const Navbar = () => {
+const NavbarTracks = () => {
 
 
   const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize, Username } = useStateContext();
@@ -61,16 +61,14 @@ const Navbar = () => {
   const Navigate = useNavigate();
 
   const [Options, setOptions] = useState(0);
-  const [toggle, settoggle] = useState(false);
+  const [LogoutOptions, setLogoutOptions] = useState(false);
 
   const handleSignInOptions = () => {
     setOptions(1);
-    settoggle(!toggle);
   };
 
   const handleLogoutOptions = () => {
     setOptions(2);
-    settoggle(!toggle);
   };
 
   const handleUserSignIn = () => {
@@ -83,11 +81,6 @@ const Navbar = () => {
     setOptions(0);
     Navigate("/SignInSignUp_O");
   };
-  const handleLogOut = () => {
-    localStorage.removeItem('token'); // remove the token from local storage
-    setOptions(0);
-    Navigate("/");
-  }
 
   const user_name=Username;
   console.log(user_name);
@@ -133,7 +126,7 @@ const Navbar = () => {
         )
       }
        
-        {toggle && (Options===2) && (
+        {(Options===2) && (
          
           <div className="absolute top-14 right-0 z-10 bg-white w-52 py-2 rounded-md shadow-md">
             <div
@@ -146,14 +139,14 @@ const Navbar = () => {
 
               <div
                 className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
-                onClick={handleLogOut}
+                onClick={handleOrganizerSignIn}
               >
                 Logout
               </div>
             
           </div>
         )}
-        {toggle && (Options===1) && (
+        {(Options===1) && (
           <div className="absolute top-14 right-0 z-10 bg-white w-52 py-2 rounded-md shadow-md">
             <div
               className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
@@ -181,6 +174,6 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavbarTracks;
 
 
