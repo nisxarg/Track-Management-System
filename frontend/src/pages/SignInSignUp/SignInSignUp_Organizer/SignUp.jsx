@@ -29,6 +29,8 @@ const Signup = () => {
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+    const [error, seterror] = useState(false);
+    const [ErrorMessage, setErrorMessage] = useState();
 
 
     const handleSubmit = async (e) => {
@@ -52,6 +54,8 @@ const Signup = () => {
             
         } catch (error) {
             if (error.response.data.message === "Username already exists") {
+                seterror(true);
+                setErrorMessage("Username already exists");
                 console.log(error.response.data.message);
             } 
             else {
@@ -74,6 +78,7 @@ const Signup = () => {
                         </Avatar>
                         <h2 style={headerStyle}>Sign Up</h2>
                         <Typography variant='caption' gutterBottom>Please fill this form to create an account !</Typography>
+                        {error && <Typography variant='caption' gutterBottom style={{color: 'red'}}> {ErrorMessage}</Typography>}
                     </Grid>
                     <form onSubmit={handleSubmit}>
                         <TextField fullWidth label="Name" placeholder="Enter your name" value={name} onChange={(e) => setName(e.target.value)} />
