@@ -3,6 +3,7 @@ var organizerdb = require('../model/model_organizer')
 var trackdb = require('../model/model_track')
 var homedb = require('../model/model_home')
 var teamdb = require('../model/model_team')
+const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
 
 exports.home = async (req, res) => {
@@ -41,32 +42,31 @@ exports.user_signup = async (req, res) => {
 
 exports.user_login = async (req, res) => {
 
-    const username_ = req.body.username;
+    try {
+        // check if organizer exists
+        const user = await userdb.findOne({username: req.body.username});
+        if(!user) return res.status(400).send('User not found');
+        
+        // check if password is correct
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
+        if(!validPassword) return res.status(400).send('Invalid Password');
+        
+        // create and assign a token
+        let tokenData = {
+            username: user.username
+        };
 
-    await userdb.findOne({ username: username_ })
-        .then(async data => {
-            if (!data) {
-                res.status(400).send({ message: `May be user not found` })
+        const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
+        console.log("token created");
+        res.status(200).json({
+            status: true,
+            success: "SendData",
+            token: token,
+        })
 
-            }
-            else {
-                // res.status(200).send(data)
-                let tokenData = {
-                    username: username_
-                };
-                // console.log(username_ )
-                const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
-                console.log("token created");
-                res.status(200).json({
-                    status: true,
-                    success: "SendData",
-                    token: token,
-                })
-            }
-        })
-        .catch(err => {
-            res.status(500).send({ message: "Error" })
-        })
+    } catch (err) {
+        return res.status(500).send('error');
+    }
 }
 
 exports.organizer_signup = async (req, res) => {
@@ -97,55 +97,42 @@ exports.organizer_signup = async (req, res) => {
     }
     catch (err) {
         console.error(err);
-        res.status(500).send({ message: "Internal server error" });
-    }
+        res.status(500).send({ message: "Internal server error" });
+    }
 
 }
 
 exports.organizer_login = async (req, res) => {
 
-    const username_ = req.body.username;
+    try {
+        // check if organizer exists
+        const organizer = await organizerdb.findOne({username: req.body.username});
+        if(!organizer) return res.status(400).send('Oraganizer not found');
+        
+        // check if password is correct
+        const validPassword = await bcrypt.compare(req.body.password, organizer.password);
+        if(!validPassword) return res.status(400).send('Invalid password');
+        
+        // create and assign a token
+        let tokenData = {
+            username: organizer.username
+        };
 
-    await organizerdb.findOne({ username: username_ })
-        .then(async data => {
-            if (!data) {
-                res.status(400).send({ message: `May be organizer not found` })
-            }
-            else {
-                // res.status(200).send(data)
-                let tokenData = {
-                    username: username_
-                };
-
-                const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
-                console.log("token created");
-                res.status(200).json({
-                    status: true,
-                    success: "SendData",
-                    token: token,
-                })
-            }
+        const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
+        console.log("token created");
+        res.status(200).json({
+            status: true,
+            success: "SendData",
+            token: token,
         })
-        .catch(err => {
-            res.status(500).send({ message: "Error" })
-        })
-}
-//    const username_ = req.params.username;
 
-// await organizerdb.findOne({ username: username_ })
-//     .then(data => {
-//         if (!data) {
-//             res.status(404).send({ message: `May be organizer not found` })
 
-//         }
-//         else {
-//             // res.send(data)
-//             res.status(200).send({ success: true })
-//         }
-//     })
-//     .catch(err => {
-//         res.status(500).send({ message: "Error" })
-//     })
+    } catch (err) {
+        return res.status(500).send('error');
+
+    }
+ 
+} 
 
 exports.add_track = async (req, res) => {
 
