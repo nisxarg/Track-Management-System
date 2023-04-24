@@ -74,16 +74,26 @@ exports.organizer_signup = async (req, res) => {
     try {
         // validate request
         if (!req.body) {
-            res.status(400).send({ message: "Content can not be empty" });
-            return;
+            return res.status(400).send({ message: "Content can not be empty" });
         }
 
         // check if username already exists
         const username = req.body.username;
         const existingorganizer = await organizerdb.findOne({ username });
         if (existingorganizer) {
-            res.status(300).send({ message: "Username already exists" });
-            return;
+            return res.status(300).send({ message: "Username already exists" });
+        }
+
+        //check if track name is already in database or not
+
+        const year_ = new Date(req.body.start_date).getFullYear();
+        const name_code_ = req.body.track_name
+
+        const data = await trackdb.findOne({name_code:name_code_, year:year_.toString()})
+
+        if(data)
+        {
+            return res.status(300).send('Track name already exists')
         }
 
         const organizer = new organizerdb(req.body)
@@ -233,7 +243,7 @@ exports.find_year_track = async (req, res) => {
 
     const year_ = req.params.year;
 
-    await homedb.findOne({ year: year_ })
+    await trackdb.findOne({ year: year_ })
         .then(data => {
             if (!data) {
                 res.status(404).send({ message: `May be track not found` })
@@ -258,6 +268,19 @@ exports.team_signup = async (req, res) => {
         flag = 0;
     var userdata = [];
 
+    //team name already exists
+    const team_name_ = team.team_name
+    const track_name_ = team.track_name
+    const year_ = team.track_year
+
+    const data = await teamdb.findOne({team_name: team_name_, track_name:track_name_, track_year:year_})
+
+    if(data)
+    {
+        return res.status(300).send('Team name already exists')
+    }
+
+
     for (let j = 0; j < 3; j++) {
 
         if (user[j] != undefined) {
@@ -269,7 +292,7 @@ exports.team_signup = async (req, res) => {
                     var len = data.tracks.length;
 
                     for (let i = 0; i < len; i++) {
-                        if (team.track_name == data.tracks[i].track_name) {
+                        if (track_name_ == data.tracks[i].track_name && year_==data.tracks[i].track_year) {
                             check = 1;
                         }
                     }
@@ -278,7 +301,7 @@ exports.team_signup = async (req, res) => {
                     flag = 1;
                 }
             } catch (err) {
-                return res.status(500).send({ message: "Errdor" });
+                return res.status(500).send({ message: "Err" });
             }
         }
         if (flag) return res.status(500).send("User not found");
@@ -293,8 +316,8 @@ exports.team_signup = async (req, res) => {
                     const name = check.username;
 
                     const newTrack = {
-                        track_name: team.track_name,
-                        track_year: team.year_name
+                        track_name: track_name_,
+                        track_year: year_
                     }
 
                     try {
@@ -335,30 +358,29 @@ exports.team_signup = async (req, res) => {
 
 exports.team_login = async (req, res) => {
 
-    const team_name_ = req.body.team_name;
+    try {
+        // check if organizer exists
+        const team = await teamdb.findOne({team_name: req.body.team_name});
+        if(!team) return res.status(400).send('Team not found');
+        
+        // check if password is correct
+        const validPassword = await bcrypt.compare(req.body.team_password, team.team_password);
+        if(!validPassword) return res.status(400).send('Invalid Password');
+        
+        // create and assign a token
+        let tokenData = {
+            team_name: team.team_name
+        };
 
-    await teamdb.findOne({ team_name: team_name_ })
-        .then(async data => {
-            if (!data) {
-                res.status(400).send({ message: `May be team not found` })
+        const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
+        console.log("token created");
+        res.status(200).json({
+            status: true,
+            success: "SendData",
+            token: token,
+        })
 
-            }
-            else {
-                // res.status(200).send(data)
-                let tokenData = {
-                    team_name: team_name_
-                };
-                // console.log(team_name_ )
-                const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
-                console.log("token created");
-                res.status(200).json({
-                    status: true,
-                    success: "SendData",
-                    token: token,
-                })
-            }
-        })
-        .catch(err => {
-            res.status(500).send({ message: "Error" })
-        })
+    } catch (err) {
+        return res.status(500).send('error');
+    }
 }
