@@ -3,32 +3,32 @@ var organizerdb = require('../model/model_organizer')
 var trackdb = require('../model/model_track')
 var homedb = require('../model/model_home')
 var teamdb = require('../model/model_team')
-const jwt =  require("jsonwebtoken")
+const jwt = require("jsonwebtoken")
 
-exports.home = async(req, res) =>{
+exports.home = async (req, res) => {
     // res.send("Hii...")
-    res.status(200).send({success:true})
+    res.status(200).send({ success: true })
 }
 
-exports.user_signup = async(req, res) =>{
+exports.user_signup = async (req, res) => {
 
-     //validate request
-     if(!req.body){
-        res.status(400).send({message: "Content can not be empty"});
+    //validate request
+    if (!req.body) {
+        res.status(400).send({ message: "Content can not be empty" });
         return;
-        }
+    }
 
     //new user
     const user = new userdb(req.body)
 
     //save user in the database
     await user.save(user)
-        .then(data=>{
+        .then(data => {
             // res.status(200).send(data)  
             // res.redirect('/')
-            res.status(200).send({success: true})
+            res.status(200).send({ success: true })
         })
-        .catch(err=>{
+        .catch(err => {
             res.status(500).send({
                 message: err.message || "Some error occured while creating a create operation"
             });
@@ -36,10 +36,10 @@ exports.user_signup = async(req, res) =>{
 
 }
 
-exports.user_login = async(req, res) =>{
+exports.user_login = async (req, res) => {
 
     const username_ = req.body.username;
-    
+
     await userdb.findOne({ username: username_ })
         .then(async data => {
             if (!data) {
@@ -47,30 +47,30 @@ exports.user_login = async(req, res) =>{
 
             }
             else {
-               // res.status(200).send(data)
+                // res.status(200).send(data)
                 let tokenData = {
-                    username: username_ 
+                    username: username_
                 };
                 // console.log(username_ )
-                const token = await jwt.sign(tokenData, "secret" , { expiresIn: "1h"});
+                const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
                 console.log("token created");
                 res.status(200).json({
-                    status:true,
-                    success:"SendData",
-                    token:token,
+                    status: true,
+                    success: "SendData",
+                    token: token,
                 })
             }
         })
         .catch(err => {
             res.status(500).send({ message: "Error" })
-        })
+        })
 }
 
-exports.organizer_signup = async(req, res) =>{
+exports.organizer_signup = async (req, res) => {
 
     //validate request
-    if(!req.body){
-        res.status(400).send({message: "Content can not be empty"});
+    if (!req.body) {
+        res.status(400).send({ message: "Content can not be empty" });
         return;
     }
 
@@ -79,11 +79,11 @@ exports.organizer_signup = async(req, res) =>{
 
     //save user in the database
     await user.save(user)
-        .then(data=>{
-            res.send(data)  
+        .then(data => {
+            res.send(data)
             // res.redirect('/')
         })
-        .catch(err=>{
+        .catch(err => {
             res.status(500).send({
                 message: err.message || "Some error occured while creating a create operation"
             });
@@ -91,10 +91,10 @@ exports.organizer_signup = async(req, res) =>{
 
 }
 
-exports.organizer_login = async(req, res) =>{
+exports.organizer_login = async (req, res) => {
 
     const username_ = req.params.username;
-    
+
     await organizerdb.findOne({ username: username_ })
         .then(data => {
             if (!data) {
@@ -108,14 +108,14 @@ exports.organizer_login = async(req, res) =>{
         })
         .catch(err => {
             res.status(500).send({ message: "Error" })
-        })
+        })
 }
 
-exports.add_track = async(req, res) =>{
+exports.add_track = async (req, res) => {
 
     //validate request
-    if(!req.body){
-        res.status(400).send({message: "Content can not be empty"});
+    if (!req.body) {
+        res.status(400).send({ message: "Content can not be empty" });
         return;
     }
 
@@ -124,11 +124,11 @@ exports.add_track = async(req, res) =>{
 
     //save track in the database
     await track.save(track)
-        .then(data=>{
-            res.send(data)  
+        .then(data => {
+            res.send(data)
             // res.redirect('/')
         })
-        .catch(err=>{
+        .catch(err => {
             res.status(500).send({
                 message: err.message || "Some error occured while creating a create operation"
             });
@@ -136,12 +136,12 @@ exports.add_track = async(req, res) =>{
 
 }
 
-exports.find_track = async(req, res) =>{
+exports.find_track = async (req, res) => {
 
     const year = req.query.year
     const name_code_ = req.query.name_code;
 
-    await trackdb.findOne({ year:year, name_code: name_code_ })
+    await trackdb.findOne({ year: year, name_code: name_code_ })
         .then(data => {
             if (!data) {
                 res.status(404).send({ message: `May be track not found` })
@@ -153,14 +153,14 @@ exports.find_track = async(req, res) =>{
         })
         .catch(err => {
             res.status(500).send({ message: "Error" })
-        })
-    
+        })
+
 }
 
-exports.find_year_track = async(req, res) =>{
+exports.find_year_track = async (req, res) => {
 
     const year_ = req.params.year;
-    
+
     await trackdb.findOne({ year: year_ })
         .then(data => {
             if (!data) {
@@ -174,80 +174,125 @@ exports.find_year_track = async(req, res) =>{
         })
         .catch(err => {
             res.status(500).send({ message: "Error" })
-        })
+        })
 
 }
 
-exports.team_signup = async(req,res) => {
-     
-    const team = req.body
+exports.team_signup = async (req, res) => {
+    const team = req.body;
+    const user = [team.teammate_1, team.teammate_2, team.teammate_3];
+    let count = 0,
+        check = 0,
+        flag = 0;
+    var userdata = [];
 
-    const user = [team.teammate_1, team.teammate_2, team.teammate_3]
+    for (let j = 0; j < 3; j++) {
 
-    let count = 0, check = 0, flag = 0
+        if (user[j] != undefined) {
+            try {
+                const data = await userdb.findOne({ username: user[j] });
+                if (data) {
+                    count++;
 
-    for(let j=0; j<3; j++)
-    {
-        if(user[j]!=undefined)
-        {
-            await userdb.findOne({ username: user[j] })
-            .then(data => {
-                if (data) 
-                {
-                    count++
 
-                    var len = data.tracks.length
+                    // userdata[j] = data.tracks;
+                    // console.log(userdata[j])
+                    // userdata[j].push({
+                    //     track_year: team.year_name,
+                    //     track_name: team.track_name
+                    //   });
 
-                    for(let i=0; i<len; i++)
-                    {   
-                        if(team.track_name==data.tracks[i].track_name && team.track_year==data.tracks[i].track_year)
-                        {
-                            check = 1
+                    // console.log(userdata[j])
+
+                    var len = data.tracks.length;
+
+                    for (let i = 0; i < len; i++) {
+                        if (team.track_name == data.tracks[i].track_name) {
+                            check = 1;
                         }
                     }
-                }
-                else
-                {
+
+                } else {
                     flag = 1;
                 }
-            })
-            .catch(err => {
-                return res.status(500).send({ message: "Error" })
-            })  
+            } catch (err) {
+                return res.status(500).send({ message: "Errdor" });
+            }
+        }
+        if (flag) return res.status(500).send("User not found");
+    }
 
+    if (count >= 1 && check == 0) {
+        for (let j = 0; j < 3; j++) {
+            if (user[j] != undefined) {
+                try {
+
+                    const check = await userdb.findOne({ username: user[j] });
+                    const name = check.username;
+                    
+                    const newTrack = {
+                        track_name: team.track_name,
+                        track_year: team.year_name
+                    }
+                    
+                   console.log("hiiii")
+                //    try
+                //     userdb.findOneAndUpdate(
+                //         { "username" : name }, // Filter to find the user with matching username
+                //         { $push: { "tracks": newTrack } }, // Add new track to 'tracks' array of found user
+                //         { new: true }, // Return the updated document after update is applied
+                //         (err, user) => {
+                //             if (err) {
+                //                 console.error(err);
+                //             } else if (user) {
+                //                 console.log(`Added new track to user ${user.username}: ${newTrack.track_name}`);
+                //                 // Do something with the updated user object here
+                //             } else {
+                //                 console.log(`User with username ${username} not found.`);
+                //             }
+                //         }
+                //     );
+                try {
+                    await userdb.findOneAndUpdate(
+                        { "username": name }, // Filter to find the user with matching username
+                        { $push: { "tracks": newTrack } }
+                    );
+                } catch (e) {
+                    console.error(e);
+                }
+                    console.log("hiiii")
+
+                    const data2 = await userdb.findOne({ username: user[j] });
+                    console.log(data2)
+
+                    if (data2) {
+                    } else {
+                    }
+                } catch (err) {
+                    return res.status(500).send({ message: "Error" });
+                }
+            }
         }
 
-        if(flag)
-        return res.status(500).send('User not found')
-
-    }
-
-
-     if(count>=1 && check==0)
-    {
-        const team = new teamdb(req.body)
-
-        await team.save(team)
-        .then(data=>{
-            res.send(data)  
-        })
-        .catch(err=>{
+        const teamData = new teamdb(req.body);
+        try {
+            const data = await teamData.save();
+            res.send(data);
+        } catch (err) {
             res.status(500).send({
-                message: err.message || "Some error occured while creating a create operation"
+                message: err.message || "Some error occured while creating a create operation",
             });
-        });           
+        }
+    } else {
+        res.status(500).send("registration not possible");
     }
-    else
-    {
-        res.status(500).send("registration not possible")
-    }
+};
 
-}
 
-exports.team_login = async(req, res) =>{
+exports.team_login = async (req, res) => {
 
     const team_name_ = req.body.team_name;
-    
+
     await teamdb.findOne({ team_name: team_name_ })
         .then(async data => {
             if (!data) {
@@ -255,23 +300,23 @@ exports.team_login = async(req, res) =>{
 
             }
             else {
-               // res.status(200).send(data)
+                // res.status(200).send(data)
                 let tokenData = {
-                    team_name: team_name_ 
+                    team_name: team_name_
                 };
                 // console.log(team_name_ )
-                const token = await jwt.sign(tokenData, "secret" , { expiresIn: "1h"});
+                const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
                 console.log("token created");
                 res.status(200).json({
-                    status:true,
-                    success:"SendData",
-                    token:token,
+                    status: true,
+                    success: "SendData",
+                    token: token,
                 })
             }
         })
         .catch(err => {
             res.status(500).send({ message: "Error" })
-        })
+        })
 }
 
 
