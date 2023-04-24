@@ -3,6 +3,7 @@ var organizerdb = require('../model/model_organizer')
 var trackdb = require('../model/model_track')
 var homedb = require('../model/model_home')
 var teamdb = require('../model/model_team')
+const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
 
 exports.home = async (req, res) => {
@@ -41,62 +42,81 @@ exports.user_signup = async (req, res) => {
 
 exports.user_login = async (req, res) => {
 
-    const username_ = req.body.username;
+    try {
+        // check if organizer exists
+        const user = await userdb.findOne({username: req.body.username});
+        if(!user) return res.status(400).send('User not found');
+        
+        // check if password is correct
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
+        if(!validPassword) return res.status(400).send('Invalid Password');
+        
+        // create and assign a token
+        let tokenData = {
+            username: user.username
+        };
 
-    await userdb.findOne({ username: username_ })
-        .then(async data => {
-            if (!data) {
-                res.status(400).send({ message: `May be user not found` })
+        const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
+        console.log("token created");
+        res.status(200).json({
+            status: true,
+            success: "SendData",
+            token: token,
+        })
 
-            }
-            else {
-                // res.status(200).send(data)
-                let tokenData = {
-                    username: username_
-                };
-                // console.log(username_ )
-                const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
-                console.log("token created");
-                res.status(200).json({
-                    status: true,
-                    success: "SendData",
-                    token: token,
-                })
-            }
-        })
-        .catch(err => {
-            res.status(500).send({ message: "Error" })
-        })
+    } catch (err) {
+        return res.status(500).send('error');
+    }
 }
 
 exports.organizer_signup = async (req, res) => {
 
-    //validate request
-    if (!req.body) {
-        res.status(400).send({ message: "Content can not be empty" });
-        return;
+    try {
+        // validate request
+        if (!req.body) {
+            res.status(400).send({ message: "Content can not be empty" });
+            return;
+        }
+
+        // check if username already exists
+        const username = req.body.username;
+        const existingorganizer = await organizerdb.findOne({ username });
+        if (existingorganizer) {
+            res.status(300).send({ message: "Username already exists" });
+            return;
+        }
+
+        const organizer = new organizerdb(req.body)
+        // create new organizer
+
+        await organizer.save(organizer)
+            .then(data => {
+                res.send(data)
+                // res.redirect('/')
+            })
     }
-
-    //new user
-    const user = new organizerdb(req.body)
-
-    //save user in the database
-    await user.save(user)
-        .then(data => {
-            res.send(data)
-            // res.redirect('/')
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occured while creating a create operation"
-            });
-        });
+    catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Internal server error" });
+    }
 
 }
 
 exports.organizer_login = async (req, res) => {
 
-    const username_ = req.body.username;
+    try {
+        // check if organizer exists
+        const organizer = await organizerdb.findOne({username: req.body.username});
+        if(!organizer) return res.status(400).send('Oraganizer not found');
+        
+        // check if password is correct
+        const validPassword = await bcrypt.compare(req.body.password, organizer.password);
+        if(!validPassword) return res.status(400).send('Invalid password');
+        
+        // create and assign a token
+        let tokenData = {
+            username: organizer.username
+        };
 
     await organizerdb.findOne({ username: username_ })
         .then(async data => {
@@ -121,6 +141,7 @@ exports.organizer_login = async (req, res) => {
         .catch(err => {
             res.status(500).send({ message: "Error" })
         })
+}
 }
 //    const username_ = req.params.username;
 
