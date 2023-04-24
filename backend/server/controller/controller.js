@@ -11,29 +11,32 @@ exports.home = async (req, res) => {
 }
 
 exports.user_signup = async (req, res) => {
+    try {
+        // validate request
+        if (!req.body) {
+            res.status(400).send({ message: "Content can not be empty" });
+            return;
+        }
 
-    //validate request
-    if (!req.body) {
-        res.status(400).send({ message: "Content can not be empty" });
-        return;
+        // check if username already exists
+        const username = req.body.username;
+        const existingUser = await userdb.findOne({ username });
+        if (existingUser) {
+            res.status(300).send({ message: "Username already exists" });
+            return;
+        }
+        const user = new userdb(req.body)
+        // create new user
+        await user.save(user)
+            .then(data => {
+                res.send(data)
+                // res.redirect('/')
+            })
     }
-
-    //new user
-    const user = new userdb(req.body)
-
-    //save user in the database
-    await user.save(user)
-        .then(data => {
-            // res.status(200).send(data)  
-            // res.redirect('/')
-            res.status(200).send({ success: true })
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occured while creating a create operation"
-            });
-        });
-
+    catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Internal server error" });
+    }
 }
 
 exports.user_login = async (req, res) => {
