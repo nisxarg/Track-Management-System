@@ -2,6 +2,7 @@ var userdb = require('../model/model_user')
 var organizerdb = require('../model/model_organizer')
 var trackdb = require('../model/model_track')
 var homedb = require('../model/model_home')
+var teamdb = require('../model/model_team')
 const jwt =  require("jsonwebtoken")
 
 exports.home = async(req, res) =>{
@@ -21,7 +22,7 @@ exports.user_signup = async(req, res) =>{
     const user = new userdb(req.body)
 
     //save user in the database
-    user.save(user)
+    await user.save(user)
         .then(data=>{
             // res.status(200).send(data)  
             // res.redirect('/')
@@ -39,7 +40,7 @@ exports.user_login = async(req, res) =>{
 
     const username_ = req.body.username;
     
-    userdb.findOne({ username: username_ })
+    await userdb.findOne({ username: username_ })
         .then(async data => {
             if (!data) {
                 res.status(400).send({ message: `May be user not found` })
@@ -50,7 +51,7 @@ exports.user_login = async(req, res) =>{
                 let tokenData = {
                     username: username_ 
                 };
-                console.log(username_ )
+                // console.log(username_ )
                 const token = await jwt.sign(tokenData, "secret" , { expiresIn: "1h"});
                 console.log("token created");
                 res.status(200).json({
@@ -61,7 +62,7 @@ exports.user_login = async(req, res) =>{
             }
         })
         .catch(err => {
-            res.status(500).send({ message: "Error update user information" })
+            res.status(500).send({ message: "Error" })
         })
 }
 
@@ -77,7 +78,7 @@ exports.organizer_signup = async(req, res) =>{
     const user = new organizerdb(req.body)
 
     //save user in the database
-    user.save(user)
+    await user.save(user)
         .then(data=>{
             res.send(data)  
             // res.redirect('/')
@@ -94,10 +95,10 @@ exports.organizer_login = async(req, res) =>{
 
     const username_ = req.params.username;
     
-    organizerdb.findOne({ username: username_ })
+    await organizerdb.findOne({ username: username_ })
         .then(data => {
             if (!data) {
-                res.status(404).send({ message: `May be user not found` })
+                res.status(404).send({ message: `May be organizer not found` })
 
             }
             else {
@@ -106,7 +107,7 @@ exports.organizer_login = async(req, res) =>{
             }
         })
         .catch(err => {
-            res.status(500).send({ message: "Error update user information" })
+            res.status(500).send({ message: "Error" })
         })
 }
 
@@ -122,7 +123,7 @@ exports.add_track = async(req, res) =>{
     const track = new trackdb(req.body)
 
     //save track in the database
-    track.save(track)
+    await track.save(track)
         .then(data=>{
             res.send(data)  
             // res.redirect('/')
@@ -138,14 +139,12 @@ exports.add_track = async(req, res) =>{
 exports.find_track = async(req, res) =>{
 
     const year = req.query.year
-    const id = req.query._id;
+    const name_code_ = req.query.name_code;
 
-    if(id===undefined)
-    {
-        await trackdb.find({ year: year })
+    await trackdb.findOne({ year:year, name_code: name_code_ })
         .then(data => {
             if (!data) {
-                res.status(404).send({ message: `May be user not found` })
+                res.status(404).send({ message: `May be track not found` })
 
             }
             else {
@@ -153,44 +152,82 @@ exports.find_track = async(req, res) =>{
             }
         })
         .catch(err => {
-            res.status(500).send({ message: "Error update user information" })
+            res.status(500).send({ message: "Error" })
         })
-    }
-    else
-    {
-        await trackdb.findOne({ year:year, _id: id })
-            .then(data => {
-                if (!data) {
-                    res.status(404).send({ message: `May be user not found` })
-    
-                }
-                else {
-                    res.send(data)
-                }
-            })
-            .catch(err => {
-                res.status(500).send({ message: "Error update user information" })
-            })
-
-    }
     
 }
 
 exports.find_year_track = async(req, res) =>{
 
-    //validate request
-    if(!req.body){
-        res.status(400).send({message: "Content can not be empty"});
-        return;
+    const year_ = req.params.year;
+    
+    await trackdb.findOne({ year: year_ })
+        .then(data => {
+            if (!data) {
+                res.status(404).send({ message: `May be track not found` })
+
+            }
+            else {
+                res.send(data)
+                // res.status(200).send({ success: true })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({ message: "Error" })
+        })
+
+}
+
+exports.team_signup = async(req,res) => {
+     
+    const team = req.body
+
+    const user = [team.teammate_1, team.teammate_2, team.teammate_3]
+
+    let count = 0, check = 0, flag = 0
+
+    for(let j=0; j<3; j++)
+    {
+        if(user[j]!=undefined)
+        {
+            await userdb.findOne({ username: user[j] })
+            .then(data => {
+                if (data) 
+                {
+                    count++
+
+                    var len = data.tracks.length
+
+                    for(let i=0; i<len; i++)
+                    {   
+                        if(team.track_name==data.tracks[i].track_name && team.track_year==data.tracks[i].track_year)
+                        {
+                            check = 1
+                        }
+                    }
+                }
+                else
+                {
+                    flag = 1;
+                }
+            })
+            .catch(err => {
+                return res.status(500).send({ message: "Error" })
+            })  
+
+        }
+
+        if(flag)
+        return res.status(500).send('User not found')
+
     }
 
-    console.log(req.body)
 
-    //new user
-    const new_year = new homedb(req.body)
+     if(count>=1 && check==0)
+    {
+        const team = new teamdb(req.body)
 
-    //save user in the database
-    new_year.save(new_year)
+        await team.save(team)
         .then(data=>{
             res.send(data)  
         })
@@ -198,43 +235,43 @@ exports.find_year_track = async(req, res) =>{
             res.status(500).send({
                 message: err.message || "Some error occured while creating a create operation"
             });
-        });
+        });           
+    }
+    else
+    {
+        res.status(500).send("registration not possible")
+    }
 
 }
 
+exports.team_login = async(req, res) =>{
 
-// exports.login = async (req, res, next) => {
+    const team_name_ = req.body.team_name;
+    
+    await teamdb.findOne({ team_name: team_name_ })
+        .then(async data => {
+            if (!data) {
+                res.status(400).send({ message: `May be team not found` })
 
-//     try {
-//       const username_ = req.params.username;
-//       userdb.findOne({ username: username_ })
-//         .then(data => {
-//             if (!data) {
-//                 res.status(400).send({ message: `May be user not found` })
-//             }
-//             else {
-//                 //res.status(200).send(data)
-//                 let tokenData = {
-//                     username: user.username
-//                 };
-//                 console.log(user.username)
-//                 const token = jwt.sign(tokenData, "secret" , { expiresIn: "1h"});
-//                 res.status(200).json({
-//                     status:true,
-//                     success:"SendData",
-//                     token:token,
-//                 })
-//             }
-//         })
-//         .catch(err => {
-//             res.status(500).send({ message: "Error update user information" })
-//         })
+            }
+            else {
+               // res.status(200).send(data)
+                let tokenData = {
+                    team_name: team_name_ 
+                };
+                // console.log(team_name_ )
+                const token = await jwt.sign(tokenData, "secret" , { expiresIn: "1h"});
+                console.log("token created");
+                res.status(200).json({
+                    status:true,
+                    success:"SendData",
+                    token:token,
+                })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({ message: "Error" })
+        })
+}
 
-//     } catch (error) {
-//       res.status(400).json({
-//         message: "An error occurred",
-//         error: error.message,
-//       })
-//     }
-//   }
 

@@ -22,8 +22,17 @@ var user_schema = new mongoose.Schema({
     gender:{
         type: String,
         required: true
-    }
-
+    },
+    tracks : [{
+        track_name:{
+            type:String,
+            required: true
+        },
+        track_year:{
+            type:String,
+            required: true
+        }
+    }]
 }) 
 
 user_schema.pre('save',async function() {

@@ -12,9 +12,10 @@ route.post('/api/user_login', controller.user_login)
 route.post('/api/organizer_signup', controller.organizer_signup)
 route.post('/api/organizer_login/:username', controller.organizer_login)
 route.post('/api/add_track', controller.add_track)
-route.post('/api/track/', controller.find_track)
-route.post('/api/:year', controller.find_year_track)
-// route.post('/api/login', controller.login)
+route.get('/api/track/', controller.find_track)
+route.get('/api/:year', controller.find_year_track)
+route.post('/api/team_signup', controller.team_signup)
+route.post('/api/team_login', controller.team_login)
 
 
 
