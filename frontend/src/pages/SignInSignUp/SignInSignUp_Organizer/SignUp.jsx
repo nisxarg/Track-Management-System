@@ -9,10 +9,12 @@ import Checkbox from '@material-ui/core/Checkbox';
 import axios from 'axios';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import 'react-datepicker/dist/react-datepicker.css';
-
+import { useNavigate } from 'react-router-dom';
 
 
 const Signup = () => {
+    const navigate = useNavigate();
+
     const { currentColor } = useStateContext();
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
@@ -39,16 +41,14 @@ const Signup = () => {
             track_name: track_name,
             start_date: startDate,
             end_date: endDate,
-            profile: profile_link,
+            resume_link: profile_link,
             password: password,
-            confirmPassword: confirmPassword,
-            acceptedTerms: acceptedTerms,
         };
 
         try {
             const res = await axios.post('http://localhost:5000/api/organizer_signup', data);
             console.log(res.data);
-            // Do something with the response, such as redirecting the user to the dashboard page
+            navigate('/SignInSignUp_O');
         } catch (error) {
             console.error(error);
         }

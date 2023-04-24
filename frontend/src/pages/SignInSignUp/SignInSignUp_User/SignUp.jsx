@@ -9,12 +9,14 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import axios from 'axios';
 import { useStateContext } from '../../../contexts/ContextProvider';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
     const { currentColor } = useStateContext();
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: currentColor }
+    const navigate = useNavigate();
     // const marginTop = { marginTop: 5 }
 
     const [name, setName] = useState('');
@@ -43,7 +45,7 @@ const Signup = () => {
         try {
             const res = await axios.post('http://localhost:5000/api/user_signup', data);
             console.log(res.data);
-            // Do something with the response, such as redirecting the user to the dashboard page
+            navigate('/SignInSignUp');
         } catch (error) {
             console.error(error);
         }

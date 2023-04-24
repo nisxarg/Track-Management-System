@@ -5,13 +5,14 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
 const baseURL = "https://jsonplaceholder.typicode.com/posts";
 
 const Login = ({ handleChange }) => {
- 
+    const navigate = useNavigate();
 
     const { currentColor } = useStateContext();
     const paperStyle = { padding: 20, height: '73vh', width: 300, margin: "0 auto" }
@@ -28,12 +29,12 @@ const Login = ({ handleChange }) => {
 
     const submitAction = async () => {
         try {
-            const res = await axios.post(`http://localhost:5000/api/user_login/${user}`, { username: user, password: pwd });
+            const res = await axios.post(`http://localhost:5000/api/organizer_login`, { username: user, password: pwd });
             if (res.status === 200) {
                 console.log('User is authenticated');
                 const token = res.data.token; // assuming the token is returned in the response
                 localStorage.setItem('token', token); // store the token in local storage
-                // Redirect to the next page
+                navigate('/home'); // navigate to next page
             }
         } catch (err) {
             console.error(err);

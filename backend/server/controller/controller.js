@@ -93,17 +93,26 @@ exports.organizer_signup = async (req, res) => {
 
 exports.organizer_login = async (req, res) => {
 
-    const username_ = req.params.username;
+    const username_ = req.body.username;
 
     await organizerdb.findOne({ username: username_ })
-        .then(data => {
+        .then(async data => {
             if (!data) {
-                res.status(404).send({ message: `May be organizer not found` })
-
+                res.status(400).send({ message: `May be organizer not found` })
             }
             else {
-                // res.send(data)
-                res.status(200).send({ success: true })
+                // res.status(200).send(data)
+                let tokenData = {
+                    username: username_
+                };
+                console.log(username_)
+                const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
+                console.log("token created");
+                res.status(200).json({
+                    status: true,
+                    success: "SendData",
+                    token: token,
+                })
             }
         })
         .catch(err => {
@@ -229,37 +238,37 @@ exports.team_signup = async (req, res) => {
 
                     const check = await userdb.findOne({ username: user[j] });
                     const name = check.username;
-                    
+
                     const newTrack = {
                         track_name: team.track_name,
                         track_year: team.year_name
                     }
-                    
-                   console.log("hiiii")
-                //    try
-                //     userdb.findOneAndUpdate(
-                //         { "username" : name }, // Filter to find the user with matching username
-                //         { $push: { "tracks": newTrack } }, // Add new track to 'tracks' array of found user
-                //         { new: true }, // Return the updated document after update is applied
-                //         (err, user) => {
-                //             if (err) {
-                //                 console.error(err);
-                //             } else if (user) {
-                //                 console.log(`Added new track to user ${user.username}: ${newTrack.track_name}`);
-                //                 // Do something with the updated user object here
-                //             } else {
-                //                 console.log(`User with username ${username} not found.`);
-                //             }
-                //         }
-                //     );
-                try {
-                    await userdb.findOneAndUpdate(
-                        { "username": name }, // Filter to find the user with matching username
-                        { $push: { "tracks": newTrack } }
-                    );
-                } catch (e) {
-                    console.error(e);
-                }
+
+                    console.log("hiiii")
+                    //    try
+                    //     userdb.findOneAndUpdate(
+                    //         { "username" : name }, // Filter to find the user with matching username
+                    //         { $push: { "tracks": newTrack } }, // Add new track to 'tracks' array of found user
+                    //         { new: true }, // Return the updated document after update is applied
+                    //         (err, user) => {
+                    //             if (err) {
+                    //                 console.error(err);
+                    //             } else if (user) {
+                    //                 console.log(`Added new track to user ${user.username}: ${newTrack.track_name}`);
+                    //                 // Do something with the updated user object here
+                    //             } else {
+                    //                 console.log(`User with username ${username} not found.`);
+                    //             }
+                    //         }
+                    //     );
+                    try {
+                        await userdb.findOneAndUpdate(
+                            { "username": name }, // Filter to find the user with matching username
+                            { $push: { "tracks": newTrack } }
+                        );
+                    } catch (e) {
+                        console.error(e);
+                    }
                     console.log("hiiii")
 
                     const data2 = await userdb.findOne({ username: user[j] });
