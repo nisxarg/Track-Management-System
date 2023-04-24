@@ -23,7 +23,7 @@ const Home = (props) => {
   console.log(keyNoteSpeakers);
 
   return (
-    <>
+    <div style={{marginTop:'20px'}}>
      <div>
       <div
         className=" rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3"
@@ -38,20 +38,7 @@ const Home = (props) => {
       </div>
       
     </div>
-    <div>
-      <div
-        className=" rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3"
-        style={{ backgroundColor: currentColor }}
-      >      <p className="text-2xl text-white font-semibold mt-8">  {welcomeContent.title}-{props.year}</p>
-      </div>
-
-      <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex  mb-3 mr-3 ml-3 text-justify " >
-        <p>{welcomeContent.content}</p>
-
-
-      </div>
-      
-    </div>
+  
      {/* changed */}
      <div>
   <div
@@ -112,6 +99,7 @@ const Home = (props) => {
     <ul>
       {mainContent.tracks.List.map((tracks) => (
         <li key={tracks.text}>
+          
           <a href={`/track-details/${tracks.text}`}>{tracks.text}</a>
         </li>
       ))}
@@ -120,7 +108,7 @@ const Home = (props) => {
 </div>
 {/* changed */}
     
-    </>
+    </div>
    
    
   )

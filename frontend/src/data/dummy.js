@@ -38,7 +38,7 @@ export const homePageData1 = {
       content: {
       
         keyNoteSpeakers: {
-          title: "speakers for this year 2023",
+          title: "Keynote Speakers ",
           List: [{
             text: "first Speaker",
             link: "#"
@@ -55,7 +55,7 @@ export const homePageData1 = {
           ]
         },
         invitedSpeakers: {
-          title: "speakers for this year 2023",
+          title: "Invited Speakers ",
           List: [{
             text: "first Speaker",
             link: "#",
@@ -72,24 +72,24 @@ export const homePageData1 = {
           ]
         },
         tracks: {
-          title: "tracks for this year 2023",
+          title: "Tracks",
           List: [{
-            text: "first track",
+            text: "First track",
             link: "#",
           },
           {
-            text: "Second: track",
+            text: "Second track",
             link: "#",
           },
           {
-            text: "Third: track",
+            text: "Third track",
             link: "#",
           },
 
           ]
         },
         tutorials: {
-          title: "tutorials for this year 2023",
+          title: "Tutorials for this year 2023",
           List: [{
             text: "first turorial",
             link: "#",
@@ -118,7 +118,7 @@ export const homePageData1 = {
       content: {
       
         keyNoteSpeakers: {
-          title: "speakers for this year 2022",
+          title: "Key Note speakers ",
           List: [{
             text: "first Speaker",
             link: "#"
@@ -135,7 +135,7 @@ export const homePageData1 = {
           ]
         },
         invitedSpeakers: {
-          title: "speakers for this year 2023",
+          title: "Invited speakers",
           List: [{
             text: "first Speaker",
             link: "#",
@@ -152,24 +152,24 @@ export const homePageData1 = {
           ]
         },
         tracks: {
-          title: "tracks for this year 2023",
+          title: "Tracks ",
           List: [{
             text: "first track",
             link: "#",
           },
           {
-            text: "Second: track",
+            text: "Second track",
             link: "#",
           },
           {
-            text: "Third: track",
+            text: "Third track",
             link: "#",
           },
 
           ]
         },
         tutorials: {
-          title: "tutorials for this year 2023",
+          title: "Tutorials ",
           List: [{
             text: "first turorial",
             link: "#",
