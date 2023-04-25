@@ -27,15 +27,15 @@ const TrackDetails = () => {
   const { trackName } = useParams();
 
   console.log("Track : " ,Track)
-  const [Track,setTrack] = useState({}); // uncomment this
-  // const trackData = Track.content[trackName]; // Comment this
+//   const [Track,setTrack] = useState({}); // uncomment this
+  const trackData = Track.content[trackName]; // Comment this
 
   // uncomment this
-  // useEffect(() => {
-  //   axios.get('https://localhost:5000/api/track?year=2021&track=track1')
-  //     .then(response => setTrack(response.data))
-  //     .catch(error => console.log(error));
-  // },[]);
+//   useEffect(() => {
+//     axios.get('https://localhost:5000/api/track?year=2021&track=track1')
+//       .then(response => setTrack(response.data))
+//       .catch(error => console.log(error));
+//   },[]);
 
   const [des,setDes] = useState({title : Track.content.TaskDescription.title,content:Track.content.TaskDescription.content});
   const [cors,setCors] = useState({title : Track.content.corpus.title,content:Track.content.corpus.content});
@@ -58,6 +58,10 @@ const TrackDetails = () => {
   const handleSubmit = async () => {
     const track_data = {
       content : {
+        introduction : {
+            title : intro.title,
+            content : intro.content
+        },
         TaskDescription : {
           title : des.title,
           content : des.content
@@ -66,14 +70,6 @@ const TrackDetails = () => {
           title : cors.title,
           content : cors.content
         },
-        evaluation : {
-          title : eva.title,
-          content : eva.content
-        },
-        introduction : {
-          title : intro.title,
-          content : intro.content
-        },
         registration : {
           title : regs.title,
           content : regs.content
@@ -81,17 +77,21 @@ const TrackDetails = () => {
         submission : {
           title : sub.title,
           content : sub.content
+        },
+        evaluation : {
+            title : eva.title,
+            content : eva.content
         }
       }
     }
     console.log("track_data : ",track_data)
     // uncomment this
-    // try {
-    //   const res = await axios.put('https://example.com/api/description',track_data);
-    //   console.log(res);
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    try {
+      const res = await axios.put('http://localhost:5000/api',track_data);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
     setOpen(false);
   }
 
@@ -139,6 +139,7 @@ const TrackDetails = () => {
             onChange={(e) => setIntro({title:intro.title,content:e.target.value})}
           />
           </ListItem>
+          <Divider/>
           <ListItem>
             <TextField
               id="filled-multiline-static"
@@ -162,11 +163,8 @@ const TrackDetails = () => {
             defaultValue={cors.content}
             variant="filled"
             onChange={(e) => setCors({title:cors.title,content:e.target.value})}
-
           />
           </ListItem>
-          <Divider />
-          <Divider />
           <Divider />
           <ListItem>
           <TextField
@@ -178,7 +176,6 @@ const TrackDetails = () => {
             defaultValue={regs.content}
             variant="filled"
             onChange={(e) => setRegs({title:regs.title,content:e.target.value})}
-
           />
           </ListItem>
           <Divider />
