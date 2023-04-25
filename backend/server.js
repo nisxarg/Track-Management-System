@@ -13,7 +13,7 @@ app.use((req, res, next) => {
   next();
 });
 
-dotenv.config({path: 'config.env'})
+dotenv.config()
 const PORT = process.env.port || 5000
 
 app.use(express.json())
