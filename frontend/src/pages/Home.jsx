@@ -2,14 +2,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useStateContext } from '../contexts/ContextProvider';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TrackDetails from './TrackDetails';
 
 const Home = (props) => {
     const currYear = props.year;
     const { currentColor } = useStateContext();
     const [homeData, setHomeData] = useState(null);
+    const navigate = useNavigate();
 
+    const handleTrackClick = (year, nameCode) => {
+        navigate(`/api/track?year=${year}&name_code=${nameCode}`);
+      }
  
     useEffect(async() => {
       try {
@@ -98,19 +102,12 @@ const Home = (props) => {
         </p>
     </div>
     <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
-        <ul>
-            {tracks.list.map((track) => (
-                <li key={track.text}>
-                    <Link
-  to={{
-    pathname: '/api/track/',
-    search: `?year=${props.year}&name_code=${track.text}`,
-  }}
->
-  {track.text}
-</Link>
-                </li>
-            ))}
+    <ul>
+          {tracks.list.map((track) => (
+            <li key={track.text} onClick={() => handleTrackClick(props.year, track.text)}>
+              {track.text}
+            </li>
+          ))}
         </ul>
     </div>
 </div>

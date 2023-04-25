@@ -83,7 +83,8 @@ const App = () => {
                                 <Route path="/SignInSignUp_O" element={<SignInSignUp_O />} />
 
 
-                                <Route path="/track-details/:trackName"element={<TrackDetails  />} />
+                                
+                                <Route path="/api/track" element={<TrackDetails />} />
 
 
 

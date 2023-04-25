@@ -16,15 +16,15 @@ const TrackDetails = (props) => {
   const queryParams = new URLSearchParams(location.search);
   const year = queryParams.get('year');
   const name_code = queryParams.get('name_code');
-
-  useEffect(() => {
-    // Fetch track data from API using axios
+ 
+  useEffect( async () => {
     axios
-      .get(`http://localhost:5000/api/track/?year=${year}&name_code=${name_code}`)
-      .then((response) => setTrackData(response.data));
-  }, []);
+    .get(`http://localhost:5000/api/track/?year=${year}&name_code=${name_code}`)
+    .then((response) => setTrackData(response.data));
+}, []);
 
-
+if (!trackData) return <div>Loading...</div>
+  console.log("i am calling data")
   console.log(trackData)
   return (
   <>
@@ -35,14 +35,14 @@ const TrackDetails = (props) => {
   style={{ backgroundColor: currentColor }}
 >
   <p className="text-2xl text-white font-semibold mt-8">
-  {track.title}
+  {trackData.content.introduction.title}
   </p>
 </div>
 
 <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
   <p>
     {/* Display the track data here */}
-    {track.content.introduction.content}
+    {trackData.content.introduction.content}
   </p>
 </div>
 </div>
@@ -53,12 +53,12 @@ const TrackDetails = (props) => {
     style={{ backgroundColor: currentColor }}
   >
     <p className="text-2xl text-white font-semibold mt-8">
-      {track.content.TaskDescription.title}
+      {trackData.content.TaskDescription.title}
     </p>
   </div>
 
   <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
-    <p>{track.content.TaskDescription.content}</p>
+    <p>{trackData.content.TaskDescription.content}</p>
   </div>
 
   {/* corpus */}
@@ -67,12 +67,12 @@ const TrackDetails = (props) => {
     style={{ backgroundColor: currentColor }}
   >
     <p className="text-2xl text-white font-semibold mt-8">
-      {track.content.corpus.title}
+      {trackData.content.corpus.title}
     </p>
   </div>
 
   <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
-    <p>{track.content.corpus.content}</p>
+    <p>{trackData.content.corpus.content}</p>
   </div>
 
   {/* registration */}
@@ -81,12 +81,12 @@ const TrackDetails = (props) => {
     style={{ backgroundColor: currentColor }}
   >
     <p className="text-2xl text-white font-semibold mt-8">
-      {track.content.registration.title}
+      {trackData.content.registration.title}
     </p>
   </div>
 
   <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
-    <p>{track.content.registration.content}</p>
+    <p>{trackData.content.registration.content}</p>
   </div>
 
   {/* submission */}
@@ -96,12 +96,12 @@ const TrackDetails = (props) => {
     style={{ backgroundColor: currentColor }}
   >
     <p className="text-2xl text-white font-semibold mt-8">
-      {track.content.submission.title}
+      {trackData.content.submission.title}
     </p>
   </div>
 
   <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
-    <p>{track.content.submission.content}</p>
+    <p>{trackData.content.submission.content}</p>
   </div>
 
   {/* evaluation */}
@@ -111,12 +111,12 @@ const TrackDetails = (props) => {
     style={{ backgroundColor: currentColor }}
   >
     <p className="text-2xl text-white font-semibold mt-8">
-      {track.content.evaluation.title}
+      {trackData.content.evaluation.title}
     </p>
   </div>
 
   <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
-    <p>{track.content.evaluation.content}</p>
+    <p>{trackData.content.evaluation.content}</p>
   </div>
 
 
