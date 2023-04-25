@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 const Signup = () => {
     const navigate = useNavigate();
 
-    const { currentColor } = useStateContext();
+    const { currentColor,setIndex } = useStateContext();
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: currentColor }
@@ -48,9 +48,9 @@ const Signup = () => {
         try {
             const res = await axios.post('http://localhost:5000/api/organizer_signup', data);
             console.log(res.data);
-            
-                console.log(res.data.message);
-                navigate('/SignInSignUp_O');
+            seterror(false);
+            setIndex(0);
+            navigate('/SignInSignUp_O');
             
         } catch (error) {
             if (error.response.data.message === "Username already exists") {

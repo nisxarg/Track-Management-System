@@ -12,7 +12,7 @@ import { useStateContext } from '../../../contexts/ContextProvider';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
-    const { currentColor } = useStateContext();
+    const { currentColor, setIndex } = useStateContext();
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: currentColor }
@@ -47,12 +47,14 @@ const Signup = () => {
         try {
             const res = await axios.post('http://localhost:5000/api/user_signup', data);
             console.log(res.data);
+            seterror(false);
+            setIndex(0);
             navigate('/SignInSignUp');
         } catch (error) {
             if (error.response.data.message === "Username already exists") {
                 seterror(true);
                 setErrorMessage("Username already exists");
-               
+
                 console.log(error.response.data.message);
             }
             else {
@@ -74,7 +76,7 @@ const Signup = () => {
                         </Avatar>
                         <h2 style={headerStyle}>Sign Up</h2>
                         <Typography variant='caption' gutterBottom>Please fill this form to create an account !</Typography>
-                        {error && <Typography variant='caption' gutterBottom style={{color: 'red'}}> {ErrorMessage}</Typography>}
+                        {error && <Typography variant='caption' gutterBottom style={{ color: 'red' }}> {ErrorMessage}</Typography>}
                     </Grid>
                     <form onSubmit={handleSubmit}>
                         <TextField fullWidth label="Name" placeholder="Enter your name" value={name} onChange={(e) => setName(e.target.value)} />
