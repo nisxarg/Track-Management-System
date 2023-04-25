@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import { Grid, Paper, Avatar, Typography, TextField, Button } from '@material-ui/core'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import DatePicker from 'react-datepicker';
 import Checkbox from '@material-ui/core/Checkbox';
 import axios from 'axios';
@@ -15,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 const Signup = () => {
     const navigate = useNavigate();
 
-    const { currentColor } = useStateContext();
+    const { currentColor,setIndex } = useStateContext();
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: currentColor }
@@ -31,6 +29,8 @@ const Signup = () => {
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+    const [error, seterror] = useState(false);
+    const [ErrorMessage, setErrorMessage] = useState();
 
 
     const handleSubmit = async (e) => {
@@ -48,9 +48,20 @@ const Signup = () => {
         try {
             const res = await axios.post('http://localhost:5000/api/organizer_signup', data);
             console.log(res.data);
+            seterror(false);
+            setIndex(0);
             navigate('/SignInSignUp_O');
+            
         } catch (error) {
-            console.error(error);
+            if (error.response.data.message === "Username already exists") {
+                seterror(true);
+                setErrorMessage("Username already exists");
+                console.log(error.response.data.message);
+            } 
+            else {
+                console.error(error);
+            }
+            
         }
     };
 
@@ -67,6 +78,7 @@ const Signup = () => {
                         </Avatar>
                         <h2 style={headerStyle}>Sign Up</h2>
                         <Typography variant='caption' gutterBottom>Please fill this form to create an account !</Typography>
+                        {error && <Typography variant='caption' gutterBottom style={{color: 'red'}}> {ErrorMessage}</Typography>}
                     </Grid>
                     <form onSubmit={handleSubmit}>
                         <TextField fullWidth label="Name" placeholder="Enter your name" value={name} onChange={(e) => setName(e.target.value)} />

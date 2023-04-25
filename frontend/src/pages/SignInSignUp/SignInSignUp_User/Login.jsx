@@ -21,6 +21,8 @@ const Login = ({ handleChange }) => {
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const { Username,setUsername } = useStateContext();
+    const [error, seterror] = useState(false);
+    const [ErrorMessage, setErrorMessage] = useState();
 
     // route.post('/api/user_signup', controller.user_signup)
     // route.post('/api/user_login/:username', controller.user_login)
@@ -40,9 +42,16 @@ const Login = ({ handleChange }) => {
             navigate('/home'); // navigate to next page
 
             }
-        } catch (err) {
-            console.error(err);
-            // Display error message to the user
+        } catch (error) {
+            
+            if (error.response.data.message ) {
+                seterror(true);
+                setErrorMessage(error.resoponse.data.message);
+                console.log(error.response.data.message);
+            } 
+            else {
+                console.error(error);
+            }
         }
     };
 
@@ -56,6 +65,7 @@ const Login = ({ handleChange }) => {
                             <LockOutlinedIcon />
                         </Avatar>
                         <h2>Sign In</h2>
+                        {error && <Typography variant='caption' gutterBottom style={{ color: 'red' }}> {ErrorMessage}</Typography>}
                     </Grid>
                     <TextField label='Username' placeholder='Enter username' value={user} fullWidth required onChange={(e) => setUser(e.target.value)} />
                     <TextField label='Password' placeholder='Enter password' value={pwd} fullWidth required onChange={(e) => setPwd(e.target.value)} type='password' />

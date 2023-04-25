@@ -53,9 +53,9 @@ const Signup = () => {
             navigate('/SignInSignUp_O');
             
         } catch (error) {
-            if (error.response.data.message === "Username already exists") {
+            if (error.response.data.message ) {
                 seterror(true);
-                setErrorMessage("Username already exists");
+                setErrorMessage(error.response.data.message);
                 console.log(error.response.data.message);
             } 
             else {

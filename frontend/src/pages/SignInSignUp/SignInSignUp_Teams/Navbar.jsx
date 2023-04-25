@@ -119,7 +119,7 @@ const NavbarTracks = () => {
         onClick={handleSignInOptions}
       >
         <p>
-        Sign in 
+        Register 
         </p>
         <MdKeyboardArrowDown className="text-gray-400 text-14" />
       </div>   
@@ -133,7 +133,7 @@ const NavbarTracks = () => {
               className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
               onClick={handleUserSignIn}
             >
-              Edit Profile
+              Edit Team Profile
             </div>
             
 
@@ -150,18 +150,10 @@ const NavbarTracks = () => {
           <div className="absolute top-14 right-0 z-10 bg-white w-52 py-2 rounded-md shadow-md">
             <div
               className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
-              onClick={handleUserSignIn}
+              onClick={handleTeamSignIn}
             >
-              Sign in as  User
+              Team Sign-In
             </div>
-             
-              <div
-                className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
-                onClick={handleOrganizerSignIn}
-              >
-                Sign in as Organizer
-              </div>
-            
           </div>
         )}
 
