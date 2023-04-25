@@ -8,11 +8,13 @@
     "dotenv": "^16.0.3",
     "dotenv-webpack": "^8.0.1",
     "express": "^4.18.2",
+    "jest": "^29.5.0",
     "jsonwebtoken": "^9.0.0",
     "mocha": "^10.2.0",
     "mongoose": "^7.0.3",
     "nodemon": "^2.0.22",
-    "openssl": "^2.0.0"
+    "openssl": "^2.0.0",
+    "supertest": "^6.3.3"
   },
   "scripts": {
     "start": "nodemon server.js",
