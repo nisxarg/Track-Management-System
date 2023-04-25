@@ -7,7 +7,6 @@ import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
 import { Home, Data, CFP, Organizations, PastPrecedings, Resources, CFT, SignInSignUp,SignInSignUp_O } from './pages';
 import { useStateContext } from './contexts/ContextProvider';
 import TrackDetails from './pages/TrackDetails'
-import TrackDetails1 from './pages/TrackDetails1'
 
 const App = () => {
     const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
@@ -84,8 +83,6 @@ const App = () => {
                                 <Route path="/SignInSignUp_O" element={<SignInSignUp_O />} />
 
                                 <Route path="/api/track" element={<TrackDetails />} />
-                                <Route path="/api/track_org" element={<TrackDetails1 />} />
-
 
                             </Routes>
                         </div>
