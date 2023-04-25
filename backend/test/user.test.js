@@ -43,7 +43,7 @@ describe('POST /api/user_signup', () => {
     test('should return status 200 for Successful signup', async () => {
         const req = {
             body: {
-                username : 'dev_lodo',
+                username : 'devq',
                 email: '123@gmail.com',
                 password: '123',
                 phone_no : '1234567890',
