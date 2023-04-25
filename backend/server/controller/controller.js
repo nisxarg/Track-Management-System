@@ -15,22 +15,21 @@ exports.user_signup = async (req, res) => {
     try {
         // validate request
         if (!req.body) {
-            res.status(400).send({ message: "Content can not be empty" });
-            return;
+            return res.status(400).send({ message: "Content can not be empty" });
         }
 
         // check if username already exists
         const username = req.body.username;
         const existingUser = await userdb.findOne({ username });
         if (existingUser) {
-            res.status(300).send({ message: "Username already exists" });
-            return;
+            return res.status(400).send({ message: "Username already exists" });
         }
+
         const user = new userdb(req.body)
         // create new user
         await user.save(user)
             .then(data => {
-                res.send(data)
+                res.status(200).send(data)
                 // res.redirect('/')
             })
     }
@@ -43,7 +42,12 @@ exports.user_signup = async (req, res) => {
 exports.user_login = async (req, res) => {
 
     try {
-        // check if organizer exists
+
+        if (!req.body) {
+            return res.status(400).send({ message: "Content can not be empty" });
+        }
+
+        // check if user exists
         const user = await userdb.findOne({username: req.body.username});
         if(!user) return res.status(400).send('User not found');
         
@@ -285,7 +289,7 @@ exports.find_year_track = async (req, res) => {
 
     const year_ = req.params.year;
 
-    await homedb.findOne({ year: year_ })
+    await trackdb.findOne({ year: year_ })
         .then(data => {
             if (!data) {
                 res.status(404).send({ message: `May be track not found` })
