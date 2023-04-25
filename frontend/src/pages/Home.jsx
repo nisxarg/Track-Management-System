@@ -14,7 +14,7 @@ const Home = (props) => {
     useEffect(async() => {
       try {
         const response = await axios.get(`http://localhost:5000/api/${props.year}`)
-        
+
         // console.log(response.data);
         setHomeData(response.data);
       } catch (error) {
@@ -103,7 +103,7 @@ const Home = (props) => {
                 <li key={track.text}>
                     <Link
   to={{
-    pathname: '/api/track',
+    pathname: '/api/track/',
     search: `?year=${props.year}&name_code=${track.text}`,
   }}
 >

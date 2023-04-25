@@ -1,23 +1,31 @@
 import React from 'react';
-// import  Navbar  from '../components/Navbar';
-// import { useParams } from 'react-router-dom';
-// import { homePageData1 } from '../data/dummy'
-import { useStateContext } from '../contexts/ContextProvider';
-// import { Track } from '../data/dummy';
-import { useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
+import { useStateContext } from '../contexts/ContextProvider';
+
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
   
-  // const { trackName } = useParams();
-  const TrackDetails = (props) => {
-    const track = props.trackData;
+  
+ 
+const TrackDetails = (props) => {
+  const track = props.trackData;
     const { currentColor } = useStateContext();
-   
-    const location = useLocation();
+  const [trackData, setTrackData] = useState(null);
+  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const year = queryParams.get('year');
-  const trackname = queryParams.get('name_code');
+  const name_code = queryParams.get('name_code');
 
-  
+  useEffect(() => {
+    // Fetch track data from API using axios
+    axios
+      .get(`http://localhost:5000/api/track/?year=${year}&name_code=${name_code}`)
+      .then((response) => setTrackData(response.data));
+  }, []);
+
+
+  console.log(trackData)
   return (
   <>
  
