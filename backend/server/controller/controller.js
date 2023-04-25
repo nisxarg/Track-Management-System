@@ -314,7 +314,7 @@ exports.find_year_track = async (req, res) => {
 
     const year_ = req.params.year;
 
-    await trackdb.findOne({ year: year_ })
+    await homedb.findOne({ year: year_ })
         .then(data => {
             if (!data) {
                 res.status(404).send({ message: `May be track not found` })
