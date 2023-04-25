@@ -36,8 +36,9 @@ const Login = ({ handleChange }) => {
                 console.log('User is authenticated');
                 const token = res.data.token; // assuming the token is returned in the response
                 localStorage.setItem('token', token); // store the token in local storage
+                localStorage.setItem('role','ORG')
                 // navigate('/home'); // navigate to next page
-                navigate('/api/track_org?year=2022&name_code=track_2022_2')
+                navigate('/api/track?year=2022&name_code=track_2022_2')
             }
         } catch (error) {
 
@@ -50,7 +51,6 @@ const Login = ({ handleChange }) => {
                 console.error(error);
             }
         }
-
     };
 
     return (
