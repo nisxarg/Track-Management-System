@@ -3,6 +3,7 @@ var organizerdb = require('../model/model_organizer')
 var trackdb = require('../model/model_track')
 var homedb = require('../model/model_home')
 var teamdb = require('../model/model_team')
+const axios = require("axios");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
 
@@ -20,6 +21,7 @@ exports.user_signup = async (req, res) => {
 
         // check if username already exists
         const username = req.body.username;
+        const password = req.body.password;
         const existingUser = await userdb.findOne({ username });
         if (existingUser) {
             return res.status(400).send({ message: "Username already exists" });
@@ -28,9 +30,17 @@ exports.user_signup = async (req, res) => {
         const user = new userdb(req.body)
         // create new user
         await user.save(user)
-            .then(data => {
+            .then(async data => {
+
+                try {
+                    const r = await axios.post(
+                        "https://api.chatengine.io/users/",
+                        { username : username, secret : password,first_name : username},
+                        { headers: { "Private-Key": process.env.CHAT_ENGINE_PRIVATE_KEY } }
+                    );
+                } catch (e) {
+                }
                 res.status(200).send(data)
-                // res.redirect('/')
             })
     }
     catch (err) {
@@ -48,13 +58,13 @@ exports.user_login = async (req, res) => {
         }
 
         // check if user exists
-        const user = await userdb.findOne({username: req.body.username});
-        if(!user) return res.status(400).send('User not found');
-        
+        const user = await userdb.findOne({ username: req.body.username });
+        if (!user) return res.status(400).send('User not found');
+
         // check if password is correct
         const validPassword = await bcrypt.compare(req.body.password, user.password);
-        if(!validPassword) return res.status(400).send('Invalid Password');
-        
+        if (!validPassword) return res.status(400).send('Invalid Password');
+
         // create and assign a token
         let tokenData = {
             username: user.username
@@ -62,6 +72,21 @@ exports.user_login = async (req, res) => {
 
         const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
         console.log("token created");
+
+        const username = user.username
+        const password = user.password
+
+        try {
+            const r = await axios.get("https://api.chatengine.io/users/me/", {
+              headers: {
+                "Project-ID": process.env.CHAT_ENGINE_PROJECT_ID,
+                "User-Name": username,
+                "User-Secret": password,
+              },
+            });
+          } catch (e) {
+          }
+
         res.status(200).json({
             status: true,
             success: "SendData",
