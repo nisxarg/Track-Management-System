@@ -37,6 +37,16 @@ exports.user_signup = async (req, res) => {
             return res.status(400).send({ message: "Enter Valid Password" });
         }
 
+        if(/^[0-9]{10}$/.test(req.body.phone_no))
+        {
+            return res.status(400).send({ message: "Enter 10 Digit Phone-Number" });
+        }
+
+        const numberRegex = /^[0-9]*$/;  // matches only digits
+        if (!(req.body.phone_no.length === 10 && numberRegex.test(req.body.phone_no))) {
+            return res.status(400).send({ message: "Enter 10 Digit Phone-Number" });
+        }
+
         const user = new userdb(req.body)
         // create new user
         await user.save(user)
@@ -175,10 +185,10 @@ exports.organizer_signup = async (req, res) => {
 
         //check if track name is already in database or not
 
-        const year_ = new Date(req.body.track_list[0].start_date).getFullYear().toString();
-        const name_code_ = req.body.track_list[0].track_name
+        const year_ = new Date(req.body.start_date).getFullYear();
+        const name_code_ = req.body.track_name
 
-        const data = await trackdb.findOne({name_code:name_code_, year:year_})
+        const data = await trackdb.findOne({name_code:name_code_, year:year_.toString()})
 
         if(data)
         {
@@ -262,7 +272,7 @@ exports.add_track = async (req, res) => {
         .then(async data => {
             
             try{
-                // console.log("i am at update track")
+
                 const existingdata = await homedb.findOne({ year : find_year });
 
                 await homedb.findOneAndUpdate(
@@ -316,8 +326,8 @@ exports.update_track = async (req, res) => {
         return;
     }
     const tracke = new trackdb(req.body)
-    console.log("Printing track details")
-    console.log(tracke)
+    // console.log("Printing track details")
+    // console.log(tracke)
     
     const find_year = tracke.year;
     const tn = tracke.name_code;
@@ -326,26 +336,23 @@ exports.update_track = async (req, res) => {
     const importantDates_ = tracke.importantDates;
     const content_ = tracke.content;
    
-            try{
-                // console.log("i am at update track")
-                // const existingdata = await db.findOne({ year : find_year });
-                // console.log("Printing data")
-                // console.log(existingdata)
-                // console.log("Printing year")
-                // console.log(typeof(existingdata.year),existingdata.year)
-                await trackdb.findOneAndUpdate(
-                    { "year" : find_year, "name_code" : tn}, //filtering
-                    { $set : {  
-                        "tag" : tag_,
-                        "sidebar" : sidebar_,
-                        "importantDates" : importantDates_,
-                        "content" :  content_
-                        }
-                    }
-                )
-            }catch (e) {
-                console.error(e);
+    try{
+
+        await trackdb.findOneAndUpdate(
+            { "year" : find_year, "name_code" : tn}, 
+            { $set : {  
+                "tag" : tag_,
+                "sidebar" : sidebar_,
+                "importantDates" : importantDates_,
+                "content" :  content_
+                }
             }
+        )
+
+        return res.send(tracke)
+    }catch (e) {
+        console.error(e);
+    }
             
 
 }
@@ -365,7 +372,7 @@ exports.add_home = async(req,res)=>{
     await user.save(user)
         .then(data => {
             res.send(data)
-            // res.redirect('/')
+
         })
         .catch(err => {
             res.status(500).send({
@@ -408,7 +415,6 @@ exports.find_year_track = async (req, res) => {
             }
             else {
                 res.send(data)
-                // res.status(200).send({ success: true })
             }
         })
         .catch(err => {
@@ -435,6 +441,13 @@ exports.team_signup = async (req, res) => {
     if(data)
     {
         return res.status(300).send({ message: "Team name already exists" })
+    }
+
+    const data1 = await trackdb.findOne({name_code:track_name_, year:year_})
+
+    if(!data1)
+    {
+        return res.status(300).send({ message: "Track doesn't exists" })
     }
 
 
@@ -479,7 +492,7 @@ exports.team_signup = async (req, res) => {
 
                     try {
                         await userdb.findOneAndUpdate(
-                            { "username": name }, // Filter to find the user with matching username
+                            { "username": name }, 
                             { $push: { "tracks": newTrack } }
                         );
                     } catch (e) {
@@ -498,11 +511,8 @@ exports.team_signup = async (req, res) => {
             }
         }
 
-        if(!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(req.body.email)){
-            return res.status(400).send({ message: "Enter Valid Email-Address" });
-        }
         // The regular expression ^[^\s@]+@[^\s@]+\.[^\s@]+$ matches any string that has the format username@domain.tld. It checks that there are no spaces or @ characters in the username or domain, and that there is a dot (.) in the domain followed by one or more characters.
-        if(!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.password)){
+        if(!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.team_password)){
             return res.status(400).send({ message: "Enter Valid Password" });
         }
 
