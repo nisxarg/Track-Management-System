@@ -184,7 +184,6 @@ exports.organizer_signup = async (req, res) => {
 }
 
 exports.organizer_login = async (req, res) => {
-
     try {
         // check if organizer exists
         const organizer = await organizerdb.findOne({username: req.body.username});
@@ -223,6 +222,9 @@ exports.add_track = async (req, res) => {
         return;
     }
     const tracke = new trackdb(req.body)
+    console.log("Printing track details")
+    console.log(tracke)
+    
     const find_year = tracke.year;
     const tn = tracke.name_code;
    
@@ -232,9 +234,9 @@ exports.add_track = async (req, res) => {
             try{
                 // console.log("i am at update track")
                 const existingdata = await homedb.findOne({ year : find_year });
-                console.log("Printing data")
+                // console.log("Printing data")
                 console.log(existingdata)
-                console.log("Printing year")
+                // console.log("Printing year")
                 console.log(typeof(existingdata.year),existingdata.year)
 
                 await homedb.findOneAndUpdate(
@@ -260,6 +262,50 @@ exports.add_track = async (req, res) => {
                 message: err.message || "Some error occured while creating a create operation"
             });
         });
+
+}
+
+
+
+exports.update_track = async (req, res) => {
+
+    //validate request
+    if (!req.body) {
+        res.status(400).send({ message: "Content can not be empty" });
+        return;
+    }
+    const tracke = new trackdb(req.body)
+    console.log("Printing track details")
+    console.log(tracke)
+    
+    const find_year = tracke.year;
+    const tn = tracke.name_code;
+    const tag_ = tracke.tag;
+    const sidebar_ = tracke.sidebar;
+    const importantDates_ = tracke.importantDates;
+    const content_ = tracke.content;
+   
+            try{
+                // console.log("i am at update track")
+                // const existingdata = await db.findOne({ year : find_year });
+                // console.log("Printing data")
+                // console.log(existingdata)
+                // console.log("Printing year")
+                // console.log(typeof(existingdata.year),existingdata.year)
+                await trackdb.findOneAndUpdate(
+                    { "year" : find_year, "name_code" : tn}, //filtering
+                    { $set : {  
+                        "tag" : tag_,
+                        "sidebar" : sidebar_,
+                        "importantDates" : importantDates_,
+                        "content" :  content_
+                        }
+                    }
+                )
+            }catch (e) {
+                console.error(e);
+            }
+            
 
 }
 
@@ -318,7 +364,6 @@ exports.find_year_track = async (req, res) => {
         .then(data => {
             if (!data) {
                 res.status(404).send({ message: `May be track not found` })
-
             }
             else {
                 res.send(data)
@@ -433,8 +478,6 @@ exports.team_login = async (req, res) => {
         // check if organizer exists
         const team = await teamdb.findOne({team_name: req.body.team_name});
         if(!team) return res.status(400).send('Team not found');
-
-        console.log(team)
         
         // check if password is correct
         const validPassword = await bcrypt.compare(req.body.team_password, team.team_password);
@@ -457,29 +500,3 @@ exports.team_login = async (req, res) => {
         return res.status(500).send('error');
     }
 }
-
-exports.update_track = async(req,res) => {
-       
-    try{
-
-        if (!req.body) {
-            res.status(400).send({ message: "Content can not be empty" });
-            return;
-        }
-
-        const track = await trackdb.findOne({name_code: req.body.name_code, year:req.body.year});
-        if(!track) return res.status(400).send('track not found');
-
-        // console.log(track)
-
-        await trackdb.updateOne({name_code: track.name_code }, { $set: req.body }); 
-        
-        return res.status(200).send(req.body);
-
-    }
-    catch(err){
-        return res.status(500).send('error');
-    }
-
-}
-
