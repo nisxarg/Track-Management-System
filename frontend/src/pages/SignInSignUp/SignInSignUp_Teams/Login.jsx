@@ -9,11 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
-const baseURL = "https://jsonplaceholder.typicode.com/posts";
-
 const Login = ({ handleChange }) => {
     const navigate = useNavigate();
-    const { setUsername } = useStateContext();
+    const { setUsername,TrackNameMain,TrackYearMain } = useStateContext();
 
     const { currentColor } = useStateContext();
     const paperStyle = { padding: 20, height: '73vh', width: 300, margin: "0 auto" }
@@ -30,13 +28,13 @@ const Login = ({ handleChange }) => {
 
     const submitAction = async () => {
         try {
-            const res = await axios.post(`http://localhost:5000/api/organizer_login`, { username: user, password: pwd });
+            const res = await axios.post(`http://localhost:5000/api/team_login`, { username: user, password: pwd });
             if (res.status === 200) {
                 setUsername(user);
                 console.log('User is authenticated');
                 const token = res.data.token; // assuming the token is returned in the response
                 localStorage.setItem('token', token); // store the token in local storage
-                navigate('/home'); // navigate to next page
+                navigate(`/api/track?year=${TrackYearMain}&name_code=${TrackNameMain}`); // navigate to next page
             }
         } catch (err) {
             console.error(err);
@@ -53,7 +51,7 @@ const Login = ({ handleChange }) => {
                         <Avatar style={avatarStyle}>
                             <LockOutlinedIcon />
                         </Avatar>
-                        <h2>Sign In</h2>
+                        <h2>Team Sign In</h2>
                     </Grid>
                     <TextField label='Username' placeholder='Enter username' value={user} fullWidth required onChange={(e) => setUser(e.target.value)} />
                     <TextField label='Password' placeholder='Enter password' value={pwd} fullWidth required onChange={(e) => setPwd(e.target.value)} type='password' />

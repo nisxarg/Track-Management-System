@@ -13,55 +13,53 @@ import { useNavigate } from 'react-router-dom';
 const Signup = () => {
     const navigate = useNavigate();
 
-    const { currentColor,setIndex } = useStateContext();
+    const { currentColor, setIndex, TrackNameMain, TrackYearMain } = useStateContext();
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: currentColor }
     // const marginTop = { marginTop: 5 }
 
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [track_name, setTrackName] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [profile_link, setprofile_link] = useState('');
+    const [team_name, setTeamName] = useState('');
+    const [teammate_1, setTeammate1] = useState('');
+    const [teammate_2, setTeammate2] = useState('');
+    const [teammate_3, setTeammate3] = useState('');
+    const [track_name, setTrackName] = useState(TrackNameMain);
+    const [track_year, setTrackYear] = useState(TrackYearMain);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [acceptedTerms, setAcceptedTerms] = useState(false);
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
     const [error, seterror] = useState(false);
     const [ErrorMessage, setErrorMessage] = useState();
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = {
-            username: name,
-            email: email,
+            team_name: team_name,
+            teammate_1: teammate_1,
+            teammate_2: teammate_2,
+            teammate_3: teammate_3,
             track_name: track_name,
-            start_date: startDate,
-            end_date: endDate,
-            resume_link: profile_link,
-            password: password,
+            track_year: track_year,
+            password: password
         };
 
         try {
-            const res = await axios.post('http://localhost:5000/api/organizer_signup', data);
+            const res = await axios.post('http://localhost:5000/api/team_signup', data);
             console.log(res.data);
             seterror(false);
             setIndex(0);
-            navigate('/SignInSignUp_O');
-            
+            navigate('/SignInSignUp_T');
+
         } catch (error) {
             if (error.response.data.message === "Username already exists") {
                 seterror(true);
                 setErrorMessage("Username already exists");
                 console.log(error.response.data.message);
-            } 
+            }
             else {
                 console.error(error);
             }
-            
+
         }
     };
 
@@ -76,39 +74,17 @@ const Signup = () => {
                         <Avatar style={avatarStyle}>
                             <AddCircleOutlineOutlinedIcon />
                         </Avatar>
-                        <h2 style={headerStyle}>Sign Up</h2>
+                        <h2 style={headerStyle}>Register your Team Here</h2>
                         <Typography variant='caption' gutterBottom>Please fill this form to create an account !</Typography>
-                        {error && <Typography variant='caption' gutterBottom style={{color: 'red'}}> {ErrorMessage}</Typography>}
+                        {error && <Typography variant='caption' gutterBottom style={{ color: 'red' }}> {ErrorMessage}</Typography>}
                     </Grid>
                     <form onSubmit={handleSubmit}>
-                        <TextField fullWidth label="Name" placeholder="Enter your name" value={name} onChange={(e) => setName(e.target.value)} />
-                        <TextField fullWidth label="Email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <TextField fullWidth label="Phone Number" placeholder="Enter your phone number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
-                        <TextField fullWidth label="Track_Name" placeholder="Enter the name of Track " value={track_name} onChange={(e) => setTrackName(e.target.value)} />
-                        <div className="flex mt-4">
-                            <DatePicker
-                                selected={startDate}
-                                onChange={(date) => setStartDate(date)}
-                                selectsStart
-                                startDate={startDate}
-                                endDate={endDate}
-                                placeholderText="Start date"
-                                className="w-full"
-                                style={{ outline: 'none !important', border: 'none' }}
-                            />
-                            <DatePicker
-                                selected={endDate}
-                                onChange={(date) => setEndDate(date)}
-                                selectsEnd
-                                startDate={startDate}
-                                endDate={endDate}
-                                minDate={startDate}
-                                placeholderText="End date"
-                                className="w-full"
-                                style={{ outline: 'none !important', border: 'none' }}
-                            />
-                        </div>
-                        <TextField fullWidth label="Share your Profile Link" placeholder="Profile Link " value={profile_link} onChange={(e) => setprofile_link(e.target.value)} />
+                        <TextField fullWidth label="Team Name" placeholder="Enter your team name" value={team_name} onChange={(e) => setTeamName(e.target.value)} />
+                        <TextField fullWidth label="Teammate 1" placeholder="Enter teammate 1 name" value={teammate_1} onChange={(e) => setTeammate1(e.target.value)} />
+                        <TextField fullWidth label="Teammate 2" placeholder="Enter teammate 2 name" value={teammate_2} onChange={(e) => setTeammate2(e.target.value)} />
+                        <TextField fullWidth label="Teammate 3" placeholder="Enter teammate 3 name" value={teammate_3} onChange={(e) => setTeammate3(e.target.value)} />
+                        <TextField fullWidth label="Track Name" placeholder="Enter the name of the track" value={track_name} onChange={(e) => setTrackName(e.target.value)} style={{ marginTop: '5px' }} />
+                        <TextField fullWidth label="Track Year" placeholder="Enter the year of the track" value={track_year} onChange={(e) => setTrackYear(e.target.value)} style={{ marginTop: '5px' }}/>
                         <TextField fullWidth label="Password" placeholder="Enter your password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <TextField fullWidth label="Confirm Password" placeholder="Confirm your password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
 

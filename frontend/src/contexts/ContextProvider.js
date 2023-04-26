@@ -19,7 +19,11 @@ export const ContextProvider = ({ children }) => {
   const [Username, setUsername] = useState('');
   const [index, setIndex] = useState(0);
   const [trackactive, settrackactive] = useState(false);
+  const [Navbarview, setNavbarview] = useState(1);
   const [sidebarData, setsidebarData] = useState([]);
+  const [TrackNameMain, setTrackNameMain] = useState([]);
+  const [TrackYearMain, setTrackYearMain] = useState([]);
+
   const setMode = (e) => {
     setCurrentMode(e.target.value);
     localStorage.setItem('themeMode', e.target.value);
@@ -34,7 +38,7 @@ export const ContextProvider = ({ children }) => {
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <StateContext.Provider value={{ currentColor, currentMode, activeMenu, screenSize, setScreenSize, handleClick, isClicked, initialState, setIsClicked, setActiveMenu, setCurrentColor, setCurrentMode, setMode, setColor, themeSettings, setThemeSettings, Username, setUsername, index, setIndex, trackactive, settrackactive, sidebarData, setsidebarData }}>
+    <StateContext.Provider value={{ currentColor, currentMode, activeMenu, screenSize, setScreenSize, handleClick, isClicked, initialState, setIsClicked, setActiveMenu, setCurrentColor, setCurrentMode, setMode, setColor, themeSettings, setThemeSettings, Username, setUsername, index, setIndex, trackactive, settrackactive, sidebarData, setsidebarData,TrackNameMain, setTrackNameMain,TrackYearMain, setTrackYearMain,Navbarview,setNavbarview }}>
       {children}
     </StateContext.Provider>
   );

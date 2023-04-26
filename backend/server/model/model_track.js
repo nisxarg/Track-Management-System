@@ -17,7 +17,7 @@ var track_schema = new mongoose.Schema({
             required : true
         }
     }],
-    sidebar: {
+    sidebar: [{
         title: {
             type: String,
             required: true,
@@ -27,9 +27,9 @@ var track_schema = new mongoose.Schema({
                 type: String,
                 required: true
             },
-
         }]
     },
+],
     importantDates: {
         title: {
             type: String,

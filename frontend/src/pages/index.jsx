@@ -8,4 +8,5 @@ export { default as CFT } from './CFT';
 
 export { default as SignInSignUp } from './SignInSignUp/SignInSignUp_User/SignInSignUp';
 export { default as SignInSignUp_O } from './SignInSignUp/SignInSignUp_Organizer/SignInSignUp';
+export { default as SignInSignUp_T } from './SignInSignUp/SignInSignUp_Teams/SignInSignUp';
 
