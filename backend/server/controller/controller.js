@@ -555,22 +555,48 @@ exports.set_score = async (req, res) => {
             { "track_name" : track_name_, "track_year" : track_year_, "team_and_score" : {$elemMatch: { "team_name": team_name_}}}
         ) 
 
-        // console.log(data)
-        
-        const id = data._id
+        var len = data.team_and_score.length
+        var id 
+
+        for(let i=0; i<len; i++)
+        {
+            if(data.team_and_score[i].team_name==team_name_)
+            {
+                id = data.team_and_score[i]._id;
+                break;
+            }
+        }
         
         const data1 = await leaderdb.findOneAndUpdate(
-            {"_id": id},
+            {"team_and_score" :{$elemMatch: { "_id": id}}},
             {
                 $set:{
-                    team_and_score:{
-                        team_name: team_name_,
-                        team_score:new_score}
+                    "team_and_score.$.team_score" : new_score
                 }
             }
         )
 
         res.send({new_score: new_score})
+
+    } catch (err) {
+        return res.status(500).send('error');
+    }
+}
+
+exports.get_leaderboard = async (req, res) => {
+
+    try {
+       
+        const track_name_ = req.body.track_name
+        const track_year_ = req.body.track_year
+
+        const data = await leaderdb.findOne({track_name:track_name_, track_year:track_year_})
+
+        const team_data = data.team_and_score
+
+        team_data.sort((a,b) => a.team_score - b.team_score)
+
+        res.send(team_data)
 
     } catch (err) {
         return res.status(500).send('error');

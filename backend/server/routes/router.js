@@ -20,6 +20,7 @@ route.post('/api/add_home', controller.add_home)
 route.post('/api/change_pwd', controller.change_pwd)
 route.post('/api/update_track', controller.update_track)
 route.post('/api/set_score', controller.set_score)
+route.post('/api/leaderboard', controller.get_leaderboard)
 
 
 
