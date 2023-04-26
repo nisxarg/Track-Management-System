@@ -11,7 +11,7 @@ import { Navbar } from '../components';
 
 const TrackDetails = (props) => {
   const track = props.trackData;
-  const { currentColor, setsidebarData } = useStateContext();
+  const { currentColor, setsidebarData,Navbarview,setNavbarview } = useStateContext();
   const [trackData, setTrackData] = useState(null);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -20,6 +20,7 @@ const TrackDetails = (props) => {
 
 
   useEffect(async () => {
+    setNavbarview(0);
     try {
       const response = await axios.get(`http://localhost:5000/api/track/?year=${year}&name_code=${name_code}`);
       setTrackData(response.data);
@@ -47,7 +48,7 @@ const TrackDetails = (props) => {
 
       }
 
-      <Navbar view='0' />
+      <Navbar />
       <div>
         <div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor, height: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 

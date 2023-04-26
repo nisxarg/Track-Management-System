@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, } from 'react-router-dom'
 import { FiSettings } from 'react-icons/fi'
 import { TooltipComponent } from '@syncfusion/ej2-react-popups'
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
-import { Home, Data, CFP, Organizations, PastPrecedings, Resources, CFT, SignInSignUp, SignInSignUp_O } from './pages';
+import { Home, Data, CFP, Organizations, PastPrecedings, Resources, CFT, SignInSignUp, SignInSignUp_O ,SignInSignUp_T} from './pages';
 import { useStateContext } from './contexts/ContextProvider';
 import TrackDetails from './pages/TrackDetails'
 
@@ -81,6 +81,7 @@ const App = () => {
                                     <Route path="/2012" element={<Home year="2012" />} />
                                     <Route path="/SignInSignUp" element={<SignInSignUp />} />
                                     <Route path="/SignInSignUp_O" element={<SignInSignUp_O />} />
+                                    <Route path="/SignInSignUp_T" element={<SignInSignUp_T />} />
 
 
 

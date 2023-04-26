@@ -18,7 +18,7 @@ const Sidebar = () => {
     activeMenu,
     setActiveMenu,
     screenSize,
-    sidebarData,
+    sidebarData,TrackNameMain,TrackYearMain,
   } = useStateContext();
   // change
   const location = useLocation();
@@ -77,8 +77,11 @@ const Sidebar = () => {
                       key={link.name}
                       onClick={(event) => {
                         event.preventDefault();
-                        window.location.href = `/${link.name}`;
-                        handleCloseSideBar();
+                        if (link.name === "Track-Details") {
+                          window.location.href = `/api/track?year=${TrackYearMain}&name_code=${TrackNameMain}`;
+                        } else {
+                          window.location.href = `/${link.name}`;
+                        }
                       }}
                       style={({ isActive }) => ({
                         backgroundColor: isActive ? currentColor : '',

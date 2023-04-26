@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box';
 import Login from './Login'
 import Signup from './SignUp'
 import { useStateContext } from '../../../contexts/ContextProvider';
+import { Navbar } from '../../../components';
 
 const SignInSignUp = () => {
   const { index,setIndex } = useStateContext();
@@ -29,6 +30,7 @@ const SignInSignUp = () => {
     const { children, value, index, ...other } = props;
 
     return (
+      
       <div className="dark:bg-secondary-dark-bg bg-white text-white">
         <div
           role="tabpanel"
@@ -44,10 +46,13 @@ const SignInSignUp = () => {
           )}
         </div>
       </div>
+    
     );
   }
 
   return (
+    <>
+   <Navbar/>
     <div className="dark:bg-secondary-dark-bg bg-white text-white">
       <Paper elevation={20} style={paperStyle}>
         <Tabs
@@ -69,6 +74,7 @@ const SignInSignUp = () => {
         </TabPanel>
       </Paper>
     </div>
+    </>
   )
 }
 

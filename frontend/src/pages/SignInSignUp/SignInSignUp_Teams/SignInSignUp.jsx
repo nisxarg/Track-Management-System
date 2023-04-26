@@ -7,19 +7,20 @@ import Box from '@material-ui/core/Box';
 import Login from './Login'
 import Signup from './SignUp'
 import { useStateContext } from '../../../contexts/ContextProvider';
+import { Navbar } from '../../../components';
 
-const SignInSignUp = () => {
-  const { index,setIndex } = useStateContext();
+const SignInSignUp_T = () => {
+  const { index, setIndex } = useStateContext();
 
   useEffect(() => {
     setIndex(0); // set the default tab to signIn (index 0)
     console.log("using useEffect");
     console.log(index);
 
- 
+
   }, [])
-  const handleChange=()=>{
-    if(index===0)setIndex(1);
+  const handleChange = () => {
+    if (index === 0) setIndex(1);
     else setIndex(0);
   }
 
@@ -48,6 +49,8 @@ const SignInSignUp = () => {
   }
 
   return (
+    <>
+   <Navbar/>
     <div className="dark:bg-secondary-dark-bg bg-white text-white">
       <Paper elevation={20} style={paperStyle}>
         <Tabs
@@ -69,6 +72,7 @@ const SignInSignUp = () => {
         </TabPanel>
       </Paper>
     </div>
+    </>
   )
 }
 
