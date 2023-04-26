@@ -11,7 +11,7 @@ import { Navbar } from '../components';
 
 const TrackDetails = (props) => {
   const track = props.trackData;
-  const { currentColor, setsidebarData, Navbarview, setNavbarview } = useStateContext();
+  const { currentColor, setsidebarData,Navbarview,setNavbarview } = useStateContext();
   const [trackData, setTrackData] = useState(null);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);

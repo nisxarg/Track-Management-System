@@ -40,7 +40,7 @@ const Signup = () => {
             teammate_3: teammate_3,
             track_name: track_name,
             track_year: track_year,
-            team_password: password
+            password: password
         };
 
         try {
@@ -51,9 +51,9 @@ const Signup = () => {
             navigate('/SignInSignUp_T');
 
         } catch (error) {
-            if (error.response.data.message ) {
+            if (error.response.data.message === "Username already exists") {
                 seterror(true);
-                setErrorMessage(error.response.data.message);
+                setErrorMessage("Username already exists");
                 console.log(error.response.data.message);
             }
             else {
@@ -82,7 +82,10 @@ const Signup = () => {
                         <TextField fullWidth label="Team Name" placeholder="Enter your team name" value={team_name} onChange={(e) => setTeamName(e.target.value)} />
                         <TextField fullWidth label="Teammate 1" placeholder="Enter teammate 1 name" value={teammate_1} onChange={(e) => setTeammate1(e.target.value)} />
                         <TextField fullWidth label="Teammate 2" placeholder="Enter teammate 2 name" value={teammate_2} onChange={(e) => setTeammate2(e.target.value)} />
-                        <TextField fullWidth label="Teammate 3" placeholder="Enter teammate 3 name" value={teammate_3} onChange={(e) => setTeammate3(e.target.value)} />              <TextField fullWidth label="Password" placeholder="Enter your password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <TextField fullWidth label="Teammate 3" placeholder="Enter teammate 3 name" value={teammate_3} onChange={(e) => setTeammate3(e.target.value)} />
+                        <TextField fullWidth label="Track Name" placeholder="Enter the name of the track" value={track_name} onChange={(e) => setTrackName(e.target.value)} style={{ marginTop: '5px' }} />
+                        <TextField fullWidth label="Track Year" placeholder="Enter the year of the track" value={track_year} onChange={(e) => setTrackYear(e.target.value)} style={{ marginTop: '5px' }}/>
+                        <TextField fullWidth label="Password" placeholder="Enter your password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <TextField fullWidth label="Confirm Password" placeholder="Confirm your password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
 
                         {password !== confirmPassword && <Typography style={{ color: 'red' }}>Password and confirm password does not match</Typography>}

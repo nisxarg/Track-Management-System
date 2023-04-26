@@ -13,14 +13,12 @@ route.post('/api/organizer_signup', controller.organizer_signup)
 route.post('/api/organizer_login/', controller.organizer_login)
 route.post('/api/add_track', controller.add_track)
 route.get('/api/track/', controller.find_track)
-route.get('/api/year/:year', controller.find_year_track)
+route.get('/api/:year', controller.find_year_track)
 route.post('/api/team_signup', controller.team_signup)
 route.post('/api/team_login', controller.team_login)
 route.post('/api/add_home', controller.add_home)
 route.post('/api/change_pwd', controller.change_pwd)
 route.post('/api/update_track', controller.update_track)
-route.post('/api/set_score', controller.set_score)
-route.get('/api/leaderboard/', controller.get_leaderboard)
 
 
 

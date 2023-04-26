@@ -33,12 +33,13 @@ const Login = ({ handleChange }) => {
             const res = await axios.post(`http://localhost:5000/api/organizer_login`, { username: user, password: pwd });
             if (res.status === 200) {
                 setUsername(user);
+                localStorage.setItem('user', user);
                 console.log('User is authenticated');
                 const token = res.data.token; // assuming the token is returned in the response
                 const data_array=JSON.stringify(res.data.track_list);
                 localStorage.setItem('track_list', data_array);
                 localStorage.setItem('token', token); // store the token in local storage
-                navigate('/DisplayTracks'); // navigate to next page
+                navigate('/DisplayTracks'); // navigate to next page// navigate to next page
             }
         } catch (error) {
 

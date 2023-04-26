@@ -15,33 +15,26 @@ var organizer_schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    track_list:[
-
-        {
-            track_name: {
-                type: String,
-                required: true
-            },
-            start_date: {
-                type: Date,
-                required: true
-            },
-            end_date: {
-                type: Date,
-                required: true
-            },
-            verified: {
-                type: Boolean,
-                default: false
-            }
-        }
-
-    ],
+    track_name: {
+        type: String,
+        required: true
+    },
+    start_date: {
+        type: Date,
+        required: true
+    },
+    end_date: {
+        type: Date,
+        required: true
+    },
     resume_link: {
         type: String,
         required: true
+    },
+    verified: {
+        type: Boolean,
+        default: false
     }
-
 })
 
 organizer_schema.pre('save', async function () {

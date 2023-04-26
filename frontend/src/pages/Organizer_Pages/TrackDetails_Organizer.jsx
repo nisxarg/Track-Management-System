@@ -38,11 +38,11 @@ const TrackDetails_Organizer = () => {
   const name_code = queryParams.get('name_code');
   const Navigate = useNavigate();
   const { setTrackNameMain, setTrackYearMain } = useStateContext();
-  window.addEventListener('beforeunload', function (e) {
-    localStorage.removeItem('token');
-    setOptions(0);
-    Navigate('/', { replace: true });
-  });
+  // window.addEventListener('beforeunload', function (e) {
+  //   localStorage.removeItem('token');
+  //   setOptions(0);
+  //   Navigate('/', { replace: true });
+  // });
   useEffect(() => {
 
     setTrackYearMain(year);
