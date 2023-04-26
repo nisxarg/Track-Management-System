@@ -583,14 +583,16 @@ exports.set_score = async (req, res) => {
     }
 }
 
-exports.get_leaderboard = async (req, res) => {
-
+exports.leaderboard = async (req, res) => {
+    
     try {
-       
-        const track_name_ = req.body.track_name
-        const track_year_ = req.body.track_year
+        
+        const track_name_ = req.query.track_name
+        const track_year_ = req.query.track_year
 
         const data = await leaderdb.findOne({track_name:track_name_, track_year:track_year_})
+
+        console.log(data)
 
         const team_data = data.team_and_score
 
