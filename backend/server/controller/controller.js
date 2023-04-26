@@ -607,8 +607,8 @@ exports.get_leaderboard = async (req, res) => {
 
     try {
 
-        const track_name_ = req.body.track_name
-        const track_year_ = req.body.track_year
+        const track_name_ = req.query.track_name
+        const track_year_ = req.query.track_year
 
         const data = await leaderdb.findOne({track_name:track_name_, track_year:track_year_})
 
