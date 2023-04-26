@@ -76,7 +76,7 @@ const Signup = () => {
                         <Avatar style={avatarStyle}>
                             <AddCircleOutlineOutlinedIcon />
                         </Avatar>
-                        <h2 style={headerStyle}>Sign Up</h2>
+                        <h2 style={headerStyle}>Sign Up For Organizer</h2>
                         <Typography variant='caption' gutterBottom>Please fill this form to create an account !</Typography>
                         {error && <Typography variant='caption' gutterBottom style={{color: 'red'}}> {ErrorMessage}</Typography>}
                     </Grid>

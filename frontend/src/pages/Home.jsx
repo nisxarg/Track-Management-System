@@ -4,10 +4,14 @@ import { useStateContext } from '../contexts/ContextProvider';
 
 import { Link, useNavigate } from 'react-router-dom';
 import TrackDetails from './TrackDetails';
+import { Navbar, Sidebar} from '../components';
+import { links } from '../data/dummy';
+
 
 const Home = (props) => {
     const currYear = props.year;
-    const { currentColor } = useStateContext();
+    const { currentColor,activeMenu,setsidebarData } = useStateContext();
+    
     const [homeData, setHomeData] = useState(null);
     const navigate = useNavigate();
 
@@ -16,6 +20,7 @@ const Home = (props) => {
       }
  
     useEffect(async() => {
+        setsidebarData(links);
       try {
         const response = await axios.get(`http://localhost:5000/api/${props.year}`)
 
@@ -36,35 +41,35 @@ const Home = (props) => {
     const invitedSpeakers = homeData.content.invitedSpeakers;
     const tracks = homeData.content.tracks;
     const tutorials = homeData.content.tutorials;
-
-    console.log(homeData)
     
 
     return (
       
       <div>
         
-        
+        <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full lg:static">
+                                <Navbar />
+                            </div>
         <div style={{ marginTop: '20px' }}>
             <div>
-                <div className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor }}>
+                <div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor,height: '4rem', display: 'flex',flexDirection: 'column',justifyContent: 'center' }}>
                     <p className="text-2xl text-white font-semibold mt-8">
                         {welcomeContent.title}-{props.year}
                     </p>
                 </div>
-                <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
+                <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
                     <p>{welcomeContent.content}</p>
                 </div>
             </div>
         </div>
         {/* keyNoteSpeakers */}
         <div>
-            <div className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor }}>
+        <div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor,height: '4rem', display: 'flex',flexDirection: 'column',justifyContent: 'center' }}>
                 <p className="text-2xl text-white font-semibold mt-8">
                     {keyNoteSpeakers.title}
                 </p>
             </div>
-            <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
+            <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
         <ul>
           {keyNoteSpeakers.list.map((speaker, index) => (
             <li key={index}>
@@ -78,12 +83,12 @@ const Home = (props) => {
     
     {/* invitedSpeakers */}
 <div>
-    <div className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor }}>
+<div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor,height: '4rem', display: 'flex',flexDirection: 'column',justifyContent: 'center' }}>
         <p className="text-2xl text-white font-semibold mt-8">
             {invitedSpeakers.title}
         </p>
     </div>
-    <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
+    <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
         <ul>
             {invitedSpeakers.list.map((speaker) => (
                 <li key={speaker.text}>
@@ -96,12 +101,12 @@ const Home = (props) => {
 
 {/* tracks */}
 <div>
-    <div className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor }}>
+<div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor,height: '4rem', display: 'flex',flexDirection: 'column',justifyContent: 'center' }}>
         <p className="text-2xl text-white font-semibold mt-8">
             {tracks.title}
         </p>
     </div>
-    <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
+    <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
     <ul>
           {tracks.list.map((track) => (
             <li key={track.text} onClick={() => handleTrackClick(props.year, track.text)}>
@@ -115,12 +120,12 @@ const Home = (props) => {
 
 {/* tutorials */}
 <div>
-    <div className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor }}>
+<div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor,height: '4rem', display: 'flex',flexDirection: 'column',justifyContent: 'center' }}>
         <p className="text-2xl text-white font-semibold mt-8">
             {tutorials.title}
         </p>
     </div>
-    <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
+    <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
         <ul>
             {tutorials.list.map((tutorial) => (
                 <li key={tutorial.text}>

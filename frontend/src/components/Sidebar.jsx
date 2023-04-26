@@ -4,11 +4,12 @@ import { Link, NavLink } from 'react-router-dom';
 import { SiShopware } from 'react-icons/si';
 import { MdOutlineCancel } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-import { links } from '../data/dummy';
+// import { links } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
  // change
 import { useLocation } from 'react-router-dom';
 import { Track } from '../data/dummy'; 
+import PropTypes from 'prop-types';
 // change
 
 const Sidebar = () => {
@@ -17,6 +18,7 @@ const Sidebar = () => {
     activeMenu,
     setActiveMenu,
     screenSize,
+    sidebarData,
   } = useStateContext();
    // change
   const location = useLocation();
@@ -37,7 +39,7 @@ const Sidebar = () => {
     'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2';
 
 
-
+const links=sidebarData;
 return (
   <div className="ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
     {activeMenu && (
@@ -112,3 +114,16 @@ return (
 );
         }
 export default Sidebar;
+
+// Sidebar.propTypes = {
+//   links: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       title: PropTypes.string.isRequired,
+//       links: PropTypes.arrayOf(
+//         PropTypes.shape({
+//           name: PropTypes.string.isRequired,
+//         })
+//       ).isRequired,
+//     })
+//   ),
+// };

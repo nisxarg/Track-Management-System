@@ -193,7 +193,7 @@ export const homePageData1 = {
 
 export const Track ={
   name_code: "1",
-  sidebar:  {
+  sidebar: [ {
     title: 'Home',
     links: [
       {
@@ -213,7 +213,7 @@ export const Track ={
 
       },
     ],
-  },
+  }],
   importantDates:{
     title:"important Dates",
     dates:[

@@ -64,7 +64,7 @@ const Login = ({ handleChange }) => {
                         <Avatar style={avatarStyle}>
                             <LockOutlinedIcon />
                         </Avatar>
-                        <h2>Sign In</h2>
+                        <h2>Sign In for Participant</h2>
                         {error && <Typography variant='caption' gutterBottom style={{ color: 'red' }}> {ErrorMessage}</Typography>}
                     </Grid>
                     <TextField label='Username' placeholder='Enter username' value={user} fullWidth required onChange={(e) => setUser(e.target.value)} />
