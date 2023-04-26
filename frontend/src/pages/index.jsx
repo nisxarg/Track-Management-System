@@ -9,4 +9,7 @@ export { default as CFT } from './CFT';
 export { default as SignInSignUp } from './SignInSignUp/SignInSignUp_User/SignInSignUp';
 export { default as SignInSignUp_O } from './SignInSignUp/SignInSignUp_Organizer/SignInSignUp';
 export { default as SignInSignUp_T } from './SignInSignUp/SignInSignUp_Teams/SignInSignUp';
-
+export { default as TrackDetails_Organizer } from './Organizer_Pages/TrackDetails_Organizer';
+export { default as DisplayTracks } from './Organizer_Pages/DisplayTracks';
+export { default as TrackDetails } from './TrackDetails';
+export { default as LeaderBoard } from './TrackDetails'

@@ -28,13 +28,15 @@ const Login = ({ handleChange }) => {
 
     const submitAction = async () => {
         try {
-            const res = await axios.post(`http://localhost:5000/api/team_login`, { username: user, password: pwd });
+            const res = await axios.post(`http://localhost:5000/api/team_login`, { username: user, team_password: pwd });
             if (res.status === 200) {
                 setUsername(user);
                 console.log('User is authenticated');
                 const token = res.data.token; // assuming the token is returned in the response
                 localStorage.setItem('token', token); // store the token in local storage
-                navigate(`/api/track?year=${TrackYearMain}&name_code=${TrackNameMain}`); // navigate to next page
+                localStorage.setItem('year', TrackYearMain);
+                localStorage.setItem('name', localStorage.getItem('year'));
+                navigate(`/api/track?year=${localStorage.getItem('year')}&name_code=${localStorage.getItem('name')}`); // navigate to next page
             }
         } catch (err) {
             console.error(err);
