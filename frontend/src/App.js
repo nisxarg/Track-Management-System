@@ -7,6 +7,8 @@ import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
 import { Home, Data, CFP, Organizations, PastPrecedings, Resources, CFT, SignInSignUp, SignInSignUp_O ,SignInSignUp_T,TrackDetails_Organizer, DisplayTracks} from './pages';
 import { useStateContext } from './contexts/ContextProvider';
 import TrackDetails from './pages/TrackDetails'
+import Submit from './pages/Submit'
+import Leaderboard from './pages/Leaderboard'
 
 
 const App = () => {
@@ -59,14 +61,17 @@ const App = () => {
                                     <Route path="/home" element={(<Home year="2023" />)} />
 
                                     {/* Home section Pages  */}
-                                    <Route path="/CallForPapers" element={<CFP />} />
-                                    <Route path="/CallForTracks" element={<CFT />} />
+                                    <Route path="/Call_For_Papers" element={<CFP />} />
+                                    <Route path="/Call_For_Tracks" element={<CFT />} />
                                     <Route path="/Organizations" element={<Organizations />} />
 
                                     {/* Archives */}
-                                    <Route path="/Fire" element={<Data />} />
+                                    <Route path="/Data" element={<Data />} />
                                     <Route path="/Resources" element={<Resources />} />
                                     <Route path="/PastPrecedings" element={<PastPrecedings />} />
+
+                                    <Route path="/Submit" element={<Submit />} />
+                                    <Route path="/Leaderboard" element={<Leaderboard />} />
 
                                     <Route path="/2022" element={<Home year="2022" />} />
                                     <Route path="/2021" element={<Home year="2021" />} />

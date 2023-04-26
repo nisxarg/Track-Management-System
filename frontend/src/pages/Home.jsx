@@ -22,7 +22,7 @@ const Home = (props) => {
         setsidebarData(links);
         
         try {
-            const response = await axios.get(`http://localhost:5000/api/${props.year}`)
+            const response = await axios.get(`http://localhost:5000/api/year/${props.year}`)
 
             // console.log(response.data);
             setHomeData(response.data);

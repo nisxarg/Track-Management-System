@@ -6,8 +6,8 @@ describe('POST /api/organizer_login', () => {
     test('should return status 200 for valid credentials', async () => {
         const req = {
             body: {
-                username: 'vyom123',
-                password: 'abc'
+                username: 'vandan',
+                password: 'A1_a'
             }
         };
         const res = await request(baseURL).post('/api/organizer_login').send(req.body);
@@ -17,8 +17,8 @@ describe('POST /api/organizer_login', () => {
     test('should return status 400 for invalid username', async () => {
         const req = {
             body: {
-                username: 'vyom12',
-                password: '123'
+                username: 'vandan12',
+                password: 'A1_a'
             }
         };
         const res = await request(baseURL).post('/api/organizer_login').send(req.body);
@@ -28,7 +28,7 @@ describe('POST /api/organizer_login', () => {
     test('should return status 400 for invalid password', async () => {
         const req = {
             body: {
-                username: 'vyom123',
+                username: 'vandan',
                 password: 'abcd'
             }
         };
@@ -43,12 +43,16 @@ describe('POST /api/organizer_signup', () => {
     test('should return status 200 for Successful signup', async () => {
         const req = {
             body: {
-                    "username":"vyomqq",
-                    "email" : "abc@abc",
-                    "password" : "abcd",
-                    "track_name": "xyz",
-                    "start_date": "2023-04-22T20:09:27.848+00:00",
-                    "end_date": "2023-04-22T20:09:27.848+00:00",
+                    "username":"vyom",
+                    "email" : "abc@gmail.com",
+                    "password" : "A1_a",
+                    "track_list":[
+                        {
+                            "track_name": "track3",
+                            "start_date": "2023-04-22T20:09:27.848+00:00",
+                            "end_date": "2023-04-22T20:09:27.848+00:00"
+                        }
+                    ],
                     "resume_link": "abc"
             }
         };
@@ -59,12 +63,16 @@ describe('POST /api/organizer_signup', () => {
     test('should return status 300 for already exist username', async () => {
         const req = {
             body: {
-                "username":"vyom123",
-                "email" : "abc@abc",
-                "password" : "abc",
-                "track_name": "xyz",
-                "start_date": "2023-04-22T20:09:27.848+00:00",
-                "end_date": "2023-04-22T20:09:27.848+00:00",
+                "username":"vyom",
+                "email" : "abc@gmail.com",
+                "password" : "A1_a",
+                "track_list":[
+                    {
+                        "track_name": "track3",
+                        "start_date": "2023-04-22T20:09:27.848+00:00",
+                        "end_date": "2023-04-22T20:09:27.848+00:00"
+                    }
+                ],
                 "resume_link": "abc"
             }
         };
@@ -75,13 +83,17 @@ describe('POST /api/organizer_signup', () => {
     test('should return status 300 for Track already exist', async () => {
         const req = {
             body: {
-                    "username":"vyomxyz",
-                    "email" : "abc@abc",
-                    "password" : "abcd",
-                    "track_name": "track_2022_2",
-                    "start_date": "2023-04-22T20:09:27.848+00:00",
-                    "end_date": "2023-04-22T20:09:27.848+00:00",
-                    "resume_link": "abc"
+                "username":"vyom1",
+                "email" : "abc@gmail.com",
+                "password" : "A1_a",
+                "track_list":[
+                    {
+                        "track_name": "track3",
+                        "start_date": "2023-04-22T20:09:27.848+00:00",
+                        "end_date": "2023-04-22T20:09:27.848+00:00"
+                    }
+                ],
+                "resume_link": "abc"
             }
         };
         const res = await request(baseURL).post('/api/organizer_signup').send(req.body);
