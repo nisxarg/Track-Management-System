@@ -9,7 +9,7 @@ const axios = require("axios");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
 
-exports.home = async (req, res) => {
+exports.home = async (req, res) => {it 
     // res.send("Hii...")
     res.status(200).send({ success: true })
 }
@@ -537,6 +537,40 @@ exports.team_login = async (req, res) => {
             success: "SendData",
             token: token,
         })
+
+    } catch (err) {
+        return res.status(500).send('error');
+    }
+}
+
+exports.set_score = async (req, res) => {
+
+    const new_score = req.body.score
+    const track_name_ = req.body.track_name
+    const track_year_ = req.body.track_year
+    const team_name_ = req.body.team_name
+
+    try {
+        const data = await leaderdb.findOne(
+            { "track_name" : track_name_, "track_year" : track_year_, "team_and_score" : {$elemMatch: { "team_name": team_name_}}}
+        ) 
+
+        // console.log(data)
+        
+        const id = data._id
+        
+        const data1 = await leaderdb.findOneAndUpdate(
+            {"_id": id},
+            {
+                $set:{
+                    team_and_score:{
+                        team_name: team_name_,
+                        team_score:new_score}
+                }
+            }
+        )
+
+        res.send({new_score: new_score})
 
     } catch (err) {
         return res.status(500).send('error');
