@@ -26,5 +26,5 @@ var leaderboard_schema = new mongoose.Schema({
 }) 
 
 //creating collection
-const leaderdb = mongoose.model('leaderdb', home_schema);  //(<collectionname>, <collectionshema>)
+const leaderdb = mongoose.model('leaderdb', leaderboard_schema);  //(<collectionname>, <collectionshema>)
 module.exports = leaderdb;

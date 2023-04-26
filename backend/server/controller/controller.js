@@ -3,6 +3,8 @@ var organizerdb = require('../model/model_organizer')
 var trackdb = require('../model/model_track')
 var homedb = require('../model/model_home')
 var teamdb = require('../model/model_team')
+var leaderdb = require('../model/model_leaderboard')
+
 const axios = require("axios");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
@@ -213,7 +215,6 @@ exports.organizer_login = async (req, res) => {
     }
  
 } 
-
 exports.add_track = async (req, res) => {
 
     //validate request
@@ -222,9 +223,6 @@ exports.add_track = async (req, res) => {
         return;
     }
     const tracke = new trackdb(req.body)
-    console.log("Printing track details")
-    console.log(tracke)
-    
     const find_year = tracke.year;
     const tn = tracke.name_code;
    
@@ -234,10 +232,6 @@ exports.add_track = async (req, res) => {
             try{
                 // console.log("i am at update track")
                 const existingdata = await homedb.findOne({ year : find_year });
-                // console.log("Printing data")
-                console.log(existingdata)
-                // console.log("Printing year")
-                console.log(typeof(existingdata.year),existingdata.year)
 
                 await homedb.findOneAndUpdate(
                     { "year" : find_year }, //filtering
@@ -249,13 +243,29 @@ exports.add_track = async (req, res) => {
                          }}
                         }
                 )
+
+                const new_leaderboard = 
+                {
+                    "track_name": tn,
+                    "track_year": find_year
+                }
+
+             const leader_insert = new leaderdb(new_leaderboard)
+            
+
+             await leader_insert.save(leader_insert)
+             .catch(e =>{
+                console.error(e);
+             })
+             
+
             }catch (e) {
                 console.error(e);
             }
             const existingdata = await homedb.findOne({ year:find_year });
-            //console.log(existingdata)
+
             res.send(data)
-            // res.redirect('/')
+
         })
         .catch(err => {
             res.status(500).send({
@@ -264,7 +274,6 @@ exports.add_track = async (req, res) => {
         });
 
 }
-
 
 
 exports.update_track = async (req, res) => {
@@ -460,6 +469,7 @@ exports.team_signup = async (req, res) => {
         const teamData = new teamdb(req.body);
         try {
             const data = await teamData.save();
+            
             res.send(data);
         } catch (err) {
             res.status(500).send({
