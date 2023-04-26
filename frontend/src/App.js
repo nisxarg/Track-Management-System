@@ -4,13 +4,13 @@ import { BrowserRouter, Routes, Route, } from 'react-router-dom'
 import { FiSettings } from 'react-icons/fi'
 import { TooltipComponent } from '@syncfusion/ej2-react-popups'
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
-import { Home, Data, CFP, Organizations, PastPrecedings, Resources, CFT, SignInSignUp, SignInSignUp_O ,SignInSignUp_T} from './pages';
+import { Home, Data, CFP, Organizations, PastPrecedings, Resources, CFT, SignInSignUp, SignInSignUp_O, SignInSignUp_T, TrackDetails_Organizer, DisplayTracks,TrackDetails} from './pages';
 import { useStateContext } from './contexts/ContextProvider';
-import TrackDetails from './pages/TrackDetails'
+
 
 
 const App = () => {
-    const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings,sidebarData } = useStateContext();
+    const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, sidebarData } = useStateContext();
 
 
     return (
@@ -36,11 +36,11 @@ const App = () => {
                         </div>
                         {activeMenu ? (
                             <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
-                                <Sidebar links={sidebarData}/>sidebar
+                                <Sidebar links={sidebarData} />sidebar
                             </div>
                         ) : (
                             <div className="w-0 dark:bg-secondary-dark-bg">
-                                <Sidebar links={sidebarData}/> sidebar
+                                <Sidebar links={sidebarData} /> sidebar
                             </div>
                         )}
                         <div className={
@@ -82,6 +82,8 @@ const App = () => {
                                     <Route path="/SignInSignUp" element={<SignInSignUp />} />
                                     <Route path="/SignInSignUp_O" element={<SignInSignUp_O />} />
                                     <Route path="/SignInSignUp_T" element={<SignInSignUp_T />} />
+                                    <Route path="/TrackDetails_Organizer" element={<TrackDetails_Organizer />} />
+                                    <Route path="/DisplayTracks" element={<DisplayTracks />} />
 
 
 
