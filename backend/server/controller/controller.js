@@ -202,10 +202,30 @@ exports.organizer_login = async (req, res) => {
 
         const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
         console.log("token created");
+
+        const track_list_ = 
+            [
+                {
+                    name_code: "functional Track",
+                    year: "2022"
+                },
+                {
+                    name_code: "testing_for_leaderboard",
+                    year: "2010"
+                },
+                {
+                    name_code: "testing_for_leaderboard1",
+                    year: "2010"
+                }
+                
+            ]
+
+
         res.status(200).json({
             status: true,
             success: "SendData",
             token: token,
+            track_list : track_list_
         })
 
 
@@ -466,9 +486,21 @@ exports.team_signup = async (req, res) => {
             }
         }
 
+
         const teamData = new teamdb(req.body);
         try {
             const data = await teamData.save();
+
+            await leaderdb.findOneAndUpdate(
+                {"track_name": track_name_, "track_year": year_},
+                {
+                    $push :{
+                        "team_and_score":{
+                            "team_name": team_name_,
+                            "team_score": 0
+                        }
+                    }
+                })
             
             res.send(data);
         } catch (err) {
@@ -510,3 +542,19 @@ exports.team_login = async (req, res) => {
         return res.status(500).send('error');
     }
 }
+
+// exports.set_socre = async (req, res) => {
+
+//     const new_score = req.body.score
+//     const track_name = req.body.track_name
+//     const track_year = req.body.track_year
+//     const team_name = req.body.team_name
+
+//     try {
+        
+        
+
+//     } catch (err) {
+//         return res.status(500).send('error');
+//     }
+// }
