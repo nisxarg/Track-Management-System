@@ -18,6 +18,7 @@ route.post('/api/team_signup', controller.team_signup)
 route.post('/api/team_login', controller.team_login)
 route.post('/api/add_home', controller.add_home)
 route.post('/api/change_pwd', controller.change_pwd)
+route.post('/api/update_track', controller.update_track)
 
 
 

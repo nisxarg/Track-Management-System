@@ -58,13 +58,13 @@ exports.user_login = async (req, res) => {
         }
 
         // check if user exists
-        const user = await userdb.findOne({username: req.body.username});
-        if(!user) return res.status(400).send({ message: "User not found" });
-        
+        const user = await userdb.findOne({ username: req.body.username });
+        if (!user) return res.status(400).send('User not found');
+
         // check if password is correct
         const validPassword = await bcrypt.compare(req.body.password, user.password);
-        if(!validPassword) return res.status(400).send({ message: "Invalid Password" });
-        
+        if (!validPassword) return res.status(400).send('Invalid Password');
+
         // create and assign a token
         let tokenData = {
             username: user.username
@@ -72,6 +72,21 @@ exports.user_login = async (req, res) => {
 
         const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
         console.log("token created");
+
+        const username = user.username
+        const password = user.password
+
+        try {
+            const r = await axios.get("https://api.chatengine.io/users/me/", {
+              headers: {
+                "Project-ID": process.env.CHAT_ENGINE_PROJECT_ID,
+                "User-Name": username,
+                "User-Secret": password,
+              },
+            });
+          } catch (e) {
+          }
+
         res.status(200).json({
             status: true,
             success: "SendData",
@@ -80,7 +95,7 @@ exports.user_login = async (req, res) => {
 
     } catch (err) {
         return res.status(500).send('error');
-    }
+    }
 }
 
 exports.change_pwd = async(req,res) => {
@@ -173,11 +188,11 @@ exports.organizer_login = async (req, res) => {
     try {
         // check if organizer exists
         const organizer = await organizerdb.findOne({username: req.body.username});
-        if(!organizer) return res.status(400).send({ message: "Organizer not found" });
+        if(!organizer) return res.status(400).send('Oraganizer not found');
         
         // check if password is correct
         const validPassword = await bcrypt.compare(req.body.password, organizer.password);
-        if(!validPassword) return res.status(400).send({ message: "Invalid Password" });
+        if(!validPassword) return res.status(400).send('Invalid password');
         
         // create and assign a token
         let tokenData = {
@@ -196,9 +211,9 @@ exports.organizer_login = async (req, res) => {
     } catch (err) {
         return res.status(500).send('error');
 
-    }
- 
-}
+    }
+ 
+} 
 
 exports.add_track = async (req, res) => {
 
@@ -418,6 +433,8 @@ exports.team_login = async (req, res) => {
         // check if organizer exists
         const team = await teamdb.findOne({team_name: req.body.team_name});
         if(!team) return res.status(400).send('Team not found');
+
+        console.log(team)
         
         // check if password is correct
         const validPassword = await bcrypt.compare(req.body.team_password, team.team_password);
@@ -440,3 +457,29 @@ exports.team_login = async (req, res) => {
         return res.status(500).send('error');
     }
 }
+
+exports.update_track = async(req,res) => {
+       
+    try{
+
+        if (!req.body) {
+            res.status(400).send({ message: "Content can not be empty" });
+            return;
+        }
+
+        const track = await trackdb.findOne({name_code: req.body.name_code, year:req.body.year});
+        if(!track) return res.status(400).send('track not found');
+
+        // console.log(track)
+
+        await trackdb.updateOne({name_code: track.name_code }, { $set: req.body }); 
+        
+        return res.status(200).send(req.body);
+
+    }
+    catch(err){
+        return res.status(500).send('error');
+    }
+
+}
+
