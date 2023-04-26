@@ -9,7 +9,7 @@ const axios = require("axios");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
 
-exports.home = async (req, res) => {
+exports.home = async (req, res) => {it 
     // res.send("Hii...")
     res.status(200).send({ success: true })
 }
@@ -27,6 +27,14 @@ exports.user_signup = async (req, res) => {
         const existingUser = await userdb.findOne({ username });
         if (existingUser) {
             return res.status(400).send({ message: "Username already exists" });
+        }
+        
+        if(!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(req.body.email)){
+            return res.status(400).send({ message: "Enter Valid Email-Address" });
+        }
+
+        if(!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.password)){
+            return res.status(400).send({ message: "Enter Valid Password" });
         }
 
         const user = new userdb(req.body)
@@ -61,11 +69,11 @@ exports.user_login = async (req, res) => {
 
         // check if user exists
         const user = await userdb.findOne({ username: req.body.username });
-        if (!user) return res.status(400).send('User not found');
+        if (!user) return res.status(400).send({ message: "User not found" });
 
         // check if password is correct
         const validPassword = await bcrypt.compare(req.body.password, user.password);
-        if (!validPassword) return res.status(400).send('Invalid Password');
+        if (!validPassword) return res.status(400).send({ message: "Invalid Password" });
 
         // create and assign a token
         let tokenData = {
@@ -96,7 +104,7 @@ exports.user_login = async (req, res) => {
         })
 
     } catch (err) {
-        return res.status(500).send('error');
+        return res.status(500).send({ message: "error" });
     }
 }
 
@@ -110,7 +118,7 @@ exports.change_pwd = async(req,res) => {
         }
 
         const user = await userdb.findOne({username: req.body.username});
-        if(!user) return res.status(400).send('User not found');
+        if(!user) return res.status(400).send({ message: "User not found" });
         
         const old_password = req.body.old_password
         const new_password = req.body.new_password
@@ -121,23 +129,23 @@ exports.change_pwd = async(req,res) => {
         const hashPass=await bcrypt.hash(new_password,salt);
 
         if(!validPassword) {
-            return res.status(400).send('Invalid Password');
+            return res.status(400).send({ message: "Invalid Password" });
         }
         else{
-            await userdb.findOneAndUpdate(
+            await    userdb.findOneAndUpdate(
                 { "username" : user.username }, //filtering
                 { $set : {  
                     "password" : hashPass
                 }}
             )
-            return res.status(200).send('update succesfull');
+            return res.status(200).send({ message: "update succesfull" });
 
         }
 
 
     }
     catch(err){
-        return res.status(500).send('error');
+        return res.status(500).send({ message: "error" });
     }
 
 }
@@ -157,6 +165,14 @@ exports.organizer_signup = async (req, res) => {
             return res.status(300).send({ message: "Username already exists" });
         }
 
+        if(!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(req.body.email)){
+            return res.status(400).send({ message: "Enter Valid Email-Address" });
+        }
+
+        if(!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.password)){
+            return res.status(400).send({ message: "Enter Valid Password" });
+        }
+
         //check if track name is already in database or not
 
         const year_ = new Date(req.body.start_date).getFullYear();
@@ -166,7 +182,7 @@ exports.organizer_signup = async (req, res) => {
 
         if(data)
         {
-            return res.status(300).send('Track name already exists')
+            return res.status(300).send({ message: "Track name already exists" })
         }
 
         const organizer = new organizerdb(req.body)
@@ -189,11 +205,11 @@ exports.organizer_login = async (req, res) => {
     try {
         // check if organizer exists
         const organizer = await organizerdb.findOne({username: req.body.username});
-        if(!organizer) return res.status(400).send('Oraganizer not found');
+        if(!organizer) return res.status(400).send({ message: "Organizer not found" });
         
         // check if password is correct
         const validPassword = await bcrypt.compare(req.body.password, organizer.password);
-        if(!validPassword) return res.status(400).send('Invalid password');
+        if(!validPassword) return res.status(400).send({ message: "Invalid password" });
         
         // create and assign a token
         let tokenData = {
@@ -203,22 +219,18 @@ exports.organizer_login = async (req, res) => {
         const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
         console.log("token created");
 
-        const track_list_ = 
-            [
-                {
-                    name_code: "functional Track",
-                    year: "2022"
-                },
-                {
-                    name_code: "testing_for_leaderboard",
-                    year: "2010"
-                },
-                {
-                    name_code: "testing_for_leaderboard1",
-                    year: "2010"
-                }
-                
-            ]
+        var len = organizer.track_list.length
+
+        var track_list_ = []
+
+        for(let i=0; i<len; i++)
+        {
+
+            if(organizer.track_list[i].verified==true)
+            {
+                track_list_.push({track_name:organizer.track_list[i].track_name, track_year:new Date(organizer.track_list[i].start_date).getFullYear().toString()})
+            }
+        }
 
 
         res.status(200).json({
@@ -230,7 +242,7 @@ exports.organizer_login = async (req, res) => {
 
 
     } catch (err) {
-        return res.status(500).send('error');
+        return res.status(500).send({ message: "error" });
 
     }
  
@@ -392,7 +404,7 @@ exports.find_year_track = async (req, res) => {
     await homedb.findOne({ year: year_ })
         .then(data => {
             if (!data) {
-                res.status(404).send({ message: `May be track not found` })
+                res.status(404).send({ message: "May be track not found" })
             }
             else {
                 res.send(data)
@@ -422,7 +434,7 @@ exports.team_signup = async (req, res) => {
 
     if(data)
     {
-        return res.status(300).send('Team name already exists')
+        return res.status(300).send({ message: "Team name already exists" })
     }
 
 
@@ -449,7 +461,7 @@ exports.team_signup = async (req, res) => {
                 return res.status(500).send({ message: "Err" });
             }
         }
-        if (flag) return res.status(500).send("User not found");
+        if (flag) return res.status(500).send({ message: "User not found" });
     }
 
     if (count >= 1 && check == 0) {
@@ -486,7 +498,15 @@ exports.team_signup = async (req, res) => {
             }
         }
 
+        if(!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(req.body.email)){
+            return res.status(400).send({ message: "Enter Valid Email-Address" });
+        }
+        // The regular expression ^[^\s@]+@[^\s@]+\.[^\s@]+$ matches any string that has the format username@domain.tld. It checks that there are no spaces or @ characters in the username or domain, and that there is a dot (.) in the domain followed by one or more characters.
+        if(!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.password)){
+            return res.status(400).send({ message: "Enter Valid Password" });
+        }
 
+        //In this regular expression, (?=.*[A-Z]) ensures there is at least one uppercase character, (?=.*\d) ensures there is at least one digit, (?=.*[!@#$%^&*()_+]) ensures there is at least one special character, and [A-Za-z\d!@#$%^&*()_+] matches any of these characters. The {4,} specifies that the password must be at least 4 characters long.
         const teamData = new teamdb(req.body);
         try {
             const data = await teamData.save();
@@ -509,7 +529,7 @@ exports.team_signup = async (req, res) => {
             });
         }
     } else {
-        res.status(500).send("registration not possible");
+        res.status(500).send({ message: "registration not possible" });
     }
 };
 
@@ -519,11 +539,11 @@ exports.team_login = async (req, res) => {
     try {
         // check if organizer exists
         const team = await teamdb.findOne({team_name: req.body.team_name});
-        if(!team) return res.status(400).send('Team not found');
+        if(!team) return res.status(400).send({ message: "Team not found" });
         
         // check if password is correct
         const validPassword = await bcrypt.compare(req.body.team_password, team.team_password);
-        if(!validPassword) return res.status(400).send('Invalid Password');
+        if(!validPassword) return res.status(400).send({ message: "Invalid Password" });
         
         // create and assign a token
         let tokenData = {
@@ -539,22 +559,66 @@ exports.team_login = async (req, res) => {
         })
 
     } catch (err) {
-        return res.status(500).send('error');
+        return res.status(500).send({ message: "error" });
     }
 }
 
-// exports.set_socre = async (req, res) => {
+exports.set_score = async (req, res) => {
 
-//     const new_score = req.body.score
-//     const track_name = req.body.track_name
-//     const track_year = req.body.track_year
-//     const team_name = req.body.team_name
+    const new_score = req.body.score
+    const track_name_ = req.body.track_name
+    const track_year_ = req.body.track_year
+    const team_name_ = req.body.team_name
 
-//     try {
+    try {
+        const data = await leaderdb.findOne(
+            { "track_name" : track_name_, "track_year" : track_year_, "team_and_score" : {$elemMatch: { "team_name": team_name_}}}
+        ) 
+
+        var len = data.team_and_score.length
+        var id 
+
+        for(let i=0; i<len; i++)
+        {
+            if(data.team_and_score[i].team_name==team_name_)
+            {
+                id = data.team_and_score[i]._id;
+                break;
+            }
+        }
         
-        
+        const data1 = await leaderdb.findOneAndUpdate(
+            {"team_and_score" :{$elemMatch: { "_id": id}}},
+            {
+                $set:{
+                    "team_and_score.$.team_score" : new_score
+                }
+            }
+        )
 
-//     } catch (err) {
-//         return res.status(500).send('error');
-//     }
-// }
+        res.send({new_score: new_score})
+
+    } catch (err) {
+        return res.status(500).send({ message: "error" });
+    }
+}
+
+exports.get_leaderboard = async (req, res) => {
+
+    try {
+
+        const track_name_ = req.body.track_name
+        const track_year_ = req.body.track_year
+
+        const data = await leaderdb.findOne({track_name:track_name_, track_year:track_year_})
+
+        const team_data = data.team_and_score
+
+        team_data.sort((a,b) => a.team_score - b.team_score)
+
+        res.send(team_data)
+
+    } catch (err) {
+        return res.status(500).send('error');
+    }
+}
