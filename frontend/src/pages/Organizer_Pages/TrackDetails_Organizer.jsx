@@ -21,6 +21,7 @@ import Slide from '@mui/material/Slide';
 import Box from '@mui/material/Box';
 import { Navbar } from '../../components';
 import { useNavigate } from 'react-router-dom';
+import { BsWindowSidebar } from 'react-icons/bs';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -38,13 +39,21 @@ const TrackDetails_Organizer = () => {
   const name_code = queryParams.get('name_code');
   const Navigate = useNavigate();
   const { setTrackNameMain, setTrackYearMain } = useStateContext();
+  const [introduction, setintroduction] = useState(Track.introduction);
+  const [TaskDescription, setTaskDescription] = useState(Track.content.TaskDescription.content);
+  const [corpus, setcorpus] = useState(Track.content.corpus.content);
+  const [registration, setregistration] = useState(Track.content.registration.content);
+  const [submission, setsubmission] = useState(Track.content.submission.content);
+  const [evaluation, setevaluation] = useState(Track.content.evaluation.content);
+
+
   // window.addEventListener('beforeunload', function (e) {
   //   localStorage.removeItem('token');
   //   setOptions(0);
   //   Navigate('/', { replace: true });
   // });
   useEffect(() => {
-
+    console.log("into the component");
     setTrackYearMain(year);
     axios
       .get(`http://localhost:5000/api/track/?year=${year}&name_code=${name_code}`)
@@ -62,10 +71,10 @@ const TrackDetails_Organizer = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
+  // data.get('corpus')
   const handleSubmit = async (e) => {
-    //e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    // e.preventDefault();
+    // const data = new FormData(e.currentTarget);
     const track_data = {
       name_code: Track.name_code,
       year: Track.year,
@@ -75,46 +84,45 @@ const TrackDetails_Organizer = () => {
       content: {
         introduction: {
           title: Track.content.introduction.title,
-          content: data.get('Introduction')
+          content:introduction
         },
         TaskDescription: {
           title: Track.content.TaskDescription.title,
-          content: data.get('Task description')
+          content:TaskDescription
         },
         corpus: {
           title: Track.content.corpus.title,
-          content: data.get('corpus')
+          content: corpus
         },
         registration: {
           title: Track.content.registration.title,
-          content: data.get('Registration')
+          content: registration
         },
         submission: {
           title: Track.content.submission.title,
-          content: data.get('Submission')
+          content: submission
         },
         evaluation: {
           title: Track.content.evaluation.title,
-          content: data.get('evaluation')
+          content: evaluation
         }
       }
-
     }
     // navigate(`/api/trackedit?year=${year}&name_code=${nameCode}`);
     console.log("track_data : ", track_data)
-    setOpen(false);
+    // setOpen(false);
     // uncomment this
     try {
       console.log(localStorage.getItem("year"));
       console.log(localStorage.getItem("name_code"));
       const res = await axios.post('http://localhost:5000/api/update_track', track_data);
 
-      window.history.back();
+      // window.history.reload();
+      setOpen(false);
     } catch (err) {
       console.log(err);
     }
-
-
+    setOpen(false);
   }
 
   // if (!Track) return <div>Loading...</div>
@@ -144,7 +152,7 @@ const TrackDetails_Organizer = () => {
               onClose={handleClose}
               TransitionComponent={Transition}
             >
-              <form onSubmit={handleSubmit}>
+              {/* <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}> */}
                 <AppBar sx={{ position: 'relative' }}>
                   <Toolbar>
                     <IconButton
@@ -174,7 +182,7 @@ const TrackDetails_Organizer = () => {
                       rows={4}
                       variant="filled"
                       defaultValue={Track.content.introduction.content}
-
+                      onChange={(e) => setintroduction(e.target.value)}
                     />
                   </ListItem>
                   <Divider />
@@ -188,7 +196,7 @@ const TrackDetails_Organizer = () => {
                       rows={4}
                       variant="filled"
                       defaultValue={Track.content.TaskDescription.content}
-
+                      onChange={(e) => setTaskDescription(e.target.value)}
                     />
                   </ListItem>
                   <Divider />
@@ -202,6 +210,8 @@ const TrackDetails_Organizer = () => {
                       rows={4}
                       defaultValue={Track.content.corpus.content}
                       variant="filled"
+                      onChange={(e) => setcorpus(e.target.value)}
+
                     />
                   </ListItem>
                   <Divider />
@@ -215,6 +225,8 @@ const TrackDetails_Organizer = () => {
                       rows={4}
                       defaultValue={Track.content.registration.content}
                       variant="filled"
+                      onChange={(e) => setregistration(e.target.value)}
+
                     />
                   </ListItem>
                   <Divider />
@@ -228,6 +240,7 @@ const TrackDetails_Organizer = () => {
                       rows={4}
                       defaultValue={Track.content.submission.content}
                       variant="filled"
+                      onChange={(e) => setsubmission(e.target.value)}
 
                     />
                   </ListItem>
@@ -241,11 +254,12 @@ const TrackDetails_Organizer = () => {
                       rows={4}
                       defaultValue={Track.content.evaluation.content}
                       variant="filled"
+                        onChange={(e) => setevaluation(e.target.value)}
 
                     />
                   </ListItem>
                 </List>
-              </form>
+              {/* </Box> */}
             </Dialog>
           </div>
           {/* Edit part end */}
