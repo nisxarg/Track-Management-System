@@ -88,6 +88,7 @@ const App = () => {
 
 
                                     <Route path="/api/track" element={<TrackDetails />} />
+                                    <Route path="/api/trackedit" element={<TrackDetails_Organizer />} />
                                     {/* <Route path="/" element={<App1 />} */}
 
 

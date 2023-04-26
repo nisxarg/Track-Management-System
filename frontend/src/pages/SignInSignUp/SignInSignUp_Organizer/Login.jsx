@@ -35,6 +35,8 @@ const Login = ({ handleChange }) => {
                 setUsername(user);
                 console.log('User is authenticated');
                 const token = res.data.token; // assuming the token is returned in the response
+                const data_array=JSON.stringify(res.data.track_list);
+                localStorage.setItem('track_list', data_array);
                 localStorage.setItem('token', token); // store the token in local storage
                 navigate('/DisplayTracks'); // navigate to next page
             }

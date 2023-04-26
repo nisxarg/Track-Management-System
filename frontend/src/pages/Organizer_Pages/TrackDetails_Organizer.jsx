@@ -19,6 +19,9 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import Box from '@mui/material/Box';
+import { Navbar } from '../../components';
+import { useNavigate } from 'react-router-dom';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -28,18 +31,26 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const TrackDetails_Organizer = () => {
   const [Track, setTrack] = useState(null); // uncomment this
 
-  const { currentColor } = useStateContext();
+  const { currentColor, TrackNameMain, TrackYearMain, setOptions } = useStateContext();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const year = queryParams.get('year');
   const name_code = queryParams.get('name_code');
-
+  const Navigate = useNavigate();
+  const { setTrackNameMain, setTrackYearMain } = useStateContext();
+  window.addEventListener('beforeunload', function (e) {
+    localStorage.removeItem('token');
+    setOptions(0);
+    Navigate('/', { replace: true });
+  });
   useEffect(() => {
+
+    setTrackYearMain(year);
     axios
       .get(`http://localhost:5000/api/track/?year=${year}&name_code=${name_code}`)
       .then((response) => setTrack(response.data))
       .catch(err => console.log(err));
-    console.log("Track : ", Track)
+
   }, []);
 
   const [open, setOpen] = React.useState(false);
@@ -53,7 +64,7 @@ const TrackDetails_Organizer = () => {
   };
 
   const handleSubmit = async (e) => {
-    // e.preventDefault();
+    //e.preventDefault();
     const data = new FormData(e.currentTarget);
     const track_data = {
       name_code: Track.name_code,
@@ -87,17 +98,23 @@ const TrackDetails_Organizer = () => {
           content: data.get('evaluation')
         }
       }
+
     }
+    // navigate(`/api/trackedit?year=${year}&name_code=${nameCode}`);
     console.log("track_data : ", track_data)
+    setOpen(false);
     // uncomment this
     try {
+      console.log(localStorage.getItem("year"));
+      console.log(localStorage.getItem("name_code"));
       const res = await axios.post('http://localhost:5000/api/update_track', track_data);
-      console.log(res);
-      window.location.reload();
+
+      window.history.back();
     } catch (err) {
       console.log(err);
     }
-    setOpen(false);
+
+
   }
 
   // if (!Track) return <div>Loading...</div>
@@ -109,10 +126,17 @@ const TrackDetails_Organizer = () => {
 
         <>
           {/* Edit part start */}
+          <Navbar />
           <div>
-            {localStorage.getItem('role') === 'ORG' ? <Button variant="outlined" onClick={handleClickOpen}>
+            <Button
+              variant="outlined"
+              onClick={handleClickOpen}
+              style={{ marginLeft: '12px' }}
+              classes={{ hover: 'hover-style' }}
+              type='button'
+            >
               Edit track details
-            </Button> : ""}
+            </Button>
 
             <Dialog
               fullScreen
@@ -120,7 +144,7 @@ const TrackDetails_Organizer = () => {
               onClose={handleClose}
               TransitionComponent={Transition}
             >
-              <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <form onSubmit={handleSubmit}>
                 <AppBar sx={{ position: 'relative' }}>
                   <Toolbar>
                     <IconButton
@@ -221,15 +245,13 @@ const TrackDetails_Organizer = () => {
                     />
                   </ListItem>
                 </List>
-              </Box>
+              </form>
             </Dialog>
           </div>
           {/* Edit part end */}
           <div>
-            <div
-              className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3"
-              style={{ backgroundColor: currentColor }}
-            >
+            <div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor, height: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+
               <p className="text-2xl text-white font-semibold mt-8">
                 {Track.content.introduction.title}
               </p>
@@ -244,74 +266,63 @@ const TrackDetails_Organizer = () => {
           </div>
 
           {/* TaskDescription */}
-          <div
-            className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3"
-            style={{ backgroundColor: currentColor }}
-          >
+          <div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor, height: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+
             <p className="text-2xl text-white font-semibold mt-8">
               {Track.content.TaskDescription.title}
             </p>
           </div>
 
-          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
+          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
             <p>{Track.content.TaskDescription.content}</p>
           </div>
 
           {/* corpus */}
-          <div
-            className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3"
-            style={{ backgroundColor: currentColor }}
-          >
+          <div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor, height: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+
             <p className="text-2xl text-white font-semibold mt-8">
               {Track.content.corpus.title}
             </p>
           </div>
 
-          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
+          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
             <p>{Track.content.corpus.content}</p>
           </div>
 
           {/* registration */}
-          <div
-            className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3"
-            style={{ backgroundColor: currentColor }}
-          >
+          <div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor, height: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+
             <p className="text-2xl text-white font-semibold mt-8">
               {Track.content.registration.title}
             </p>
           </div>
 
-          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
+          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
             <p>{Track.content.registration.content}</p>
           </div>
 
           {/* submission */}
+          <div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor, height: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 
-          <div
-            className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3"
-            style={{ backgroundColor: currentColor }}
-          >
             <p className="text-2xl text-white font-semibold mt-8">
               {Track.content.submission.title}
             </p>
           </div>
 
-          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
+          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
             <p>{Track.content.submission.content}</p>
           </div>
 
           {/* evaluation */}
 
-          <div
-            className="rounded-t-2xl md:flex p-4 mt-3 mr-3 ml-3"
-            style={{ backgroundColor: currentColor }}
-          >
+          <div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor, height: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+
             <p className="text-2xl text-white font-semibold mt-8">
               {Track.content.evaluation.title}
             </p>
           </div>
 
-          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify">
+          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
             <p>{Track.content.evaluation.content}</p>
           </div>
         </>
