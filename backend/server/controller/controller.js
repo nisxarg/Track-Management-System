@@ -219,22 +219,18 @@ exports.organizer_login = async (req, res) => {
         const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
         console.log("token created");
 
-        const track_list_ = 
-            [
-                {
-                    name_code: "functional Track",
-                    year: "2022"
-                },
-                {
-                    name_code: "testing_for_leaderboard",
-                    year: "2010"
-                },
-                {
-                    name_code: "testing_for_leaderboard1",
-                    year: "2010"
-                }
-                
-            ]
+        var len = organizer.track_list.length
+
+        var track_list_ = []
+
+        for(let i=0; i<len; i++)
+        {
+
+            if(organizer.track_list[i].verified==true)
+            {
+                track_list_.push({track_name:organizer.track_list[i].track_name, track_year:new Date(organizer.track_list[i].start_date).getFullYear().toString()})
+            }
+        }
 
 
         res.status(200).json({
@@ -579,17 +575,23 @@ exports.set_score = async (req, res) => {
             { "track_name" : track_name_, "track_year" : track_year_, "team_and_score" : {$elemMatch: { "team_name": team_name_}}}
         ) 
 
-        // console.log(data)
-        
-        const id = data._id
+        var len = data.team_and_score.length
+        var id 
+
+        for(let i=0; i<len; i++)
+        {
+            if(data.team_and_score[i].team_name==team_name_)
+            {
+                id = data.team_and_score[i]._id;
+                break;
+            }
+        }
         
         const data1 = await leaderdb.findOneAndUpdate(
-            {"_id": id},
+            {"team_and_score" :{$elemMatch: { "_id": id}}},
             {
                 $set:{
-                    team_and_score:{
-                        team_name: team_name_,
-                        team_score:new_score}
+                    "team_and_score.$.team_score" : new_score
                 }
             }
         )
@@ -598,5 +600,25 @@ exports.set_score = async (req, res) => {
 
     } catch (err) {
         return res.status(500).send({ message: "error" });
+    }
+}
+
+exports.get_leaderboard = async (req, res) => {
+
+    try {
+
+        const track_name_ = req.body.track_name
+        const track_year_ = req.body.track_year
+
+        const data = await leaderdb.findOne({track_name:track_name_, track_year:track_year_})
+
+        const team_data = data.team_and_score
+
+        team_data.sort((a,b) => a.team_score - b.team_score)
+
+        res.send(team_data)
+
+    } catch (err) {
+        return res.status(500).send('error');
     }
 }
