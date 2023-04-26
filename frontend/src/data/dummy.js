@@ -262,21 +262,33 @@ export const links = [
   {
     title: 'Home',
     links: [
-      { name: 'Home' },
-      { name: 'Call_For_Papers', to: '/Call%20for%20Papers' },
-      { name: 'Call_for_Tracks', to: '/Call%20for%20Tracks' },
-      { name: 'Organizations', to: '/Organizations' },
+      {
+        name: 'Home',
+
+      },
+      {
+        name: 'Call for Papers',
+
+      },
+      {
+        name: 'Call for Tracks',
+
+      },
+      {
+        name: 'Organizations',
+
+      },
     ],
   },
   {
     title: 'Archives',
     links: [
       {
-        name: 'Data',to: '/Data'
+        name: 'Data',
 
       },
       {
-        name: 'Resources', to: '/Resources',
+        name: 'Resources',
 
       },
       {
