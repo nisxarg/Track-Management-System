@@ -25,7 +25,7 @@ const Home = (props) => {
         setsidebarData(links);
         
         try {
-            const response = await axios.get(`http://localhost:5000/api/year/${props.year}`)
+            const response = await axios.get(`https://track-management.onrender.com/api/year/${props.year}`)
 
             // console.log(response.data);
             setHomeData(response.data);

@@ -29,7 +29,7 @@ const Leaderboard = (props) => {
         try {
             const encodedNameCode = name_code.replace(/ /g, '_');
 
-            const response = await axios.get(`http://localhost:5000/api/leaderboard/?track_name=${encodedNameCode}&track_year=${year}`);
+            const response = await axios.get(`https://track-management.onrender.com/api/leaderboard/?track_name=${encodedNameCode}&track_year=${year}`);
 
             console.log(response.data);
             setLeaderboardData(response.data);

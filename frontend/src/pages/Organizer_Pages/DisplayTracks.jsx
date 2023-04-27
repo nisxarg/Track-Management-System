@@ -51,7 +51,7 @@ const DisplayTracks = () => {
     };
 
     try {
-      const res = await axios.post('http://localhost:5000/api/add_track_organizer', data);
+      const res = await axios.post('https://track-management.onrender.com/api/add_track_organizer', data);
       console.log("succesful-pass");
       console.log(res.data);
       console.log(res.data.message);

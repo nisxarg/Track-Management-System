@@ -46,7 +46,7 @@ const Signup = () => {
         };
 
         try {
-            const res = await axios.post('http://localhost:5000/api/organizer_signup', data);
+            const res = await axios.post('https://track-management.onrender.com/api/organizer_signup', data);
             console.log(res.data);
             seterror(false);
             setIndex(0);

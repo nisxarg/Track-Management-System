@@ -23,7 +23,7 @@ const TrackDetails = (props) => {
     
     setNavbarview(0);
     try {
-      const response = await axios.get(`http://localhost:5000/api/track/?year=${year}&name_code=${name_code}`);
+      const response = await axios.get(`https://track-management.onrender.com/api/track/?year=${year}&name_code=${name_code}`);
       setTrackData(response.data);
       setsidebarData(Links2);
       

@@ -36,7 +36,7 @@ const TrackDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/track/?year=${year}&name_code=${name_code}`)
+      .get(`https://track-management.onrender.com/api/track/?year=${year}&name_code=${name_code}`)
       .then((response) => setTrack(response.data))
       .catch(err => console.log(err));
     console.log("Track : ", Track)
@@ -91,7 +91,7 @@ const TrackDetails = () => {
     console.log("track_data : ", track_data)
     // uncomment this
     try {
-      const res = await axios.post('http://localhost:5000/api/update_track', track_data);
+      const res = await axios.post('https://track-management.onrender.com/api/update_track', track_data);
       console.log(res);
       window.location.reload();
     } catch (err) {

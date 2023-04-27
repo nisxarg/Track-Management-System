@@ -45,7 +45,7 @@ const Signup = () => {
         console.log(data);
 
         try {
-            const res = await axios.post('http://localhost:5000/api/user_signup', data);
+            const res = await axios.post('https://track-management.onrender.comapi/user_signup', data);
             console.log(res.data);
             seterror(false);
             setIndex(0);
