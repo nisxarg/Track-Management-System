@@ -11,7 +11,7 @@ const bcrypt = require('bcrypt');
 
 const jwt = require("jsonwebtoken")
 
-exports.home = async (req, res) => {it 
+exports.home = async (req, res) => {
     // res.send("Hii...")
     res.status(200).send({ success: true })
 }
