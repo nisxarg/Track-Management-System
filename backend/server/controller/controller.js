@@ -373,7 +373,7 @@ exports.add_track_organizer = async (req, res) => {
             }
         )
 
-        res.status(200).send({message: "Your Track is added for varifiaction successfully"})
+        res.status(200).send({message: "Your Track is added for verifiaction successfully"})
 
     
     }catch (e) {
@@ -696,6 +696,7 @@ exports.get_leaderboard = async (req, res) => {
         const team_data = data.team_and_score
 
         team_data.sort((a,b) => a.team_score - b.team_score)
+        team_data.reverse()
 
         res.send(team_data)
 
