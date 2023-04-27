@@ -40,7 +40,6 @@ const Leaderboard = (props) => {
     useEffect(async () => {
         const year = localStorage.getItem('year');
         const name_code = localStorage.getItem('name_code');
-
         // console.log(year);
         // console.log(name_code);
         setNavbarview(0);

@@ -83,8 +83,8 @@ const Signup = () => {
                         <TextField fullWidth label="Teammate 1" placeholder="Enter teammate 1 name" value={teammate_1} onChange={(e) => setTeammate1(e.target.value)} />
                         <TextField fullWidth label="Teammate 2" placeholder="Enter teammate 2 name" value={teammate_2} onChange={(e) => setTeammate2(e.target.value)} />
                         <TextField fullWidth label="Teammate 3" placeholder="Enter teammate 3 name" value={teammate_3} onChange={(e) => setTeammate3(e.target.value)} />
-                        <TextField fullWidth label="Track Name" placeholder="Enter the name of the track" value={track_name} onChange={(e) => setTrackName(e.target.value)} style={{ marginTop: '5px' }} />
-                        <TextField fullWidth label="Track Year" placeholder="Enter the year of the track" value={track_year} onChange={(e) => setTrackYear(e.target.value)} style={{ marginTop: '5px' }}/>
+                        <TextField fullWidth label="Track Name" placeholder="Enter the name of the track" value={track_name} style={{ marginTop: '5px' }} />
+                        <TextField fullWidth label="Track Year" placeholder="Enter the year of the track" value={track_year} style={{ marginTop: '5px' }}/>
                         <TextField fullWidth label="Password" placeholder="Enter your password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <TextField fullWidth label="Confirm Password" placeholder="Confirm your password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
 

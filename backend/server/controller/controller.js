@@ -4,7 +4,6 @@ var trackdb = require('../model/model_track')
 var homedb = require('../model/model_home')
 var teamdb = require('../model/model_team')
 var leaderdb = require('../model/model_leaderboard')
-
 const axios = require("axios");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
@@ -37,10 +36,10 @@ exports.user_signup = async (req, res) => {
             return res.status(400).send({ message: "Enter Valid Password" });
         }
 
-        if(/^[0-9]{10}$/.test(req.body.phone_no))
-        {
-            return res.status(400).send({ message: "Enter 10 Digit Phone-Number" });
-        }
+        // if(/^[0-9]{10}$/.test(req.body.phone_no))
+        // {
+        //     return res.status(400).send({ message: "Enter 10 Digit Phone-Number" });
+        // }
 
         const numberRegex = /^[0-9]*$/;  // matches only digits
         if (!(req.body.phone_no.length === 10 && numberRegex.test(req.body.phone_no))) {
@@ -232,26 +231,31 @@ exports.organizer_login = async (req, res) => {
         var len = organizer.track_list.length
 
         var track_list_ = []
+        var check = 0;
 
         for(let i=0; i<len; i++)
         {
 
-            if(organizer.track_list[i].verified==true)
+            if(organizer.track_list[i].verified==true )
             {
+                check=1;
                 track_list_.push({track_name:organizer.track_list[i].track_name, track_year:new Date(organizer.track_list[i].start_date).getFullYear().toString()})
+
             }
         }
 
-
-        res.status(200).json({
+        if(check == 1){
+          res.status(200).json({
             status: true,
             success: "SendData",
             token: token,
             track_list : track_list_
         })
-
-
-    } catch (err) {
+    }
+    else{
+        res.status(400).send({ message: "U r not verified" });
+    }
+    }catch (err) {
         return res.status(500).send({ message: "error" });
 
     }
