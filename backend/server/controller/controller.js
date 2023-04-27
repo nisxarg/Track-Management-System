@@ -4,8 +4,11 @@ var trackdb = require('../model/model_track')
 var homedb = require('../model/model_home')
 var teamdb = require('../model/model_team')
 var leaderdb = require('../model/model_leaderboard')
+
 const axios = require("axios");
 const bcrypt = require('bcrypt');
+
+
 const jwt = require("jsonwebtoken")
 
 exports.home = async (req, res) => {it 
@@ -35,11 +38,6 @@ exports.user_signup = async (req, res) => {
         if(!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.password)){
             return res.status(400).send({ message: "Enter Valid Password" });
         }
-
-        // if(/^[0-9]{10}$/.test(req.body.phone_no))
-        // {
-        //     return res.status(400).send({ message: "Enter 10 Digit Phone-Number" });
-        // }
 
         const numberRegex = /^[0-9]*$/;  // matches only digits
         if (!(req.body.phone_no.length === 10 && numberRegex.test(req.body.phone_no))) {
@@ -184,8 +182,8 @@ exports.organizer_signup = async (req, res) => {
 
         //check if track name is already in database or not
 
-        const year_ = new Date(req.body.start_date).getFullYear();
-        const name_code_ = req.body.track_name
+        const year_ = new Date(req.body.track_list[0].start_date).getFullYear();
+        const name_code_ = req.body.track_list[0].track_name
 
         const data = await trackdb.findOne({name_code:name_code_, year:year_.toString()})
 
@@ -194,8 +192,12 @@ exports.organizer_signup = async (req, res) => {
             return res.status(300).send({ message: "Track name already exists" })
         }
 
-        const organizer = new organizerdb(req.body)
+        var organizer = new organizerdb(req.body)
         // create new organizer
+
+        organizer.track_list[0].track_year = year_
+
+        console.log(organizer)
 
         await organizer.save(organizer)
             .then(data => {
@@ -253,15 +255,16 @@ exports.organizer_login = async (req, res) => {
         })
     }
     else{
-        res.status(400).send({ message: "U r not verified" });
+        res.status(400).send({ message: "You are not verified" });
     }
     }catch (err) {
-        return res.status(500).send({ message: "error" });
+        return res.status(500).send({ message: "error" });
 
-    }
- 
-} 
-exports.add_track = async (req, res) => {
+    }
+ 
+}
+
+exports.add_track_admin = async (req, res) => {
 
     //validate request
     if (!req.body) {
@@ -276,8 +279,6 @@ exports.add_track = async (req, res) => {
         .then(async data => {
             
             try{
-
-                const existingdata = await homedb.findOne({ year : find_year });
 
                 await homedb.findOneAndUpdate(
                     { "year" : find_year }, //filtering
@@ -308,7 +309,6 @@ exports.add_track = async (req, res) => {
             }catch (e) {
                 console.error(e);
             }
-            const existingdata = await homedb.findOne({ year:find_year });
 
             res.send(data)
 
@@ -318,6 +318,66 @@ exports.add_track = async (req, res) => {
                 message: err.message || "Some error occured while creating a create operation"
             });
         });
+
+}
+
+exports.add_track_organizer = async (req, res) => {
+
+    //validate request
+    if (!req.body) {
+        res.status(400).send({ message: "Content can not be empty" });
+        return;
+    }
+    
+    const username_ = req.body.username
+    const track_name_ = req.body.track_name
+    const track_year_ = new Date(req.body.start_date).getFullYear().toString()
+
+
+    const data = await trackdb.findOne({name_code: track_name_, year: track_year_})
+
+    if(data)
+    return res.status(300).send({message: "Track name already exists"})
+
+    const organizer = await organizerdb.findOne({username: username_})
+
+    var len = organizer.track_list.length
+    var check = 0
+
+    for(let i=0; i<len; i++)
+    {
+        if(organizer.track_list[i].start_date.getFullYear()==track_year_)
+        {
+            check = 1
+            break
+        }
+    }
+
+    if(check)
+    {
+        return res.status(400).send({message: "You already requested for this track in this year, please wait for admin's approval."})
+    }
+
+    try{
+
+        await organizerdb.findOneAndUpdate(
+            { "username" : username_ }, 
+            { $push : {  
+                "track_list" : 
+                {
+                    "track_name" : track_name_,
+                    "start_date" : req.body.start_date,
+                    "end_date": req.body.end_date
+                 }}
+                }
+        )
+
+        res.status(200).send({meaasge: "Your Track is added for varifiaction successfully"})
+
+    
+    }catch (e) {
+        console.error(e);
+    }    
 
 }
 
@@ -369,6 +429,13 @@ exports.add_home = async(req,res)=>{
         return;
     }
 
+    const data = await homedb.findOne({ year: req.body.year})
+
+        if(data)
+        {
+            return res.status(300).send({ message: "Already exists" })
+        }
+
     const user = new homedb(req.body)
     console.log(user)
 
@@ -382,7 +449,7 @@ exports.add_home = async(req,res)=>{
             res.status(500).send({
                 message: err.message || "Some error occured while creating a create operation"
             });
-        });
+        });
 
 
 }
@@ -395,7 +462,7 @@ exports.find_track = async (req, res) => {
     await trackdb.findOne({ year: year, name_code: name_code_ })
         .then(data => {
             if (!data) {
-                res.status(404).send({ message: `May be track not found` })
+                res.status(404).send({ message: "May be track not found" })
 
             }
             else {
@@ -451,9 +518,13 @@ exports.team_signup = async (req, res) => {
 
     if(!data1)
     {
-        return res.status(300).send({ message: "Track doesn't exists" })
-    }
+        return res.status(300).send({ message: "Track doesn't exists" })
+    }
 
+    // The regular expression ^[^\s@]+@[^\s@]+\.[^\s@]+$ matches any string that has the format username@domain.tld. It checks that there are no spaces or @ characters in the username or domain, and that there is a dot (.) in the domain followed by one or more characters.
+    if(!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.team_password)){
+        return res.status(400).send({ message: "Enter Valid Password" });
+    }
 
     for (let j = 0; j < 3; j++) {
 
@@ -513,11 +584,6 @@ exports.team_signup = async (req, res) => {
                     return res.status(500).send({ message: "Error" });
                 }
             }
-        }
-
-        // The regular expression ^[^\s@]+@[^\s@]+\.[^\s@]+$ matches any string that has the format username@domain.tld. It checks that there are no spaces or @ characters in the username or domain, and that there is a dot (.) in the domain followed by one or more characters.
-        if(!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.team_password)){
-            return res.status(400).send({ message: "Enter Valid Password" });
         }
 
         //In this regular expression, (?=.*[A-Z]) ensures there is at least one uppercase character, (?=.*\d) ensures there is at least one digit, (?=.*[!@#$%^&*()_+]) ensures there is at least one special character, and [A-Za-z\d!@#$%^&*()_+] matches any of these characters. The {4,} specifies that the password must be at least 4 characters long.
@@ -636,3 +702,4 @@ exports.get_leaderboard = async (req, res) => {
         return res.status(500).send('error');
     }
 }
+

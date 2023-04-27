@@ -4,8 +4,7 @@ var home_schema = new mongoose.Schema({
 
     year:{
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     img:{
         type: String,

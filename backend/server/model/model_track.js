@@ -4,8 +4,7 @@ var track_schema = new mongoose.Schema({
 
     name_code: {
         type: String,
-        require: true,
-        unique : true,
+        require: true
     },
     year:{
         type: String,
@@ -13,36 +12,29 @@ var track_schema = new mongoose.Schema({
     },
     tag : [{
         tagname:{
-            type : String,
-            required : true
+            type : String
         }
     }],
     sidebar: [{
         title: {
-            type: String,
-            required: true,
+            type: String
         },
         links: [{
             name: {
-                type: String,
-                required: true
+                type: String
             },
         }]
-    },
-],
+    }],
     importantDates: {
         title: {
-            type: String,
-            required: true
+            type: String
         },
         dates: [{
             date: {
-                type: String,
-                required: true
+                type: String
             },
             event: {
-                type: String,
-                required: true
+                type: String
             }
         }]
     },
@@ -50,62 +42,50 @@ var track_schema = new mongoose.Schema({
     content: {
         introduction: {
             title: {
-                type: String,
-                required: true
+                type: String
             },
             content: {
-                type: String,
-                required: true
+                type: String
             }
         },
         TaskDescription: {
             title: {
-                type: String,
-                required: true
+                type: String
             },
             content: {
-                type: String,
-                required: true
+                type: String
             }
         },
         corpus: {
             title: {
-                type: String,
-                required: true
+                type: String
             },
             content: {
-                type: String,
-                required: true
+                type: String
             }
         },
         registration: {
             title: {
-                type: String,
-                required: true
+                type: String
             },
             content: {
-                type: String,
-                required: true
+                type: String
             }
         },
         submission: {
             title: {
-                type: String,
-                required: true
+                type: String
             },
             content: {
-                type: String,
-                required: true
+                type: String
             }
         },
         evaluation: {
             title: {
-                type: String,
-                required: true
+                type: String
             },
             content: {
-                type: String,
-                required: true
+                type: String
             }
         }
     }
