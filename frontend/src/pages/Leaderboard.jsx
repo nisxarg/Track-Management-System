@@ -45,8 +45,8 @@ const Leaderboard = (props) => {
     return (
         <>
             <Navbar />
-            <div>
-                <div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor, height: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div >
+                <div className="rounded-t-2xl md:flex pb-8 pt-0 pr-4 pl-4 mt-3 mr-3 ml-3" style={{ backgroundColor: currentColor, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     <p className="text-2xl text-white font-semibold mt-8">
                         Leaderboard
                     </p>
@@ -60,20 +60,20 @@ const Leaderboard = (props) => {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Serial Number</th>
-                                    <th>Team Name</th>
-                                    <th>Team Score</th>
+                                <th style={{ backgroundColor: currentColor, color: 'white' }}>Rank</th>
+                                <th style={{ backgroundColor: currentColor, color: 'white' }}>Team Name</th>
+                                <th style={{ backgroundColor: currentColor, color: 'white' }}>Team Score</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {leaderboardData.map((item, index) => (
                                     <tr key={item.team_name}>
                                         <td>
-                                            <div className="colored-box">{index + 1}</div>
+                                            <div className="">{index + 1}</div>
                                         </td>
                                         <td>{item.team_name}</td>
                                         <td>
-                                            <div className="colored-box">{item.team_score}</div>
+                                            <div className="">{item.team_score}</div>
                                         </td>
                                     </tr>
                                 ))}

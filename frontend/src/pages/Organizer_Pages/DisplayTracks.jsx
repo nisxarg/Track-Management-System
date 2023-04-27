@@ -4,6 +4,8 @@ import { useStateContext } from '../../contexts/ContextProvider';
 import { useNavigate } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 import DatePicker from 'react-datepicker';
+import axios from 'axios';
+
 
 
 
@@ -36,10 +38,26 @@ const DisplayTracks = () => {
     setopenForm(false);
   }
 
-  const handleSave = () => {
+  const handleSave = async() => {
     setopenForm(false);
     console.log("saved successfully");
-  }
+    
+      const data = {
+          username: localStorage.getItem('user'),
+          track_name: trackName,
+          start_date: startDate,
+          end_date: endDate,
+      };
+
+      try {
+          const res = await axios.post('http://localhost:5000/api/add_track', data);
+          console.log(res.data);
+        
+      } catch (error) {        
+              console.log(error);   
+      }
+  
+  };
 
   return (
     <>
