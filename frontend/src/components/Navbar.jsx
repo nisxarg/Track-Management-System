@@ -209,7 +209,7 @@ const Navbar = () => {
                     >
                       {
                         <p>
-                          Hi, {user_name}
+                          Hi,{localStorage.getItem('user')}
                         </p>
                       }
 

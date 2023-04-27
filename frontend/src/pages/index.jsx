@@ -12,5 +12,5 @@ export { default as SignInSignUp_T } from './SignInSignUp/SignInSignUp_Teams/Sig
 export { default as TrackDetails_Organizer } from './Organizer_Pages/TrackDetails_Organizer';
 export { default as DisplayTracks } from './Organizer_Pages/DisplayTracks';
 export { default as TrackDetails } from './TrackDetails';
-export { default as LeaderBoard } from './TrackDetails'
+export { default as Leaderboard } from './Leaderboard'
 

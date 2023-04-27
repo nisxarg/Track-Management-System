@@ -6,12 +6,12 @@ import { useStateContext } from '../contexts/ContextProvider';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar } from '../components';
-
+import {Links2} from '../data/dummy'
 
 
 const TrackDetails = (props) => {
   const track = props.trackData;
-  const { currentColor, setsidebarData,Navbarview,setNavbarview } = useStateContext();
+  const { currentColor, setsidebarData, Navbarview, setNavbarview } = useStateContext();
   const [trackData, setTrackData] = useState(null);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -19,12 +19,18 @@ const TrackDetails = (props) => {
   const name_code = queryParams.get('name_code');
   const [leaderboardData, setLeaderboardData] = useState(null);
 
+
+
+
   useEffect(async () => {
+    
     setNavbarview(0);
     try {
       const response = await axios.get(`http://localhost:5000/api/track/?year=${year}&name_code=${name_code}`);
       setTrackData(response.data);
-      setsidebarData(response.data.sidebar);
+      setsidebarData(Links2);
+      localStorage.setItem('year', year);
+      localStorage.setItem('name_code', name_code);
 
     }
     catch (error) {
@@ -38,18 +44,20 @@ const TrackDetails = (props) => {
 
   }, []);
 
-  
+
   useEffect(() => {
     const fetchLeaderboardData = async () => {
       try {
         const encodedNameCode = name_code.replace(/ /g, '_');
+        localStorage.setItem('year', year);
+        localStorage.setItem('name_code', name_code);
         const response = await axios.get(`http://localhost:5000/api/leaderboard/?track_name=${encodedNameCode}&track_year=${year}`);
         setLeaderboardData(response.data);
       } catch (error) {
         console.error(error);
       }
     }
-  
+
     fetchLeaderboardData();
   }, []);
 
@@ -147,38 +155,38 @@ const TrackDetails = (props) => {
             Leaderboard
           </p>
         </div>
-  
+
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
           {leaderboardData && (
             <>
-          
-              
-          <table>
-  <thead>
-    <tr>
-      <th>Serial Number</th>
-      <th>Team Name</th>
-      <th>Team Score</th>
-    </tr>
-  </thead>
-  <tbody>
-    {leaderboardData.map((item, index) => (
-      <tr key={item.team_name}>
-        <td>
-          <div className="colored-box">{index + 1}</div>
-        </td>
-        <td>{item.team_name}</td>
-        <td>
-          <div className="colored-box">{item.team_score}</div>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
+
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Serial Number</th>
+                    <th>Team Name</th>
+                    <th>Team Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {leaderboardData.map((item, index) => (
+                    <tr key={item.team_name}>
+                      <td>
+                        <div className="colored-box">{index + 1}</div>
+                      </td>
+                      <td>{item.team_name}</td>
+                      <td>
+                        <div className="colored-box">{item.team_score}</div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </>
           )}
         </div>
-        
+
       </div>
 
 

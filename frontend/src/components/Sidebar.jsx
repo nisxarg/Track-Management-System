@@ -7,7 +7,7 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 // import { links } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 // change
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import { Track } from '../data/dummy';
 import PropTypes from 'prop-types';
 // change
@@ -21,6 +21,7 @@ const Sidebar = () => {
     sidebarData,TrackNameMain,TrackYearMain,
   } = useStateContext();
   // change
+  const Navigate = useNavigate();
   const location = useLocation();
   const isTrackDetailsPage = location.pathname.startsWith('/track-details');
   const sidebarOptions = isTrackDetailsPage ? Track.sidebar.links : [];
@@ -77,11 +78,9 @@ const Sidebar = () => {
                       key={link.name}
                       onClick={(event) => {
                         event.preventDefault();
-                        if (link.name === "Track-Details") {
-                          window.location.href = `/api/track?year=${TrackYearMain}&name_code=${TrackNameMain}`;
-                        } else {
+                          
                           window.location.href = `/${link.name}`;
-                        }
+                      
                       }}
                       style={({ isActive }) => ({
                         backgroundColor: isActive ? currentColor : '',

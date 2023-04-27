@@ -34,6 +34,7 @@ const Login = ({ handleChange }) => {
             const res = await axios.post(`http://localhost:5000/api/user_login`, { username: user, password: pwd });
             if (res.status === 200) {
                 console.log('User is authenticated');
+                localStorage.setItem('user', user);
                 setUsername(user);              
                 const token = res.data.token; // assuming the token is returned in the response
                 localStorage.setItem('token', token); // store the token in local storage

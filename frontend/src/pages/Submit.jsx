@@ -2,9 +2,11 @@ import React, { useRef } from 'react';
 import { useStateContext } from '../contexts/ContextProvider';
 import { Button } from '../components';
 import {Navbar} from '../components';
+import {Links2} from '../data/dummy'
+
 
 const Submit = () => {
-    const { currentColor } = useStateContext();
+    const { currentColor,setsidebarData,setNavbarview } = useStateContext();
     const fileInputRef = useRef();
   
     const handleUpload = () => {
@@ -15,7 +17,8 @@ const Submit = () => {
     const handleDownload = () => {
       // handle file download here
     };
-  
+    setsidebarData(Links2);
+
    
   return (
     <>

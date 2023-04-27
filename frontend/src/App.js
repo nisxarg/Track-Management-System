@@ -4,15 +4,14 @@ import { BrowserRouter, Routes, Route, } from 'react-router-dom'
 import { FiSettings } from 'react-icons/fi'
 import { TooltipComponent } from '@syncfusion/ej2-react-popups'
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
-import { Home, Data, CFP, Organizations, PastPrecedings, Resources, CFT, SignInSignUp, SignInSignUp_O ,SignInSignUp_T,TrackDetails_Organizer, DisplayTracks} from './pages';
+import { Home, Data, CFP, Organizations, PastPrecedings, Resources, CFT, SignInSignUp, SignInSignUp_O, SignInSignUp_T, TrackDetails_Organizer, DisplayTracks, Leaderboard,TrackDetails } from './pages';
 import { useStateContext } from './contexts/ContextProvider';
-import TrackDetails from './pages/TrackDetails'
 import Submit from './pages/Submit'
-import Leaderboard from './pages/Leaderboard'
+
 
 
 const App = () => {
-    const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings,sidebarData } = useStateContext();
+    const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, sidebarData } = useStateContext();
 
 
     return (
@@ -38,11 +37,11 @@ const App = () => {
                         </div>
                         {activeMenu ? (
                             <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
-                                <Sidebar links={sidebarData}/>sidebar
+                                <Sidebar links={sidebarData} />sidebar
                             </div>
                         ) : (
                             <div className="w-0 dark:bg-secondary-dark-bg">
-                                <Sidebar links={sidebarData}/> sidebar
+                                <Sidebar links={sidebarData} /> sidebar
                             </div>
                         )}
                         <div className={
@@ -57,6 +56,7 @@ const App = () => {
                                 {themeSettings && (<ThemeSettings />)}
                                 <Routes> */
                                     {/* Home Section */}
+                                    <Route path="/Leaderboard" element={<Leaderboard />} />
                                     <Route path="/" element={(<Home year="2023" />)} />
                                     <Route path="/home" element={(<Home year="2023" />)} />
 
@@ -71,7 +71,7 @@ const App = () => {
                                     <Route path="/PastPrecedings" element={<PastPrecedings />} />
 
                                     <Route path="/Submit" element={<Submit />} />
-                                    <Route path="/Leaderboard" element={<Leaderboard />} />
+
 
                                     <Route path="/2022" element={<Home year="2022" />} />
                                     <Route path="/2021" element={<Home year="2021" />} />
@@ -90,6 +90,7 @@ const App = () => {
                                     <Route path="/DisplayTracks" element={<DisplayTracks />} />
 
                                     <Route path="/api/track" element={<TrackDetails />} />
+
                                     <Route path="/api/trackedit" element={<TrackDetails_Organizer />} />
 
 

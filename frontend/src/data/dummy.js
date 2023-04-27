@@ -360,6 +360,29 @@ export const links = [
 
 ];
 
+export const Links2=[
+  {
+    title: 'Home',
+    links: [
+      {
+        name: 'Home',
+
+      },
+      {
+        name: 'api/track',
+
+      },
+      {
+        name: 'Leaderboard',
+
+      },
+      {
+        name: 'Submit',
+
+      },
+    ],
+  },
+]
 // export const homePageData = [
 //   {
 //     year: 2023,
