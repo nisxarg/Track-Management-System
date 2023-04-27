@@ -325,14 +325,14 @@ exports.add_track_organizer = async (req, res) => {
 
     //validate request
     if (!req.body) {
-        res.status(400).send({ message: "Content can not be empty" });
-        return;
+        return res.status(400).send({ message: "Content can not be empty" });
     }
     
     const username_ = req.body.username
     const track_name_ = req.body.track_name
-    const track_year_ = new Date(req.body.start_date).getFullYear().toString()
-
+    const start_date_ = req.body.start_date
+    const track_year_ = new Date(start_date_).getFullYear().toString()
+    const end_date_ = req.body.end_date
 
     const data = await trackdb.findOne({name_code: track_name_, year: track_year_})
 
@@ -346,7 +346,7 @@ exports.add_track_organizer = async (req, res) => {
 
     for(let i=0; i<len; i++)
     {
-        if(organizer.track_list[i].start_date.getFullYear()==track_year_)
+        if(organizer.track_list[i].track_name==track_name_ && organizer.track_list[i].start_date.getFullYear()==track_year_)
         {
             check = 1
             break
@@ -366,17 +366,18 @@ exports.add_track_organizer = async (req, res) => {
                 "track_list" : 
                 {
                     "track_name" : track_name_,
-                    "start_date" : req.body.start_date,
-                    "end_date": req.body.end_date
-                 }}
+                    "start_date" : start_date_,
+                    "end_date": end_date_
+                 }
                 }
+            }
         )
 
         res.status(200).send({meaasge: "Your Track is added for varifiaction successfully"})
 
     
     }catch (e) {
-        console.error(e);
+        res.status(500).send({message: "error"});
     }    
 
 }
