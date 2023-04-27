@@ -108,7 +108,7 @@ const Signup = () => {
                                 style={{ outline: 'none !important', border: 'none' }}
                             />
                         </div>
-                        <TextField fullWidth label="Share your Profile Link" placeholder="Profile Link " value={profile_link} onChange={(e) => setprofile_link(e.target.value)} />
+                        <TextField fullWidth label="Share your Profile Link" placeholder="Profile Link " value={profile_link} onChange={(e) => setprofile_link(e.target.value)} required />
                         <TextField fullWidth label="Password" placeholder="Enter your password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <TextField fullWidth label="Confirm Password" placeholder="Confirm your password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
 

@@ -1,0 +1,78 @@
+import React, { useState } from 'react';
+import { Grid, Paper, Avatar, Typography, TextField, Checkbox, Button } from '@material-ui/core';
+import { DatePicker } from '@material-ui/pickers';
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+
+const paperStyle = {
+  padding: '30px 20px',
+  width: 350,
+  margin: 'auto',
+  borderRadius: '10px'
+};
+
+const avatarStyle = {
+  backgroundColor: '#1bbd7e'
+};
+
+const headerStyle = {
+  margin: '10px 0',
+  color: '#1bbd7e'
+};
+
+const AddTracks = () => {
+  const [trackName, setTrackName] = useState('');
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // handle form submission here
+  };
+
+  return (
+    <div className="dark:bg-secondary-dark-bg bg-white text-white">
+      <Grid>
+        <Paper style={paperStyle}>
+          <Grid align='center'>
+            <Avatar style={avatarStyle}>
+              <AddCircleOutlineOutlinedIcon />
+            </Avatar>
+            <h2 style={headerStyle}>Sign Up For Organizer</h2>
+            <Typography variant='caption' gutterBottom>Please fill this form to create an account !</Typography>
+          </Grid>
+          <form onSubmit={handleSubmit}>
+            <TextField fullWidth label="Track Name" placeholder="Enter the name of Track " value={trackName} onChange={(e) => setTrackName(e.target.value)} />
+            <div className="flex mt-4">
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                selectsStart
+                startDate={startDate}
+                endDate={endDate}
+                placeholderText="Start date"
+                className="w-full"
+                style={{ outline: 'none !important', border: 'none' }}
+              />
+              <DatePicker
+                selected={endDate}
+                onChange={(date) => setEndDate(date)}
+                selectsEnd
+                startDate={startDate}
+                endDate={endDate}
+                minDate={startDate}
+                placeholderText="End date"
+                className="w-full"
+                style={{ outline: 'none !important', border: 'none' }}
+              />
+            </div>
+            <Button type="submit" variant="contained" color="primary" style={{ fontSize: '0.9rem', margin: 'auto', height: '40px', padding: '16px' }}>
+              Sign Up
+            </Button>
+          </form>
+        </Paper>
+      </Grid>
+    </div>
+  );
+};
+
+export default AddTracks;
