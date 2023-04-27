@@ -373,7 +373,7 @@ exports.add_track_organizer = async (req, res) => {
             }
         )
 
-        res.status(200).send({meaasge: "Your Track is added for varifiaction successfully"})
+        res.status(200).send({message: "Your Track is added for varifiaction successfully"})
 
     
     }catch (e) {
