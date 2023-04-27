@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Navbar } from '../../components';
 import { useStateContext } from '../../contexts/ContextProvider';
 import { useNavigate } from 'react-router-dom';
-import { TextField } from '@material-ui/core';
+import { TextField ,Typography} from '@material-ui/core';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
 
@@ -21,6 +21,7 @@ const DisplayTracks = () => {
   const [trackName, setTrackName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [message,setmessage]=useState('');
 
   const handleYearSelection = (year) => {
     setSelectedYear(year);
@@ -38,25 +39,30 @@ const DisplayTracks = () => {
     setopenForm(false);
   }
 
-  const handleSave = async() => {
+  const handleSave = async () => {
     setopenForm(false);
     console.log("saved successfully");
-    
-      const data = {
-          username: localStorage.getItem('user'),
-          track_name: trackName,
-          start_date: startDate,
-          end_date: endDate,
-      };
 
-      try {
-          const res = await axios.post('http://localhost:5000/api/add_track', data);
-          console.log(res.data);
-        
-      } catch (error) {        
-              console.log(error);   
-      }
-  
+    const data = {
+      username: localStorage.getItem('user'),
+      track_name: trackName,
+      start_date: startDate,
+      end_date: endDate,
+    };
+
+    try {
+      const res = await axios.post('http://localhost:5000/api/add_track_organizer', data);
+      console.log("succesful-pass");
+      console.log(res.data);
+      console.log(res.data.message);
+      setmessage(res.data.message);
+    } catch (error) {
+      // console.log(error);
+      console.log("unsuccesful-pass");
+      console.log(error.response.data.message);
+      setmessage(error.response.data.message);
+    }
+
   };
 
   return (
@@ -90,17 +96,17 @@ const DisplayTracks = () => {
                 />
               </div>
               <div className="mb-4">
-              <DatePicker
-                selected={endDate}
-                onChange={(date) => setEndDate(date)}
-                selectsEnd
-                startDate={startDate}
-                endDate={endDate}
-                minDate={startDate}
-                placeholderText="End date"
-                className="w-full"
-                style={{ outline: 'none !important', border: 'none' }}
-              />
+                <DatePicker
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  selectsEnd
+                  startDate={startDate}
+                  endDate={endDate}
+                  minDate={startDate}
+                  placeholderText="End date"
+                  className="w-full"
+                  style={{ outline: 'none !important', border: 'none' }}
+                />
               </div>
               <div className="flex justify-end">
                 <button
@@ -155,6 +161,7 @@ const DisplayTracks = () => {
                   Add Track
                 </button>
               </div>
+              <Typography variant='caption' gutterBottom style={{color: 'red'}}> {message}</Typography>
 
             </div>
           </div>
