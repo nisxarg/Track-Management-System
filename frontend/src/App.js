@@ -6,14 +6,26 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups'
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
 import { Home, Data, CFP, Organizations, PastPrecedings, Resources, CFT, SignInSignUp, SignInSignUp_O, SignInSignUp_T, TrackDetails_Organizer, DisplayTracks, Leaderboard,TrackDetails } from './pages';
 import { useStateContext } from './contexts/ContextProvider';
+import { useEffect } from 'react';
+
 import Submit from './pages/Submit'
 
 
 
 const App = () => {
+
+    
     const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, sidebarData } = useStateContext();
 
-
+    useEffect(async () => {
+        
+        window.addEventListener('beforeunload', () => {
+            localStorage.clear();
+          });
+      
+       
+    
+      }, [])
     return (
 
         <div className={currentMode === 'Dark' ? 'dark' : ''}>
