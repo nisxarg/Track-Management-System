@@ -15,7 +15,10 @@ const Home = (props) => {
     const navigate = useNavigate();
 
     const handleTrackClick = (year, nameCode) => {
-        navigate(`/api/track?year=${year}&name_code=${nameCode}`);
+        localStorage.setItem('year',year);
+        localStorage.setItem('name_code',nameCode);
+
+        navigate(`/TrackDetails`);
     }
 
     useEffect(async () => {
@@ -109,8 +112,7 @@ const Home = (props) => {
                 <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
                     <ul>
                         {tracks.list.map((track) => {
-                            setTrackYearMain(props.year);
-                            setTrackNameMain(track.text);
+                            
                             return (
                                 <li key={track.text} onClick={() => handleTrackClick(props.year, track.text)}
                                 className="hover:text-blue-500 cursor-pointer">

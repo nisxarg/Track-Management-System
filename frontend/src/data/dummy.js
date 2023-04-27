@@ -369,7 +369,7 @@ export const Links2=[
 
       },
       {
-        name: 'api/track',
+        name: 'TrackDetails',
 
       },
       {

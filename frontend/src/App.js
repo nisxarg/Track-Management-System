@@ -90,7 +90,7 @@ const App = () => {
                                     <Route path="/TrackDetails_Organizer" element={<TrackDetails_Organizer />} />
                                     <Route path="/DisplayTracks" element={<DisplayTracks />} />
 
-                                    <Route path="/api/track" element={<TrackDetails />} />
+                                    <Route path="/TrackDetails" element={<TrackDetails />} />
 
                                     <Route path="/api/trackedit" element={<TrackDetails_Organizer />} />
 

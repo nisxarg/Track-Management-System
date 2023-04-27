@@ -15,12 +15,9 @@ const TrackDetails = (props) => {
   const [trackData, setTrackData] = useState(null);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const year = queryParams.get('year');
-  const name_code = queryParams.get('name_code');
+  const year = localStorage.getItem('year');
+  const name_code = localStorage.getItem('name_code');
   const [leaderboardData, setLeaderboardData] = useState(null);
-
-
-
 
   useEffect(async () => {
     
@@ -29,8 +26,7 @@ const TrackDetails = (props) => {
       const response = await axios.get(`http://localhost:5000/api/track/?year=${year}&name_code=${name_code}`);
       setTrackData(response.data);
       setsidebarData(Links2);
-      localStorage.setItem('year', year);
-      localStorage.setItem('name_code', name_code);
+      
 
     }
     catch (error) {

@@ -122,15 +122,3 @@ const Sidebar = () => {
 }
 export default Sidebar;
 
-// Sidebar.propTypes = {
-//   links: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       title: PropTypes.string.isRequired,
-//       links: PropTypes.arrayOf(
-//         PropTypes.shape({
-//           name: PropTypes.string.isRequired,
-//         })
-//       ).isRequired,
-//     })
-//   ),
-// };

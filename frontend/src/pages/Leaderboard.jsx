@@ -10,11 +10,11 @@ import { Links2 } from '../data/dummy'
 
 const Leaderboard = (props) => {
 
-    const track = props.trackData;
-    const { currentColor, setsidebarData, Navbarview, setNavbarview } = useStateContext();
+
+    const { currentColor, setsidebarData, setNavbarview } = useStateContext();
     setsidebarData(Links2);
     const [trackData, setTrackData] = useState(null);
-    const location = useLocation();
+
 
 
 
@@ -39,7 +39,7 @@ const Leaderboard = (props) => {
         }
     }, []);
 
-    
+
     console.log("i am calling data")
     console.log(trackData)
     return (
@@ -53,34 +53,34 @@ const Leaderboard = (props) => {
                 </div>
 
                 <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
-                     
-                        <>
+
+                    <>
 
 
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Serial Number</th>
-                                        <th>Team Name</th>
-                                        <th>Team Score</th>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Serial Number</th>
+                                    <th>Team Name</th>
+                                    <th>Team Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {leaderboardData.map((item, index) => (
+                                    <tr key={item.team_name}>
+                                        <td>
+                                            <div className="colored-box">{index + 1}</div>
+                                        </td>
+                                        <td>{item.team_name}</td>
+                                        <td>
+                                            <div className="colored-box">{item.team_score}</div>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {leaderboardData.map((item, index) => (
-                                        <tr key={item.team_name}>
-                                            <td>
-                                                <div className="colored-box">{index + 1}</div>
-                                            </td>
-                                            <td>{item.team_name}</td>
-                                            <td>
-                                                <div className="colored-box">{item.team_score}</div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </>
-                    
+                                ))}
+                            </tbody>
+                        </table>
+                    </>
+
                 </div>
 
             </div>
