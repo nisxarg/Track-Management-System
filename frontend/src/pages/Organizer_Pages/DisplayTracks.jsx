@@ -36,10 +36,10 @@ const DisplayTracks = () => {
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
           {selectedYear && (
             <ul>
-              {track_list.filter((track) => track.year === selectedYear).map((track, index) => (
-                <li key={track.text} onClick={() => handleTrackClick(track.year, track.name_code)}
+              {track_list.filter((track) => track.track_year === selectedYear).map((track, index) => (
+                <li key={track.track_name} onClick={() => handleTrackClick(track.track_year, track.track_name)}
                 className="hover:text-blue-500 cursor-pointer">
-                    {track.name_code}
+                    {track.track_name}
                 </li>
                
               ))}
@@ -50,7 +50,7 @@ const DisplayTracks = () => {
           )}
         </div>
         <div className="flex justify-center my-3">
-          {Array.from(new Set(track_list.map((track) => track.year))).map((year) => (
+          {Array.from(new Set(track_list.map((track) => track.track_year))).map((year) => (
             <button key={year} className="mx-2 rounded-full px-4 py-1 text-white font-semibold bg-gray-700 hover:bg-gray-800 focus:outline-none" onClick={() => handleYearSelection(year)}>
               {year}
             </button>
