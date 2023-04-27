@@ -8,7 +8,6 @@ import axios from 'axios';
 import { Navbar } from '../components';
 import { Links2 } from '../data/dummy'
 
-
 const Leaderboard = (props) => {
 
     const track = props.trackData;
@@ -20,22 +19,6 @@ const Leaderboard = (props) => {
 
 
     const [leaderboardData, setLeaderboardData] = useState([]);
-    // const year = localStorage.getItem('year');
-    // const name_code = localStorage.getItem('name_code');
-    // useEffect(async () => {
-    //     const year = localStorage.getItem('year');
-    //     const name_code = localStorage.getItem('name_code');
-    //     setNavbarview(0);
-    //     try {
-    //         const encodedNameCode = name_code.replace(/ /g, '_');
-    //         const main_data = await axios.get(` http://localhost:5000/api/leaderboard/?track_year=${year}&track_name=${name_code}`)
-    //             .then((response) => setLeaderboardData(response.data))
-    //             .catch(err => console.log(err));
-    //         console.log("leaderboardData ", main_data)
-    //     } catch (err) {
-    //         console.log(err)
-    //     }
-    // }, []);
 
     useEffect(async () => {
         const year = localStorage.getItem('year');
@@ -56,7 +39,7 @@ const Leaderboard = (props) => {
         }
     }, []);
 
-    if (!trackData) return <div>this is leaderboard</div>
+    
     console.log("i am calling data")
     console.log(trackData)
     return (
@@ -70,7 +53,7 @@ const Leaderboard = (props) => {
                 </div>
 
                 <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 rounded-b-2xl md:flex mb-3 mr-3 ml-3 text-justify" style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)' }}>
-                    {leaderboardData && (
+                     
                         <>
 
 
@@ -97,7 +80,7 @@ const Leaderboard = (props) => {
                                 </tbody>
                             </table>
                         </>
-                    )}
+                    
                 </div>
 
             </div>
