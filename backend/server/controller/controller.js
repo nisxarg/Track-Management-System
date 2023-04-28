@@ -11,7 +11,7 @@ const bcrypt = require('bcrypt');
 
 const jwt = require("jsonwebtoken")
 
-exports.home = async (req, res) => {
+exports.home = async (req, res) => {it 
     // res.send("Hii...")
     res.status(200).send({ success: true })
 }
@@ -201,7 +201,7 @@ exports.organizer_signup = async (req, res) => {
 
         await organizer.save(organizer)
             .then(data => {
-                res.send(data)
+                res.status(200).send(data)
                 // res.redirect('/')
             })
     }
@@ -310,7 +310,7 @@ exports.add_track_admin = async (req, res) => {
                 console.error(e);
             }
 
-            res.send(data)
+            res.sttus(200).send(data)
 
         })
         .catch(err => {
@@ -414,7 +414,7 @@ exports.update_track = async (req, res) => {
             }
         )
 
-        return res.send(tracke)
+        return res.status(200).send(tracke)
     }catch (e) {
         console.error(e);
     }
@@ -443,7 +443,7 @@ exports.add_home = async(req,res)=>{
     //save user in the database
     await user.save(user)
         .then(data => {
-            res.send(data)
+            res.status(200).send(data)
 
         })
         .catch(err => {
@@ -467,7 +467,7 @@ exports.find_track = async (req, res) => {
 
             }
             else {
-                res.send(data)
+                res.status(200).send(data)
             }
         })
         .catch(err => {
@@ -486,7 +486,7 @@ exports.find_year_track = async (req, res) => {
                 res.status(404).send({ message: "May be track not found" })
             }
             else {
-                res.send(data)
+                res.status(200).send(data)
             }
         })
         .catch(err => {
@@ -603,7 +603,7 @@ exports.team_signup = async (req, res) => {
                     }
                 })
             
-            res.send(data);
+            res.status(200).send(data);
         } catch (err) {
             res.status(500).send({
                 message: err.message || "Some error occured while creating a create operation",
@@ -677,7 +677,7 @@ exports.set_score = async (req, res) => {
             }
         )
 
-        res.send({new_score: new_score})
+        res.status(200).send({new_score: new_score})
 
     } catch (err) {
         return res.status(500).send({ message: "error" });
@@ -698,7 +698,7 @@ exports.get_leaderboard = async (req, res) => {
         team_data.sort((a,b) => a.team_score - b.team_score)
         team_data.reverse()
 
-        res.send(team_data)
+        res.status(200).send(team_data)
 
     } catch (err) {
         return res.status(500).send('error');
