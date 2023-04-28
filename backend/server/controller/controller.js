@@ -4,6 +4,7 @@ var trackdb = require('../model/model_track')
 var homedb = require('../model/model_home')
 var teamdb = require('../model/model_team')
 var leaderdb = require('../model/model_leaderboard')
+var uvtrackdb = require('../model/model_uvtrack')
 
 const axios = require("axios");
 const bcrypt = require('bcrypt');
@@ -165,6 +166,7 @@ exports.organizer_signup = async (req, res) => {
             return res.status(400).send({ message: "Content can not be empty" });
         }
 
+        // console.log(req.body)
         // check if username already exists
         const username = req.body.username;
         const existingorganizer = await organizerdb.findOne({ username });
@@ -182,27 +184,45 @@ exports.organizer_signup = async (req, res) => {
 
         //check if track name is already in database or not
 
-        const year_ = new Date(req.body.track_list[0].start_date).getFullYear();
+        const start_date_ = req.body.track_list[0].start_date
+        console.log(start_date_)
+
+        const year_ = new Date(start_date_).getFullYear().toString();
         const name_code_ = req.body.track_list[0].track_name
 
-        const data = await trackdb.findOne({name_code:name_code_, year:year_.toString()})
+        console.log(year_)
+
+        const data = await trackdb.findOne({name_code:name_code_, year:year_})
 
         if(data)
         {
             return res.status(300).send({ message: "Track name already exists" })
         }
 
-        var organizer = new organizerdb(req.body)
-        // create new organizer
+        const organizer = new organizerdb(req.body)
 
-        organizer.track_list[0].track_year = year_
 
-        console.log(organizer)
+        const data1 = {
+            username: req.body.username,
+            track_name: name_code_,
+            track_year: year_,
+            start_date: start_date_
+        }
+
+        const uvtrack = new uvtrackdb(data1)
 
         await organizer.save(organizer)
             .then(data => {
                 res.status(200).send(data)
                 // res.redirect('/')
+            })
+            .catch((e)=>{
+                console.error(e)
+            })
+
+            await uvtrack.save(uvtrack)
+            .catch((e)=>{
+                console.error(e)
             })
     }
     catch (err) {
@@ -264,62 +284,62 @@ exports.organizer_login = async (req, res) => {
  
 }
 
-exports.add_track_admin = async (req, res) => {
+// exports.add_track_admin = async (req, res) => {
 
-    //validate request
-    if (!req.body) {
-        res.status(400).send({ message: "Content can not be empty" });
-        return;
-    }
-    const tracke = new trackdb(req.body)
-    const find_year = tracke.year;
-    const tn = tracke.name_code;
+//     //validate request
+//     if (!req.body) {
+//         res.status(400).send({ message: "Content can not be empty" });
+//         return;
+//     }
+//     const tracke = new trackdb(req.body)
+//     const find_year = tracke.year;
+//     const tn = tracke.name_code;
    
-    await tracke.save(tracke)
-        .then(async data => {
+//     await tracke.save(tracke)
+//         .then(async data => {
             
-            try{
+//             try{
 
-                await homedb.findOneAndUpdate(
-                    { "year" : find_year }, //filtering
-                    { $push : {  
-                        "content.tracks.list" : 
-                        {
-                            "text" : tracke.name_code,
-                            "link" : "jaymataji"
-                         }}
-                        }
-                )
+//                 await homedb.findOneAndUpdate(
+//                     { "year" : find_year }, //filtering
+//                     { $push : {  
+//                         "content.tracks.list" : 
+//                         {
+//                             "text" : tracke.name_code,
+//                             "link" : "jaymataji"
+//                          }}
+//                         }
+//                 )
 
-                const new_leaderboard = 
-                {
-                    "track_name": tn,
-                    "track_year": find_year
-                }
+//                 const new_leaderboard = 
+//                 {
+//                     "track_name": tn,
+//                     "track_year": find_year
+//                 }
 
-             const leader_insert = new leaderdb(new_leaderboard)
+//              const leader_insert = new leaderdb(new_leaderboard)
             
 
-             await leader_insert.save(leader_insert)
-             .catch(e =>{
-                console.error(e);
-             })
+//              await leader_insert.save(leader_insert)
+//              .catch(e =>{
+//                 console.error(e);
+//              })
              
 
-            }catch (e) {
-                console.error(e);
-            }
+//             }catch (e) {
+//                 console.error(e);
+//             }
 
-            res.sttus(200).send(data)
+//             res.status(200).send(data)
 
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occured while creating a create operation"
-            });
-        });
+//         })
+//         .catch(err => {
+//             res.status(500).send({
+//                 message: err.message || "Some error occured while creating a create operation"
+//             });
+//         });
 
-}
+// }
 
 exports.add_track_organizer = async (req, res) => {
 
@@ -636,7 +656,7 @@ exports.team_login = async (req, res) => {
         res.status(200).json({
             status: true,
             success: "SendData",
-            token: token,
+            token: token
         })
 
     } catch (err) {
@@ -704,4 +724,97 @@ exports.get_leaderboard = async (req, res) => {
         return res.status(500).send('error');
     }
 }
+
+exports.verify_track = async (req, res) => {
+    
+    //validate request
+    if (!req.body) {
+        return res.status(400).send({ message: "Content can not be empty" });
+    }
+
+    try {
+
+
+        const track_name_ = req.body.track_name
+        const track_year_ = req.body.track_year
+
+        const data1 = await uvtrackdb.findOne({track_name: track_name_, track_year: track_year_})
+
+        const start_date_ = data1.start_date
+
+        await uvtrackdb.findOneAndDelete({track_name: track_name_, track_year: track_year_})
+        .catch((e)=>{
+            console.error(e)
+        })
+        
+        const username_ = data1.username     // organizer username
+
+        const data2 = await organizerdb.findOneAndUpdate(
+            {"track_list" :{$elemMatch: { "track_name": track_name_, "start_date": start_date_}}},
+            {
+                $set:{
+                    "track_list.$.verified" : true
+                }
+            }
+        )
+
+        const data = {
+            name_code: track_name_,
+            yaer: track_year_
+        }
+
+        const tracke = new trackdb(data)
+
+        await tracke.save(tracke)
+        .then(async data => {
+            
+            try{
+    
+                await homedb.findOneAndUpdate(
+                    { "year" : track_year_ }, //filtering
+                    { $push : {  
+                        "content.tracks.list" : 
+                        {
+                            "text" : track_name_,
+                            "link" : "jaymataji"
+                         }}
+                        }
+                )
+    
+                const new_leaderboard = 
+                {
+                    "track_name": track_name_,
+                    "track_year": track_year_
+                }
+    
+             const leader_insert = new leaderdb(new_leaderboard)
+            
+    
+             await leader_insert.save(leader_insert)
+             .catch(e =>{
+                console.error(e);
+             })
+             
+    
+            }catch (e) {
+                console.error(e);
+            }
+    
+            res.status(200).send({message: "Verified Successfully"})
+    
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Error"
+            });
+        });
+
+    } catch (err) {
+        return res.status(500).send('error');
+    }
+}
+
+
+
+
 
