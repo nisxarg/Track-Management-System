@@ -38,9 +38,14 @@ const Signup = () => {
         const data = {
             username: name,
             email: email,
-            track_name: track_name,
-            start_date: startDate,
-            end_date: endDate,
+            track_list:[
+                {
+                    track_name: track_name,
+                    start_date: startDate,
+                    end_date: endDate,
+                }
+            ],
+            
             resume_link: profile_link,
             password: password,
         };

@@ -6,13 +6,13 @@ var track_schema = new mongoose.Schema({
         type: String,
         require: true
     },
-    year:{
+    year: {
         type: String,
         require: true
     },
-    tag : [{
-        tagname:{
-            type : String
+    tag: [{
+        tagname: {
+            type: String
         }
     }],
     sidebar: [{
@@ -27,7 +27,9 @@ var track_schema = new mongoose.Schema({
     }],
     importantDates: {
         title: {
-            type: String
+            type: String,
+            default: ""
+
         },
         dates: [{
             date: {
@@ -42,50 +44,62 @@ var track_schema = new mongoose.Schema({
     content: {
         introduction: {
             title: {
-                type: String
+                type: String,
+                default: "Titile of Introduction"
             },
             content: {
-                type: String
+                type: String,
+                default: "Content of Introduction"
             }
         },
         TaskDescription: {
             title: {
-                type: String
+                type: String,
+                default: "Title of task Description"
             },
             content: {
-                type: String
+                type: String,
+                default: "content of task description"
             }
         },
         corpus: {
             title: {
-                type: String
+                type: String,
+                default: "Title of Corpus"
             },
             content: {
-                type: String
+                type: String,
+                default: "Content of Corpus"
             }
         },
         registration: {
             title: {
-                type: String
+                type: String,
+                default: "Title of registration"
             },
             content: {
-                type: String
+                type: String,
+                default: "Content of registration"
             }
         },
         submission: {
             title: {
-                type: String
+                type: String,
+                default: "Title of submission"
             },
             content: {
-                type: String
+                type: String,
+                default: "Content of submission"
             }
         },
         evaluation: {
             title: {
-                type: String
+                type: String,
+                default: "Title of evaluation "
             },
             content: {
-                type: String
+                type: String,
+                default: "Content of evaluation"
             }
         }
     }

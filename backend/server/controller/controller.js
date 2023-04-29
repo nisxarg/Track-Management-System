@@ -5,7 +5,7 @@ var homedb = require('../model/model_home')
 var teamdb = require('../model/model_team')
 var leaderdb = require('../model/model_leaderboard')
 var uvtrackdb = require('../model/model_uvtrack')
-var admindb =  require('../model/model_admin')
+var admindb = require('../model/model_admin')
 const axios = require("axios");
 const bcrypt = require('bcrypt');
 
@@ -18,24 +18,24 @@ exports.home = async (req, res) => {
 }
 
 
-exports.admin_login = async (req,res) => {
-    try{
+exports.admin_login = async (req, res) => {
+    try {
         //validate request
-        if(!req.body){
-            res.status(400).send({message: "Details are empty"})
+        if (!req.body) {
+            res.status(400).send({ message: "Details are empty" })
         }
         const username_ = req.body.username;
         const password_ = req.body.password;
-         // check if admin exists
-         const user = await admindb.findOne({ username : username_});
+        // check if admin exists
+        const user = await admindb.findOne({ username: username_ });
 
-         if (!user) return res.status(400).send({ message: "User not found" });
+        if (!user) return res.status(400).send({ message: "User not found" });
 
-         // check if password is correct
-         const validPassword = await bcrypt.compare(password_, user.password);
-         if (!validPassword) return res.status(400).send({ message: "Invalid Password" });
+        // check if password is correct
+        const validPassword = await bcrypt.compare(password_, user.password);
+        if (!validPassword) return res.status(400).send({ message: "Invalid Password" });
 
-        res.status(200).send({message :  "Login successful"})
+        res.status(200).send({ message: "Login successful" })
 
         // create and assign a token
         let tokenData = {
@@ -52,9 +52,8 @@ exports.admin_login = async (req,res) => {
         })
 
 
-    }catch(err)
-    {
-          res.status(500).send({ message : "Internal server error"})   
+    } catch (err) {
+        res.status(500).send({ message: "Internal server error" })
     }
 }
 
@@ -223,16 +222,16 @@ exports.organizer_signup = async (req, res) => {
         const username_ = req.body.username;
         const email_ = req.body.email;
         const password_ = req.body.password;
-        const existingorganizer = await organizerdb.findOne({ username_ });
+        const existingorganizer = await organizerdb.findOne({ username: username_ });
         if (existingorganizer) {
             return res.status(300).send({ message: "Username already exists" });
         }
 
-        if(!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email_)){
+        if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email_)) {
             return res.status(400).send({ message: "Enter Valid Email-Address" });
         }
 
-        if(!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.password)){
+        if (!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.password)) {
             return res.status(400).send({ message: "Enter Valid Password" });
         }
 
@@ -314,6 +313,8 @@ exports.organizer_login = async (req, res) => {
 
             }
         }
+        console.log("i am in organizer login")
+        console.log(track_list_)
 
         if (check == 1) {
             res.status(200).json({
@@ -444,6 +445,20 @@ exports.add_track_organizer = async (req, res) => {
             }
         )
 
+        const data1 = {
+            username: username_,
+            track_name: track_name_,
+            track_year: track_year_,
+            start_date: start_date_
+        }
+
+        const uvtrack = new uvtrackdb(data1)
+
+        await uvtrack.save(uvtrack)
+            .catch((e) => {
+                console.error(e)
+            })
+
         res.status(200).send({ message: "Your Track is added for verifiaction successfully" })
 
 
@@ -532,14 +547,14 @@ exports.add_home = async (req, res) => {
 
 exports.find_track = async (req, res) => {
 
-    const year = req.query.year
+    const year_ = req.query.year
     const name_code_ = req.query.name_code;
-
-    await trackdb.findOne({ year: year, name_code: name_code_ })
+    console.log("i am in find track")
+    console.log(year_, name_code_)
+    await trackdb.findOne({ year: year_, name_code: name_code_ })
         .then(data => {
             if (!data) {
                 res.status(404).send({ message: "May be track not found" })
-
             }
             else {
                 res.status(200).send(data)
@@ -787,7 +802,7 @@ exports.get_leaderboard = async (req, res) => {
 exports.admin_page = async (req, res) => {
 
     try {
-
+        console.log("i am in admin page")
         const data = await uvtrackdb.find({})
 
         data.sort((a, b) => a.start_date - b.start_date)
@@ -830,10 +845,12 @@ exports.verify_track = async (req, res) => {
 
         const data = {
             name_code: track_name_,
-            yaer: track_year_
+            year: track_year_
         }
 
         const tracke = new trackdb(data)
+
+        console.log(tracke)
 
         await tracke.save(tracke)
             .then(async data => {

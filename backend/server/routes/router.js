@@ -7,7 +7,7 @@ const controller = require('../controller/controller')
 
 // API
 route.get('/', controller.home)
-route.get('/admin', controller.admin_login)
+route.post('/admin', controller.admin_login)
 route.post('/api/user_signup', controller.user_signup)
 route.post('/api/user_login', controller.user_login)
 route.post('/api/organizer_signup', controller.organizer_signup)  

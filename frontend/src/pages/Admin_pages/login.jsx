@@ -20,7 +20,7 @@ const Admin_Login = ({ handleChange }) => {
     const btnstyle = { margin: '8px 0' };
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
-    const { Username,setUsername } = useStateContext();
+    const { Username, setUsername } = useStateContext();
     const [error, seterror] = useState(false);
     const [ErrorMessage, setErrorMessage] = useState();
 
@@ -31,25 +31,22 @@ const Admin_Login = ({ handleChange }) => {
 
     const submitAction = async () => {
         try {
-            const res = await axios.post(`http://localhost:5000/api/user_login`, { username: user, password: pwd });
+            const res = await axios.post(`http://localhost:5000/admin`, { username: user, password: pwd });
             if (res.status === 200) {
                 console.log('User is authenticated');
-                localStorage.setItem('user', user);
-                setUsername(user);              
+                setUsername(user);
                 const token = res.data.token; // assuming the token is returned in the response
-                localStorage.setItem('token', token); // store the token in local storage
-                console.log(`Token: ${token}`); // print token to console
-                          
-            navigate('/Tracks_verification'); // navigate to next page
+
+                navigate('/Tracks_verification'); // navigate to next page
 
             }
         } catch (error) {
-            
-            if (error.response.data.message ) {
+
+            if (error.response.data.message) {
                 seterror(true);
                 setErrorMessage(error.resoponse.data.message);
                 console.log(error.response.data.message);
-            } 
+            }
             else {
                 console.error(error);
             }
@@ -59,36 +56,36 @@ const Admin_Login = ({ handleChange }) => {
     return (
         <div style={{ height: '100vh' }}>
 
-        <div className=" dark:bg-secondary-dark-bg bg-white text-white mt-20">
+            <div className=" dark:bg-secondary-dark-bg bg-white text-white mt-20">
 
-            <Grid>
-                <Paper style={paperStyle}>
-                    <Grid align='center'>
-                        <Avatar style={avatarStyle}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <h2>Admin Login</h2>
-                        {error && <Typography variant='caption' gutterBottom style={{ color: 'red' }}> {ErrorMessage}</Typography>}
-                    </Grid>
-                    <TextField label='Username' placeholder='Enter username' value={user} fullWidth required onChange={(e) => setUser(e.target.value)} />
-                    <TextField label='Password' placeholder='Enter password' value={pwd} fullWidth required onChange={(e) => setPwd(e.target.value)} type='password' />
-                    <FormControlLabel control={<Checkbox name='checkedB' color='primary' />} label='Remember me' />
+                <Grid>
+                    <Paper style={paperStyle}>
+                        <Grid align='center'>
+                            <Avatar style={avatarStyle}>
+                                <LockOutlinedIcon />
+                            </Avatar>
+                            <h2>Admin Login</h2>
+                            {error && <Typography variant='caption' gutterBottom style={{ color: 'red' }}> {ErrorMessage}</Typography>}
+                        </Grid>
+                        <TextField label='Username' placeholder='Enter username' value={user} fullWidth required onChange={(e) => setUser(e.target.value)} />
+                        <TextField label='Password' placeholder='Enter password' value={pwd} fullWidth required onChange={(e) => setPwd(e.target.value)} type='password' />
+                        <FormControlLabel control={<Checkbox name='checkedB' color='primary' />} label='Remember me' />
 
-                    <Button type='button' color='primary' variant='contained' onClick={submitAction} style={btnstyle} fullWidth>
-                        Sign in
-                    </Button>
-                    <Typography>
-                        <Link href='#'>Forgot password ?</Link>
-                    </Typography>
-                    <Typography>
-                        Do you have an account ?
-                        <Link href='#' onClick={() => handleChange('event', 1)}>
-                            Sign Up
-                        </Link>
-                    </Typography>
-                </Paper>
-            </Grid>
-        </div>
+                        <Button type='button' color='primary' variant='contained' onClick={submitAction} style={btnstyle} fullWidth>
+                            Sign in
+                        </Button>
+                        <Typography>
+                            <Link href='#'>Forgot password ?</Link>
+                        </Typography>
+                        <Typography>
+                            Do you have an account ?
+                            <Link href='#' onClick={() => handleChange('event', 1)}>
+                                Sign Up
+                            </Link>
+                        </Typography>
+                    </Paper>
+                </Grid>
+            </div>
         </div>
     )
 }
