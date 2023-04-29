@@ -47,7 +47,7 @@ const Login = ({ handleChange }) => {
             
             if (error.response.data.message ) {
                 seterror(true);
-                setErrorMessage(error.resoponse.data.message);
+                setErrorMessage(error.response.data.message);
                 console.log(error.response.data.message);
             } 
             else {

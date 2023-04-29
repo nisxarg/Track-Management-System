@@ -34,8 +34,8 @@ const TrackDetails_Organizer = () => {
   const { currentColor, TrackNameMain, TrackYearMain, setOptions } = useStateContext();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const year = queryParams.get('year');
-  const name_code = queryParams.get('name_code');
+  const year = localStorage.getItem('year');
+  const name_code = localStorage.getItem('name_code');
   const Navigate = useNavigate();
   const { setTrackNameMain, setTrackYearMain } = useStateContext();
   

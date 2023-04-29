@@ -95,6 +95,7 @@ const Signup = () => {
                                 placeholderText="Start date"
                                 className="w-full"
                                 style={{ outline: 'none !important', border: 'none' }}
+                                dateFormat="yyyy/MM/dd"
                             />
                             <DatePicker
                                 selected={endDate}
@@ -106,6 +107,7 @@ const Signup = () => {
                                 placeholderText="End date"
                                 className="w-full"
                                 style={{ outline: 'none !important', border: 'none' }}
+                                dateFormat="yyyy/MM/dd"
                             />
                         </div>
                         <TextField fullWidth label="Share your Profile Link" placeholder="Profile Link " value={profile_link} onChange={(e) => setprofile_link(e.target.value)} required />

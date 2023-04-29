@@ -50,7 +50,7 @@ const Home = (props) => {
 
         <div>
 
-            <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full lg:static">
+            <div className="md:static bg-main-bg dark:bg-main-dark-bg navbar w-full lg:static">
                 <Navbar />
             </div>
             <div style={{ marginTop: '20px' }}>

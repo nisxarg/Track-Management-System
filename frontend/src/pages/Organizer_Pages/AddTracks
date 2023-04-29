@@ -52,6 +52,7 @@ const AddTracks = () => {
                 placeholderText="Start date"
                 className="w-full"
                 style={{ outline: 'none !important', border: 'none' }}
+                dateFormat="yyyy/MM/dd"
               />
               <DatePicker
                 selected={endDate}
@@ -63,6 +64,7 @@ const AddTracks = () => {
                 placeholderText="End date"
                 className="w-full"
                 style={{ outline: 'none !important', border: 'none' }}
+                dateFormat="yyyy/MM/dd"
               />
             </div>
             <Button type="submit" variant="contained" color="primary" style={{ fontSize: '0.9rem', margin: 'auto', height: '40px', padding: '16px' }}>

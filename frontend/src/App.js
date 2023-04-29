@@ -4,14 +4,14 @@ import { BrowserRouter, Routes, Route, } from 'react-router-dom'
 import { FiSettings } from 'react-icons/fi'
 import { TooltipComponent } from '@syncfusion/ej2-react-popups'
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
-import { Home, Data, CFP, Organizations, PastPrecedings, Resources, CFT, SignInSignUp, SignInSignUp_O, SignInSignUp_T, TrackDetails_Organizer, DisplayTracks, Leaderboard,TrackDetails } from './pages';
+import { Home, Data, CFP, Organizations, PastPrecedings, Resources, CFT, SignInSignUp, SignInSignUp_O, SignInSignUp_T, TrackDetails_Organizer, DisplayTracks, Leaderboard, TrackDetails, Chat,Admin_Login,Tracks_verification } from './pages';
 import { useStateContext } from './contexts/ContextProvider';
 import Submit from './pages/Submit'
 
 
 
 const App = () => {
-    const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, sidebarData } = useStateContext();
+    const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, sidebarData, setchatopen,chatopen } = useStateContext();
 
 
     return (
@@ -71,6 +71,7 @@ const App = () => {
                                     <Route path="/PastPrecedings" element={<PastPrecedings />} />
 
                                     <Route path="/Submit" element={<Submit />} />
+                                    <Route path="/Chat" element={<Chat />} />
 
 
                                     <Route path="/2022" element={<Home year="2022" />} />
@@ -96,20 +97,22 @@ const App = () => {
 
 
                                     <Route path="/api/track" element={<TrackDetails />} />
+                                    <Route path="/admin" element={<Admin_Login />} />
+                                    <Route path="/Tracks_verification" element={<Tracks_verification />} />
                                     {/* <Route path="/" element={<App1 />} */}
 
 
                                 </Routes>
+                                </div>
+                                    {chatopen === false ? <Footer /> : null}
+                                </div>
                             </div>
-                            <Footer />
-                        </div>
+                        </BrowserRouter>
                     </div>
-                </BrowserRouter>
             </div>
-        </div>
-    )
+            )
 }
 
-export default App
+            export default App
 
 

@@ -13,4 +13,7 @@ export { default as TrackDetails_Organizer } from './Organizer_Pages/TrackDetail
 export { default as DisplayTracks } from './Organizer_Pages/DisplayTracks';
 export { default as TrackDetails } from './TrackDetails';
 export { default as Leaderboard } from './Leaderboard'
+export { default as Chat } from './Chat1';
+export { default as Admin_Login } from './Admin_pages/login';
+export { default as Tracks_verification } from './Admin_pages/Tracks_verification';
 

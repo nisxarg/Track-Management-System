@@ -23,8 +23,8 @@ const Signup = () => {
     const [teammate_1, setTeammate1] = useState('');
     const [teammate_2, setTeammate2] = useState('');
     const [teammate_3, setTeammate3] = useState('');
-    const [track_name, setTrackName] = useState(TrackNameMain);
-    const [track_year, setTrackYear] = useState(TrackYearMain);
+    const [track_name, setTrackName] = useState(localStorage.getItem('name_code'));
+    const [track_year, setTrackYear] = useState(localStorage.getItem('year'));
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -40,7 +40,7 @@ const Signup = () => {
             teammate_3: teammate_3,
             track_name: track_name,
             track_year: track_year,
-            password: password
+            team_password: password
         };
 
         try {
@@ -51,9 +51,9 @@ const Signup = () => {
             navigate('/SignInSignUp_T');
 
         } catch (error) {
-            if (error.response.data.message === "Username already exists") {
+            if (error.response.data.message) {
                 seterror(true);
-                setErrorMessage("Username already exists");
+                setErrorMessage(error.response.data.message);
                 console.log(error.response.data.message);
             }
             else {
@@ -84,7 +84,7 @@ const Signup = () => {
                         <TextField fullWidth label="Teammate 2" placeholder="Enter teammate 2 name" value={teammate_2} onChange={(e) => setTeammate2(e.target.value)} />
                         <TextField fullWidth label="Teammate 3" placeholder="Enter teammate 3 name" value={teammate_3} onChange={(e) => setTeammate3(e.target.value)} />
                         <TextField fullWidth label="Track Name" placeholder="Enter the name of the track" value={track_name} style={{ marginTop: '5px' }} />
-                        <TextField fullWidth label="Track Year" placeholder="Enter the year of the track" value={track_year} style={{ marginTop: '5px' }}/>
+                        <TextField fullWidth label="Track Year" placeholder="Enter the year of the track" value={track_year} style={{ marginTop: '5px' }} />
                         <TextField fullWidth label="Password" placeholder="Enter your password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <TextField fullWidth label="Confirm Password" placeholder="Confirm your password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
 

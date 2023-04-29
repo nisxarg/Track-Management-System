@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useStateContext } from '../contexts/ContextProvider';
 
 
+
 import { Cart, Chat, Notification, UserProfile } from '.';
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
@@ -31,10 +32,11 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   </TooltipComponent>
 );
 
+
 const Navbar = () => {
 
 
-  const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize, Username, trackactive,Navbarview,setNavbarview } = useStateContext();
+  const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize, Username, trackactive, Navbarview, setNavbarview } = useStateContext();
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -110,9 +112,8 @@ const Navbar = () => {
               </div>
 
               <div className="flex">
-
-                <NavButton title="Chat" dotColor="#03C9D7" customFunc={() => {}} color={currentColor} icon={<BsChatLeft />} />
-                <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => {}} color={currentColor} icon={<RiNotification3Line />} />
+                <NavButton title="Chat" dotColor="#03C9D7" customFunc={() => { setActiveMenu(false); console.log("chat is called"); window.location.href = `/Chat`; }} color={currentColor} icon={<BsChatLeft />} />
+                <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => { }} color={currentColor} icon={<RiNotification3Line />} />
                 {localStorage.getItem("token") ?
                   (
                     <div
@@ -120,7 +121,7 @@ const Navbar = () => {
                       onClick={handleLogoutOptions}
                     >
                       {
-                        <p>
+                        <p style={{ color: "currentcolor" }}>
                           Hi, {localStorage.getItem('user')}
                         </p>
                       }
@@ -131,10 +132,10 @@ const Navbar = () => {
                   :
                   (
                     <div
-                      className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+                      className="flex items-center gap-2 cursor-pointer p-1 rounded-lg dark:text-white-200"
                       onClick={handleSignInOptions}
                     >
-                      <p>
+                      <p style={{ color: "currentcolor" }}>
                         Sign in
                       </p>
                       <MdKeyboardArrowDown className="text-gray-400 text-14" />
@@ -199,7 +200,7 @@ const Navbar = () => {
 
               <div className="flex">
 
-                <NavButton title="Chat" dotColor="#03C9D7" customFunc={() => handleClick('chat')} color={currentColor} icon={<BsChatLeft />} />
+                <NavButton title="Chat" dotColor="#03C9D7" onClick={() => { console.log("chat is called"); }} color={currentColor} icon={<BsChatLeft />} />
                 <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} />
                 {localStorage.getItem("token") ?
                   (
@@ -208,7 +209,7 @@ const Navbar = () => {
                       onClick={handleLogoutOptions}
                     >
                       {
-                        <p>
+                        <p >
                           Hi,{localStorage.getItem('user')}
                         </p>
                       }
@@ -269,7 +270,6 @@ const Navbar = () => {
                   </div>
                 )}
 
-                {isClicked.cart && <Cart />}
                 {isClicked.chat && <Chat />}
                 {isClicked.notification && <Notification />}
                 {isClicked.userProfile && <UserProfile />}

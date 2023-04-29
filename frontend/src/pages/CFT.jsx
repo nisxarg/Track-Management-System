@@ -1,14 +1,17 @@
 import React from "react";
 import { Navbar } from "../components";
 import { useStateContext } from "../contexts/ContextProvider";
+import { links} from '../data/dummy'
+
 
 const Data = (props) => {
-  const { currentColor } = useStateContext();
+  const { currentColor,setsidebarData } = useStateContext();
 
+  setsidebarData(links);
 
   return (
     <div>
-      <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full lg:static">
+      <div className="md:static bg-main-bg dark:bg-main-dark-bg navbar w-full lg:static">
         <Navbar />
       </div>
       <div style={{ marginTop: "20px" }}>

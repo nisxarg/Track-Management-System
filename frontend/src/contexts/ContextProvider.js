@@ -23,6 +23,7 @@ export const ContextProvider = ({ children }) => {
   const [sidebarData, setsidebarData] = useState([]);
   const [TrackNameMain, setTrackNameMain] = useState([]);
   const [TrackYearMain, setTrackYearMain] = useState([]);
+  const [chatopen, setchatopen] = useState(false);
 
   const setMode = (e) => {
     setCurrentMode(e.target.value);
@@ -38,7 +39,7 @@ export const ContextProvider = ({ children }) => {
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <StateContext.Provider value={{ currentColor, currentMode, activeMenu, screenSize, setScreenSize, handleClick, isClicked, initialState, setIsClicked, setActiveMenu, setCurrentColor, setCurrentMode, setMode, setColor, themeSettings, setThemeSettings, Username, setUsername, index, setIndex, trackactive, settrackactive, sidebarData, setsidebarData,TrackNameMain, setTrackNameMain,TrackYearMain, setTrackYearMain,Navbarview,setNavbarview }}>
+    <StateContext.Provider value={{ currentColor, currentMode, activeMenu, screenSize, setScreenSize, handleClick, isClicked, initialState, setIsClicked, setActiveMenu, setCurrentColor, setCurrentMode, setMode, setColor, themeSettings, setThemeSettings, Username, setUsername, index, setIndex, trackactive, settrackactive, sidebarData, setsidebarData,TrackNameMain, setTrackNameMain,TrackYearMain, setTrackYearMain,Navbarview,setNavbarview,chatopen,setchatopen }}>
       {children}
     </StateContext.Provider>
   );

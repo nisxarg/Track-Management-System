@@ -3,25 +3,26 @@ import { Grid, Paper, Avatar, TextField, Button, Typography, Link } from '@mater
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { useStateContext } from '../../../contexts/ContextProvider';
+import { useStateContext } from '../../contexts/ContextProvider';
 import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
-const Login = ({ handleChange }) => {
+const baseURL = "https://jsonplaceholder.typicode.com/posts";
+
+const Admin_Login = ({ handleChange }) => {
     const navigate = useNavigate();
-    const { setUsername, TrackNameMain, TrackYearMain } = useStateContext();
 
     const { currentColor } = useStateContext();
     const paperStyle = { padding: 20, height: '73vh', width: 300, margin: "0 auto" }
     const avatarStyle = { backgroundColor: currentColor }
-    const btnstyle = { margin: '20px 0' };
+    const btnstyle = { margin: '8px 0' };
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
+    const { Username,setUsername } = useStateContext();
     const [error, seterror] = useState(false);
     const [ErrorMessage, setErrorMessage] = useState();
-
 
     // route.post('/api/user_signup', controller.user_signup)
     // route.post('/api/user_login/:username', controller.user_login)
@@ -30,22 +31,25 @@ const Login = ({ handleChange }) => {
 
     const submitAction = async () => {
         try {
-            const res = await axios.post(`http://localhost:5000/api/team_login`, { team_name: user, team_password: pwd });
+            const res = await axios.post(`http://localhost:5000/api/user_login`, { username: user, password: pwd });
             if (res.status === 200) {
-                setUsername(user);
-                localStorage.setItem('user', user);
                 console.log('User is authenticated');
+                localStorage.setItem('user', user);
+                setUsername(user);              
                 const token = res.data.token; // assuming the token is returned in the response
                 localStorage.setItem('token', token); // store the token in local storage
-                navigate(`/api/track?year=${TrackYearMain}&name_code=${TrackNameMain}`); // navigate to next page
+                console.log(`Token: ${token}`); // print token to console
+                          
+            navigate('/Tracks_verification'); // navigate to next page
+
             }
         } catch (error) {
-
-            if (error.response.data.message) {
+            
+            if (error.response.data.message ) {
                 seterror(true);
-                setErrorMessage(error.response.data.message);
+                setErrorMessage(error.resoponse.data.message);
                 console.log(error.response.data.message);
-            }
+            } 
             else {
                 console.error(error);
             }
@@ -53,7 +57,9 @@ const Login = ({ handleChange }) => {
     };
 
     return (
-        <div className=" dark:bg-secondary-dark-bg bg-white text-white">
+        <div style={{ height: '100vh' }}>
+
+        <div className=" dark:bg-secondary-dark-bg bg-white text-white mt-20">
 
             <Grid>
                 <Paper style={paperStyle}>
@@ -61,10 +67,9 @@ const Login = ({ handleChange }) => {
                         <Avatar style={avatarStyle}>
                             <LockOutlinedIcon />
                         </Avatar>
-                        <h2>Team Sign In</h2>
+                        <h2>Admin Login</h2>
                         {error && <Typography variant='caption' gutterBottom style={{ color: 'red' }}> {ErrorMessage}</Typography>}
                     </Grid>
-
                     <TextField label='Username' placeholder='Enter username' value={user} fullWidth required onChange={(e) => setUser(e.target.value)} />
                     <TextField label='Password' placeholder='Enter password' value={pwd} fullWidth required onChange={(e) => setPwd(e.target.value)} type='password' />
                     <FormControlLabel control={<Checkbox name='checkedB' color='primary' />} label='Remember me' />
@@ -84,7 +89,8 @@ const Login = ({ handleChange }) => {
                 </Paper>
             </Grid>
         </div>
+        </div>
     )
 }
 
-export default Login
+export default Admin_Login

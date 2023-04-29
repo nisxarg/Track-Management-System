@@ -267,11 +267,11 @@ export const links = [
 
       },
       {
-        name: 'Call for Papers',
+        name: 'Call_For_Papers',
 
       },
       {
-        name: 'Call for Tracks',
+        name: 'Call_For_Tracks',
 
       },
       {
@@ -292,7 +292,7 @@ export const links = [
 
       },
       {
-        name: 'Past Precedings',
+        name: 'Past_Precedings',
 
       },
     ],
