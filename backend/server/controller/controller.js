@@ -83,7 +83,7 @@ exports.user_login = async (req, res) => {
         // check if user exists
         const user = await userdb.findOne({ username: username });
 
-        
+
         // console.log(username_,password_)
         if (!user) return res.status(400).send({ message: "User not found" });
 
@@ -184,12 +184,12 @@ exports.organizer_signup = async (req, res) => {
         if (existingorganizer) {
             return res.status(300).send({ message: "Username already exists" });
         }
-        
-        if(!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(req.body.email)){
+
+        if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(req.body.email)) {
             return res.status(400).send({ message: "Enter Valid Email-Address" });
         }
 
-        if(!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.password)){
+        if (!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.password)) {
             return res.status(400).send({ message: "Enter Valid Password" });
         }
 
@@ -200,10 +200,9 @@ exports.organizer_signup = async (req, res) => {
         const year_ = new Date(start_date_).getFullYear().toString();
         const name_code_ = req.body.track_list[0].track_name
 
-        const data = await trackdb.findOne({name_code:name_code_, year:year_})
+        const data = await trackdb.findOne({ name_code: name_code_, year: year_ })
 
-        if(data)
-        {
+        if (data) {
             return res.status(300).send({ message: "Track name already exists" })
         }
 
@@ -224,12 +223,12 @@ exports.organizer_signup = async (req, res) => {
                 res.status(200).send(data)
                 // res.redirect('/')
             })
-            .catch((e)=>{
+            .catch((e) => {
                 console.error(e)
             })
 
-            await uvtrack.save(uvtrack)
-            .catch((e)=>{
+        await uvtrack.save(uvtrack)
+            .catch((e) => {
                 console.error(e)
             })
     }
@@ -425,32 +424,33 @@ exports.update_track = async (req, res) => {
     const tracke = new trackdb(req.body)
     // console.log("Printing track details")
     // console.log(tracke)
-    
+
     const find_year = tracke.year;
     const tn = tracke.name_code;
     const tag_ = tracke.tag;
     const sidebar_ = tracke.sidebar;
     const importantDates_ = tracke.importantDates;
     const content_ = tracke.content;
-   
-    try{
+
+    try {
 
         await trackdb.findOneAndUpdate(
-            { "year" : find_year, "name_code" : tn}, 
-            { $set : {  
-                "tag" : tag_,
-                "sidebar" : sidebar_,
-                "importantDates" : importantDates_,
-                "content" :  content_
+            { "year": find_year, "name_code": tn },
+            {
+                $set: {
+                    "tag": tag_,
+                    "sidebar": sidebar_,
+                    "importantDates": importantDates_,
+                    "content": content_
                 }
             }
         )
 
         return res.status(200).send(tracke)
-    }catch (e) {
+    } catch (e) {
         console.error(e);
     }
-            
+
 
 }
 
@@ -541,7 +541,7 @@ exports.team_signup = async (req, res) => {
     const team_name_ = team.team_name
     const track_name_ = team.track_name
     const year_ = team.track_year
-    
+
 
     const data = await teamdb.findOne({ team_name: team_name_, track_name: track_name_, track_year: year_ })
 
@@ -562,7 +562,7 @@ exports.team_signup = async (req, res) => {
 
     for (let j = 0; j < 3; j++) {
 
-        if (user[j] != undefined && user[j].length !=0 ) {
+        if (user[j] != undefined && user[j].length != 0) {
             try {
                 const data = await userdb.findOne({ username: user[j] });
                 if (data) {
@@ -590,9 +590,9 @@ exports.team_signup = async (req, res) => {
     if (count >= 1 && check == 0) {
 
         for (let j = 0; j < 3; j++) {
-            if (user[j] != undefined && user[j].length !=0 ) {
+            if (user[j] != undefined && user[j].length != 0) {
                 try {
-                    
+
                     const check = await userdb.findOne({ username: user[j] });
                     const name = check.username;
 
@@ -693,31 +693,29 @@ exports.set_score = async (req, res) => {
 
     try {
         const data = await leaderdb.findOne(
-            { "track_name" : track_name_, "track_year" : track_year_, "team_and_score" : {$elemMatch: { "team_name": team_name_}}}
-        ) 
+            { "track_name": track_name_, "track_year": track_year_, "team_and_score": { $elemMatch: { "team_name": team_name_ } } }
+        )
 
         var len = data.team_and_score.length
-        var id 
+        var id
 
-        for(let i=0; i<len; i++)
-        {
-            if(data.team_and_score[i].team_name==team_name_)
-            {
+        for (let i = 0; i < len; i++) {
+            if (data.team_and_score[i].team_name == team_name_) {
                 id = data.team_and_score[i]._id;
                 break;
             }
         }
-        
+
         const data1 = await leaderdb.findOneAndUpdate(
-            {"team_and_score" :{$elemMatch: { "_id": id}}},
+            { "team_and_score": { $elemMatch: { "_id": id } } },
             {
-                $set:{
-                    "team_and_score.$.team_score" : new_score
+                $set: {
+                    "team_and_score.$.team_score": new_score
                 }
             }
         )
 
-        res.status(200).send({new_score: new_score})
+        res.status(200).send({ new_score: new_score })
 
     } catch (err) {
         return res.status(500).send({ message: "error" });
@@ -731,11 +729,11 @@ exports.get_leaderboard = async (req, res) => {
         const track_name_ = req.query.track_name
         const track_year_ = req.query.track_year
 
-        const data = await leaderdb.findOne({track_name:track_name_, track_year:track_year_})
+        const data = await leaderdb.findOne({ track_name: track_name_, track_year: track_year_ })
 
         const team_data = data.team_and_score
 
-        team_data.sort((a,b) => a.team_score - b.team_score)
+        team_data.sort((a, b) => a.team_score - b.team_score)
         team_data.reverse()
 
         res.status(200).send(team_data)
@@ -751,7 +749,7 @@ exports.admin_page = async (req, res) => {
 
         const data = await uvtrackdb.find({})
 
-        data.sort((a,b) => a.start_date - b.start_date)
+        data.sort((a, b) => a.start_date - b.start_date)
         data.reverse()
 
         res.status(200).send(data)
@@ -762,7 +760,7 @@ exports.admin_page = async (req, res) => {
 }
 
 exports.verify_track = async (req, res) => {
-    
+
     //validate request
     if (!req.body) {
         return res.status(400).send({ message: "Content can not be empty" });
@@ -775,16 +773,16 @@ exports.verify_track = async (req, res) => {
         const organizer = req.body.username
         const start_date_ = req.body.start_date
 
-        await uvtrackdb.findOneAndDelete({track_name: track_name_, track_year: track_year_})
-        .catch((e)=>{
-            console.error(e)
-        })
+        await uvtrackdb.findOneAndDelete({ track_name: track_name_, track_year: track_year_ })
+            .catch((e) => {
+                console.error(e)
+            })
 
         const data2 = await organizerdb.findOneAndUpdate(
-            {"track_list" :{$elemMatch: { "track_name": track_name_, "start_date": start_date_}}},
+            { "track_list": { $elemMatch: { "track_name": track_name_, "start_date": start_date_ } } },
             {
-                $set:{
-                    "track_list.$.verified" : true
+                $set: {
+                    "track_list.$.verified": true
                 }
             }
         )
@@ -797,53 +795,55 @@ exports.verify_track = async (req, res) => {
         const tracke = new trackdb(data)
 
         await tracke.save(tracke)
-        .then(async data => {
-            
-            try{
-    
-                await homedb.findOneAndUpdate(
-                    { "year" : track_year_ }, //filtering
-                    { $push : {  
-                        "content.tracks.list" : 
+            .then(async data => {
+
+                try {
+
+                    await homedb.findOneAndUpdate(
+                        { "year": track_year_ }, //filtering
                         {
-                            "text" : track_name_,
-                            "link" : ""
-                         }}
+                            $push: {
+                                "content.tracks.list":
+                                {
+                                    "text": track_name_,
+                                    "link": ""
+                                }
+                            }
                         }
-                )
-    
-                const new_leaderboard = 
-                {
-                    "track_name": track_name_,
-                    "track_year": track_year_
+                    )
+
+                    const new_leaderboard =
+                    {
+                        "track_name": track_name_,
+                        "track_year": track_year_
+                    }
+
+                    const leader_insert = new leaderdb(new_leaderboard)
+
+
+                    await leader_insert.save(leader_insert)
+                        .catch(e => {
+                            console.error(e);
+                        })
+
+
+                } catch (e) {
+                    console.error(e);
                 }
-    
-             const leader_insert = new leaderdb(new_leaderboard)
-            
-    
-             await leader_insert.save(leader_insert)
-             .catch(e =>{
-                console.error(e);
-             })
-             
-    
-            }catch (e) {
-                console.error(e);
-            }
 
-            const ans = await uvtrackdb.find({})
+                const ans = await uvtrackdb.find({})
 
-            ans.sort((a,b) => a.start_date - b.start_date)
-            ans.reverse()
-    
-            res.status(200).send(ans)
-    
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || "Error"
+                ans.sort((a, b) => a.start_date - b.start_date)
+                ans.reverse()
+
+                res.status(200).send(ans)
+
+            })
+            .catch(err => {
+                res.status(500).send({
+                    message: err.message || "Error"
+                });
             });
-        });
 
     } catch (err) {
         return res.status(500).send('error');
