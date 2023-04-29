@@ -13,10 +13,8 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
 
 exports.home = async (req, res) => {
-
-    res.status(200).send("hiii")
+    res.status(200).send("successfull")
 }
-
 
 exports.admin_login = async (req, res) => {
     try {
