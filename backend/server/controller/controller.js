@@ -5,7 +5,7 @@ var homedb = require('../model/model_home')
 var teamdb = require('../model/model_team')
 var leaderdb = require('../model/model_leaderboard')
 var uvtrackdb = require('../model/model_uvtrack')
-
+var admindb =  require('../model/model_admin')
 const axios = require("axios");
 const bcrypt = require('bcrypt');
 
@@ -15,6 +15,47 @@ const jwt = require("jsonwebtoken")
 exports.home = async (req, res) => {
 
     res.status(200).send("hiii")
+}
+
+
+exports.admin_login = async (req,res) => {
+    try{
+        //validate request
+        if(!req.body){
+            res.status(400).send({message: "Details are empty"})
+        }
+        const username_ = req.body.username;
+        const password_ = req.body.password;
+         // check if admin exists
+         const user = await admindb.findOne({ username : username_});
+
+         if (!user) return res.status(400).send({ message: "User not found" });
+
+         // check if password is correct
+         const validPassword = await bcrypt.compare(password_, user.password);
+         if (!validPassword) return res.status(400).send({ message: "Invalid Password" });
+
+        res.status(200).send({message :  "Login successful"})
+
+        // create and assign a token
+        let tokenData = {
+            username: user.username
+        };
+
+        const token = await jwt.sign(tokenData, "secret", { expiresIn: "1h" });
+        console.log("token created");
+
+        res.status(200).json({
+            status: true,
+            success: "SendData",
+            token: token,
+        })
+
+
+    }catch(err)
+    {
+          res.status(500).send({ message : "Internal server error"})   
+    }
 }
 
 
@@ -179,24 +220,25 @@ exports.organizer_signup = async (req, res) => {
 
         // console.log(req.body)
         // check if username already exists
-        const username = req.body.username;
-        const existingorganizer = await organizerdb.findOne({ username });
+        const username_ = req.body.username;
+        const email_ = req.body.email;
+        const password_ = req.body.password;
+        const existingorganizer = await organizerdb.findOne({ username_ });
         if (existingorganizer) {
             return res.status(300).send({ message: "Username already exists" });
         }
 
-        if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(req.body.email)) {
+        if(!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email_)){
             return res.status(400).send({ message: "Enter Valid Email-Address" });
         }
 
-        if (!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.password)) {
+        if(!/(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,}/.test(req.body.password)){
             return res.status(400).send({ message: "Enter Valid Password" });
         }
 
         //check if track name is already in database or not
 
         const start_date_ = req.body.track_list[0].start_date
-
         const year_ = new Date(start_date_).getFullYear().toString();
         const name_code_ = req.body.track_list[0].track_name
 
@@ -207,7 +249,6 @@ exports.organizer_signup = async (req, res) => {
         }
 
         const organizer = new organizerdb(req.body)
-
 
         const data1 = {
             username: req.body.username,
@@ -849,8 +890,3 @@ exports.verify_track = async (req, res) => {
         return res.status(500).send('error');
     }
 }
-
-
-
-
-
